@@ -8,7 +8,7 @@
   "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
-  "last_updated": "2026-09-25T15:17:00Z",
+  "last_updated": "2026-09-25T17:05:00Z",
   "architecton_40_registry": "/api/v1/architecton-40.json",
   "architecton_40_total": 40,
   "architecton_40_mode": "CONTROLLED_MANUAL",
@@ -85,5 +85,12 @@
   "full_validation_verified_run": true,
   "full_validation_verified_run_id": 36152887393,
   "master_cerebron_relay": "dmaillot95-ui/cerebron-omega-ai/docs/RELAY_TO_RDX_ARCHITECTON_2026-09-25.md",
-  "current_blocker": "WAITING_FOR_FIRST_REAL_ARCHITECTON_HANDOFF"
+  "current_blocker": "WAITING_FOR_FIRST_REAL_ARCHITECTON_HANDOFF",
+  "client_request_local_export_enabled": true,
+  "client_request_schema": "/api/v1/request-schema.json",
+  "client_request_server_submission": false,
+  "client_request_database_storage": false,
+  "client_request_training_default": false,
+  "email_human_gateway_status": "POLICY_CONFIGURED_EMAIL_ADDRESS_NOT_YET_BOUND",
+  "privacy_page": "/privacy.html"
 }

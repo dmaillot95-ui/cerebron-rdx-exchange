@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cerebron-rdx.local/schema/rdx-client-request-v1.json",
+  "title": "RDX Client Request V1",
+  "type": "object",
+  "required": [
+    "schema",
+    "request_id",
+    "created_at",
+    "channel",
+    "contact",
+    "decision_question",
+    "consent",
+    "handling"
+  ],
+  "properties": {
+    "schema": {
+      "const": "RDX_CLIENT_REQUEST_V1"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^RDX-REQ-.+"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "channel": {
+      "const": "LOCAL_BROWSER_EXPORT"
+    },
+    "contact": {
+      "type": "object",
+      "required": [
+        "name",
+        "email",
+        "organization"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 320
+        },
+        "organization": {
+          "type": "string",
+          "maxLength": 300
+        }
+      },
+      "additionalProperties": false
+    },
+    "decision_question": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "consent": {
+      "type": "object",
+      "required": [
+        "server_submission",
+        "training_default"
+      ],
+      "properties": {
+        "server_submission": {
+          "const": false
+        },
+        "training_default": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "handling": {
+      "type": "object",
+      "required": [
+        "human_review_required",
+        "automatic_price_commitment",
+        "automatic_deadline_commitment"
+      ],
+      "properties": {
+        "human_review_required": {
+          "const": true
+        },
+        "automatic_price_commitment": {
+          "const": false
+        },
+        "automatic_deadline_commitment": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

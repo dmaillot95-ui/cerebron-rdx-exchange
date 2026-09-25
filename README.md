@@ -69,3 +69,7 @@ Les packs canoniques de `data/packs` sont projetés vers des vues publiques mini
 - `/dossiers/RDX-000001.html`
 
 Une fiche `SOURCED` reste explicitement non vérifiée et non publiée. La projection n'élève jamais le niveau de preuve du pack source.
+
+## Demandes client Phase 1
+
+Le formulaire public produit localement un objet `RDX_CLIENT_REQUEST_V1` téléchargeable. Aucun envoi serveur, stockage en base, paiement ou entraînement n'est activé. Le schéma public est disponible via `/api/v1/request-schema.json` et la politique via `/privacy.html`.

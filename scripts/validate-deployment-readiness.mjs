@@ -3,6 +3,8 @@ import fs from 'node:fs';
 const required=[
   'dist/index.html',
   'dist/api/v1/status.json',
+  'dist/api/v1/request-schema.json',
+  'dist/privacy.html',
   'dist/api/v1/packs/RDX-000001.json',
   'dist/dossiers/RDX-000001.html',
   'dist/api/v1/architecton-40.json',
@@ -57,11 +59,13 @@ if(fs.existsSync('dist/api/v1/status.json')){
   if(s.automatic_ai_execution!==false) fail('status automatic_ai_execution must remain false');
   if(s.automatic_publication!==false) fail('status automatic_publication must remain false');
   if(s.payment_enabled!==false) fail('status payment_enabled must remain false');
+  if(s.client_request_local_export_enabled!==true) fail('local request export must be enabled');
+  if(s.client_request_server_submission!==false) fail('client request server submission must remain false until a real gateway is bound');
 }
 
 if(fs.existsSync('dist/index.html')){
   const html=fs.readFileSync('dist/index.html','utf8');
-  for(const marker of ['ARCHITECTON Ω','architectonWaveFilter','/api/v1/architecton-missions.json','/api/v1/architecton-pipeline.json','/dossiers/RDX-000001.html']){
+  for(const marker of ['ARCHITECTON Ω','architectonWaveFilter','/api/v1/architecton-missions.json','/api/v1/architecton-pipeline.json','/dossiers/RDX-000001.html','RDX_CLIENT_REQUEST_V1','/privacy.html']){
     if(!html.includes(marker)) fail(`dist/index.html missing marker: ${marker}`);
   }
 }
