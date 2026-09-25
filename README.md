@@ -88,3 +88,9 @@ La page d'accueil et `/dossiers/` lisent `/api/v1/catalog.json`. Les futurs pack
 The public bundle passes full validation and uploads successfully to the GitHub Pages artifact. The remaining deployment blocker is repository-level Pages enablement. The repository owner must enable **Settings → Pages → Build and deployment → Source: GitHub Actions** once. The workflow cannot create the Pages site with its own GITHUB_TOKEN because GitHub rejects that operation as `Resource not accessible by integration`.
 
 Latest deployment attempt: run `36170056517` — validation PASS, artifact upload PASS, site enablement blocked by repository permission.
+
+## Release integrity
+
+Every deployable public bundle now generates a deterministic `RDX_RELEASE_MANIFEST_V1` using SHA-256 for every public file plus an aggregate SHA-256. The manifest is generated during validation/deployment and is included at `api/v1/release-manifest.json` in the deployment artifact.
+
+After a real GitHub Pages deployment, `scripts/verify-live-deployment.mjs` verifies the public index, status API, catalogue, RDX-000001 projection and release manifest. A successful live verification produces the artifact `rdx-production-deployment-proof` using schema `RDX_PRODUCTION_DEPLOYMENT_PROOF_V1`.
