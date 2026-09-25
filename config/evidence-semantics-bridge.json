@@ -1,0 +1,43 @@
+{
+  "schema_version": "CEREBRON-EVIDENCE-BRIDGE-1.0",
+  "policy": "NO_DIRECT_MAPPING",
+  "rationale": "ARCHITECTON evidence maturity and RDX claim evidence_level are different semantics and must never be copied numerically.",
+  "architecton": {
+    "field": "architecton_evidence_level",
+    "scale": {
+      "E0": "HYPOTHESIS_OR_UNVERIFIED",
+      "E1": "ARCHITECTURE_OR_REASONING",
+      "E2": "EXECUTED_REPRODUCIBLE_ANALYTICAL_CALCULATION",
+      "E3": "EXECUTED_VERIFIED_NUMERICAL_SIMULATION",
+      "E4": "COMPONENT_TEST",
+      "E5": "SUBSYSTEM_TEST",
+      "E6": "INTEGRATED_DEMONSTRATOR",
+      "E7": "REPRESENTATIVE_ENVIRONMENT",
+      "E8": "OPERATIONAL_HISTORY"
+    }
+  },
+  "rdx": {
+    "field": "evidence_level",
+    "type": "integer_0_to_8",
+    "current_validator_constraints": [
+      "E4+ requires at least two declared independence groups.",
+      "Simulation-only evidence cannot exceed 3.",
+      "Material publishable claims require evidence."
+    ],
+    "note": "This field is pack-specific and is not the ARCHITECTON E0-E8 maturity ladder."
+  },
+  "normalization": {
+    "required_fields": [
+      "architecton_evidence_level",
+      "rdx_evidence_level",
+      "normalization_basis_refs"
+    ],
+    "rules": [
+      "Never convert E2 ARCHITECTON to RDX 2 by numeric identity.",
+      "Never infer ARCHITECTON E2 from literature sources alone.",
+      "A sourced claim may remain ARCHITECTON E0/E1 unless an executed calculation/test/simulation raises maturity.",
+      "Preserve source, calculation, simulation and test provenance separately.",
+      "If a valid mapping cannot be justified, set rdx_evidence_level to UNKNOWN in the normalization proposal and require review."
+    ]
+  }
+}
