@@ -1,0 +1,32 @@
+{
+  "id": "RDX-000001",
+  "title": "Direct-to-chip ou immersion à forte densité ?",
+  "decision_question": "Pour un centre de données européen, dans quelles conditions le direct-to-chip devient-il préférable à l'immersion entre 80 et 200 kW par rack ?",
+  "vertical": "data_center_cooling",
+  "status": "DRAFT",
+  "scope": {
+    "region": "Europe",
+    "rack_density_kw": [80, 200],
+    "system_boundary": "facility"
+  },
+  "sources": [],
+  "executions": [],
+  "claims": [
+    {
+      "id": "CLM-000001",
+      "statement": "Le périmètre de comparaison doit inclure installation, exploitation, maintenance et fin de vie.",
+      "scope": {
+        "region": "Europe",
+        "system_boundary": "facility"
+      },
+      "material": false,
+      "evidence_level": 0,
+      "evidence": []
+    }
+  ],
+  "audits": [],
+  "human_review": {
+    "completed": false
+  },
+  "version": null
+}
