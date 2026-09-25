@@ -39,6 +39,12 @@ jobs:
         run: node scripts/build-static-release.mjs
       - name: Verify canonical public projections remain synchronized
         run: git diff --exit-code -- dist/api/v1/packs dist/dossiers dist/api/v1/architecton-40.json dist/api/v1/architecton-missions.json dist/api/v1/architecton-wave-01.json dist/api/v1/architecton-pipeline.json
+      - name: Upload release attestation
+        uses: actions/upload-artifact@v4
+        with:
+          name: rdx-release-attestation
+          path: artifacts/rdx-release-attestation.json
+          retention-days: 90
       - name: Upload public dist
         uses: actions/upload-pages-artifact@v4
         with:
