@@ -1,0 +1,23 @@
+{
+  "schema_version": "ARCHITECTON-RDX-NORMALIZATION-1.0",
+  "mode": "PROPOSAL_ONLY",
+  "auto_create_rdx_pack": false,
+  "auto_publish": false,
+  "required_policy": "NO_DIRECT_MAPPING",
+  "source_evidence_bridge": "config/evidence-semantics-bridge.json",
+  "statuses": [
+    "PROPOSED",
+    "APPROVED",
+    "REJECTED",
+    "NEEDS_MORE_EVIDENCE"
+  ],
+  "rules": [
+    "An ARCHITECTON claim is never copied to RDX without a normalization record.",
+    "architecton_evidence_level and RDX evidence_level are separate fields.",
+    "APPROVED requires explicit normalization_basis_refs.",
+    "APPROVED requires a concrete integer rdx_evidence_level from 0 to 8.",
+    "No normalization may invent a source, execution, calculation, simulation or test.",
+    "Normalization does not publish a Decision Pack.",
+    "Human review remains required for material publishable RDX claims."
+  ]
+}
