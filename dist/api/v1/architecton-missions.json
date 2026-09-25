@@ -1,0 +1,399 @@
+{
+  "service": "CEREBRON_RDX_EXCHANGE",
+  "resource": "ARCHITECTON_M01_MISSIONS",
+  "read_only": true,
+  "canonical_registry": "data/architecton/portfolio-40.json",
+  "mission_plan": "data/architecton/missions/architecton-40-plan.json",
+  "total_missions": 40,
+  "ready_to_assign": 40,
+  "active": 0,
+  "execution_claims": 0,
+  "priority_wave": "WAVE-01",
+  "note": "READY_TO_ASSIGN is a prepared work order, not an executed R&D mission.",
+  "waves": [
+    {
+      "wave": "WAVE-01",
+      "priority": 1,
+      "status": "READY_TO_ASSIGN",
+      "inbox": "data/architecton/inbox/WAVE-01/index.json",
+      "souches": [
+        {
+          "id": "S01",
+          "name": "LANCEURS SPATIAUX Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-01/S01-M01.json"
+        },
+        {
+          "id": "S02",
+          "name": "VAISSEAU-LANCEUR TITAN WAGONSHIP Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-01/S02-M01.json"
+        },
+        {
+          "id": "S03",
+          "name": "MOTEURS-FUSÉES & ÉTAGES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-01/S03-M01.json"
+        },
+        {
+          "id": "S04",
+          "name": "PETITS CONVOYEURS MONOWAGON & TRIAGE ORBITAL Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-01/S04-M01.json"
+        },
+        {
+          "id": "S05",
+          "name": "CONVOYEURS / TRAINS SPATIAUX MODULAIRES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-01/S05-M01.json"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-02",
+      "priority": 2,
+      "status": "READY_TO_ASSIGN",
+      "inbox": "data/architecton/inbox/WAVE-02/index.json",
+      "souches": [
+        {
+          "id": "S06",
+          "name": "CONVOYEURS / TRAINS SPATIAUX ALVÉOLAIRES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-02/S06-M01.json"
+        },
+        {
+          "id": "S07",
+          "name": "VAISSEAUX CARGO & LOGISTIQUE ORBITALE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-02/S07-M01.json"
+        },
+        {
+          "id": "S08",
+          "name": "REMORQUEURS & MANŒUVRIERS ORBITAUX Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-02/S08-M01.json"
+        },
+        {
+          "id": "S09",
+          "name": "ATTERRISSEURS & NAVETTES SURFACE–ORBITE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-02/S09-M01.json"
+        },
+        {
+          "id": "S10",
+          "name": "SPATIOPORTS & INFRASTRUCTURES DE LANCEMENT Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-02/S10-M01.json"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-03",
+      "priority": 3,
+      "status": "READY_TO_ASSIGN",
+      "inbox": "data/architecton/inbox/WAVE-03/index.json",
+      "souches": [
+        {
+          "id": "S11",
+          "name": "STANDARDS & INTERFACES SPATIALES UNIVERSELLES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-03/S11-M01.json"
+        },
+        {
+          "id": "S12",
+          "name": "GARES & PORTS SPATIAUX MODULAIRES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-03/S12-M01.json"
+        },
+        {
+          "id": "S13",
+          "name": "GARES SPATIALES ALVÉOLAIRES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-03/S13-M01.json"
+        },
+        {
+          "id": "S14",
+          "name": "DÉPÔTS & TERMINAUX DE RESSOURCES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-03/S14-M01.json"
+        },
+        {
+          "id": "S15",
+          "name": "INFRASTRUCTURES DE MAINTENANCE & SERVICE SPATIAL Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-03/S15-M01.json"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-04",
+      "priority": 4,
+      "status": "READY_TO_ASSIGN",
+      "inbox": "data/architecton/inbox/WAVE-04/index.json",
+      "souches": [
+        {
+          "id": "S16",
+          "name": "ÉNERGIE SPATIALE & RÉSEAUX DE PUISSANCE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-04/S16-M01.json"
+        },
+        {
+          "id": "S17",
+          "name": "SYSTÈMES THERMIQUES & CRYOGÉNIQUES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-04/S17-M01.json"
+        },
+        {
+          "id": "S18",
+          "name": "RÉSEAUX DE FLUIDES & TRANSFERT D’ERGOLS Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-04/S18-M01.json"
+        },
+        {
+          "id": "S19",
+          "name": "ROBOTIQUE SPATIALE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-04/S19-M01.json"
+        },
+        {
+          "id": "S20",
+          "name": "USINES SPATIALES MODULAIRES & FABRICATION ORBITALE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-04/S20-M01.json"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-05",
+      "priority": 5,
+      "status": "READY_TO_ASSIGN",
+      "inbox": "data/architecton/inbox/WAVE-05/index.json",
+      "souches": [
+        {
+          "id": "S21",
+          "name": "RÉPARATION SPATIALE / REMANUFACTURING / SECONDE VIE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-05/S21-M01.json"
+        },
+        {
+          "id": "S22",
+          "name": "PLATEFORME ORBITALE MULTI-SERVICES & MULTI-CLIENTS Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-05/S22-M01.json"
+        },
+        {
+          "id": "S23",
+          "name": "ORCHESTRATION AUTONOME DES RESSOURCES & DE LA LOGISTIQUE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-05/S23-M01.json"
+        },
+        {
+          "id": "S24",
+          "name": "RÉCUPÉRATION & REQUALIFICATION AUTONOMES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-05/S24-M01.json"
+        },
+        {
+          "id": "S25",
+          "name": "CONFIANCE, PREUVE & QUALIFICATION SPATIALES VÉRIFIÉES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-05/S25-M01.json"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-06",
+      "priority": 6,
+      "status": "READY_TO_ASSIGN",
+      "inbox": "data/architecton/inbox/WAVE-06/index.json",
+      "souches": [
+        {
+          "id": "S26",
+          "name": "COMPILATION MISSION → INFRASTRUCTURE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-06/S26-M01.json"
+        },
+        {
+          "id": "S27",
+          "name": "INTELLIGENCE INDUSTRIELLE SPATIALE VÉRIFIÉE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-06/S27-M01.json"
+        },
+        {
+          "id": "S28",
+          "name": "DISPONIBILITÉ LEAP & USINE MRO Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-06/S28-M01.json"
+        },
+        {
+          "id": "S29",
+          "name": "JUMEAU NUMÉRIQUE MOTEUR & SANTÉ PRÉDICTIVE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-06/S29-M01.json"
+        },
+        {
+          "id": "S30",
+          "name": "INSPECTION ROBOTISÉE DES MOTEURS & RÉPARATION AVANCÉE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-06/S30-M01.json"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-07",
+      "priority": 7,
+      "status": "READY_TO_ASSIGN",
+      "inbox": "data/architecton/inbox/WAVE-07/index.json",
+      "souches": [
+        {
+          "id": "S31",
+          "name": "RISE / OPEN FAN & TECHNOLOGIES DE CŒUR COMPACT Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-07/S31-M01.json"
+        },
+        {
+          "id": "S32",
+          "name": "TRAIN D’ATTERRISSAGE INTELLIGENT & FREINS CARBONE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-07/S32-M01.json"
+        },
+        {
+          "id": "S33",
+          "name": "SANTÉ AÉRONEF, STRUCTURES & OPÉRATIONS PRÉDICTIVES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-07/S33-M01.json"
+        },
+        {
+          "id": "S34",
+          "name": "DOSSIERS TECHNIQUES NUMÉRIQUES & NAVIGABILITÉ AUTOMATISÉE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-07/S34-M01.json"
+        },
+        {
+          "id": "S35",
+          "name": "DISPONIBILITÉ FLOTTE & OPTIMISATION DES PIÈCES Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-07/S35-M01.json"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-08",
+      "priority": 8,
+      "status": "READY_TO_ASSIGN",
+      "inbox": "data/architecton/inbox/WAVE-08/index.json",
+      "souches": [
+        {
+          "id": "S36",
+          "name": "RÉSEAU MONDIAL DE RÉPARATION & INSPECTION AUTOMATISÉE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-08/S36-M01.json"
+        },
+        {
+          "id": "S37",
+          "name": "CYBERSÉCURITÉ AÉRONAUTIQUE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-08/S37-M01.json"
+        },
+        {
+          "id": "S38",
+          "name": "NOYAU DE SÛRETÉ POUR AUTONOMIE CERTIFIABLE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-08/S38-M01.json"
+        },
+        {
+          "id": "S39",
+          "name": "MOTEUR DE CADENCE INDUSTRIELLE & DE COÛTS ARIANE 6 Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-08/S39-M01.json"
+        },
+        {
+          "id": "S40",
+          "name": "CAPACITÉ AÉRO-SPATIALE VÉRIFIÉE Ω",
+          "phase": "M01",
+          "mission_status": "READY_TO_ASSIGN",
+          "canonical_registry_status": "QUEUED",
+          "work_order": "data/architecton/missions/WAVE-08/S40-M01.json"
+        }
+      ]
+    }
+  ]
+}
