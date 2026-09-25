@@ -1,0 +1,80 @@
+{
+  "schema": "CEREBRON_RDX_MEMORY_ROUTE_INTEGRATION_V1",
+  "date": "2026-09-25",
+  "source_farm_id": 152,
+  "scope": "RDX_MEMORY_RAG_INTEGRATION_ONLY",
+  "route": ["F152","F114","F115","F116","F119","F120"],
+  "conditional_replay": {
+    "farm_id": 117,
+    "status": "NOT_EXERCISED_NO_SIMULATION_INPUT_IN_THIS_CANARY"
+  },
+  "gold": {
+    "farm_id": 118,
+    "status": "BLOCKED_BY_GLOBAL_F72",
+    "released": false
+  },
+  "evidence": {
+    "rdx_ingress": {
+      "run_id": 36142030500,
+      "receipt_sha256": "960d8cf216f31ed7d191eb2852d7bb1446180f7ae37300048b9626f2c09b8db7",
+      "status": "PASS_M1_M7_MEMORY_ONLY"
+    },
+    "rdx_write_read_recall": {
+      "run_id": 36143467119,
+      "receipt_sha256": "a0544c0d774e34d8107be592b5193ce321d36182a44581786edfb3f76db5450f",
+      "status": "PASS_PRIVATE_WRITE_READ_SHA_POINTER_RECALL"
+    },
+    "F114": {
+      "run_id": 36146849036,
+      "receipt_sha256": "37ba91639013b8b1f557b95da72243123a35767997b6718424fb9526f12deace",
+      "status": "PASS_CANONICAL_INDEX_CONFLICT_DETECTION"
+    },
+    "F115": {
+      "run_id": 36146647325,
+      "receipt_sha256": "0fd57ab740fb6cd928d86c68724626dbb4347f01ded9b641b2c6133492ae4778",
+      "status": "PASS_SYNTHETIC_SEMANTIC_CANARY",
+      "top1_accuracy": 0.875,
+      "mrr": 0.9375,
+      "production_rag_quality": "NOT_PROVEN"
+    },
+    "F116": {
+      "run_id": 36146855717,
+      "receipt_sha256": "4a4ad9d99513e4bd252f93d672391fa73017b37969c264abc9d52cf9098a34ab",
+      "status": "PASS_NORMALIZED_EXACT_DEDUP_PROVENANCE_FUSION",
+      "semantic_dedup": "NOT_PROVEN"
+    },
+    "F119": {
+      "run_id": 36149877205,
+      "receipt_sha256": "e2019d26ae15ac31d86ab35fba0766df869ca49447d54be5dd2d630ae8b69940",
+      "status": "PASS_PINNED_CONTENT_ADDRESS_PROVENANCE_ARCHIVE"
+    },
+    "F120": {
+      "run_id": 36149917748,
+      "receipt_sha256": "13feaef4cb14852625b3dae7c0f2c40a9d20b4697d21ac253b931dffd16aac31",
+      "status": "PASS_FAIL_CLOSED_GOVERNOR"
+    },
+    "F72_scoped_review": {
+      "run_id": 36149593919,
+      "result_sha256": "3b925348d4a04b11ff54d5472a5a3cd52b83af10ea188c8c50222b341caf5aee",
+      "status": "SUPPORTED_E2_SCOPED_MEMORY_CANARY_STACK_ONLY",
+      "global_f72": "FAIL"
+    }
+  },
+  "afah": {
+    "status": "PENDING_NO_DEDICATED_RDX_REVIEW_EXECUTION_FOUND"
+  },
+  "training": {
+    "executed": false,
+    "weights_changed": false,
+    "adapter_changed": false,
+    "claim": "NO_RDX_NEURAL_TRAINING"
+  },
+  "claim_ceiling": "RDX_MEMORY_ROUTE_SCOPED_CANARY_EVIDENCE_ONLY_NO_PRODUCTION_RAG_NO_GOLD_NO_TRAINING",
+  "rules": [
+    "MEMORY_NOT_TRAINING",
+    "M6_NEVER_IN_TRAIN",
+    "GLOBAL_F72_FAIL_BLOCKS_M4_GOLD",
+    "SYNTHETIC_SEMANTIC_CANARY_NOT_PRODUCTION_RAG_QUALITY",
+    "INTERNAL_CANARIES_NOT_INDEPENDENT_EXTERNAL_PROOF"
+  ]
+}
