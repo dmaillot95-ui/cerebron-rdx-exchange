@@ -1,0 +1,24 @@
+{
+  "schema_version": "ARCHITECTON-RDX-NORMALIZATION-RECORD-1.0",
+  "normalization_id": "NRM-000001",
+  "souche_id": "SXX",
+  "source_architecton_claim_id": "CLAIM-000001",
+  "proposed_rdx_claim_id": "CLM-000001",
+  "status": "PROPOSED",
+  "architecton_evidence_level": "E0",
+  "evidence_object_refs": [],
+  "source_refs": [],
+  "execution_refs": [],
+  "proposed_rdx_evidence_level": null,
+  "normalization_basis_refs": [],
+  "statement_transform": {
+    "architecton_statement": null,
+    "rdx_statement": null,
+    "scope_preserved": false,
+    "qualifiers_preserved": false
+  },
+  "material": true,
+  "reviewer": null,
+  "reviewed_at": null,
+  "notes": "Template only. A normalization record is not an RDX publication."
+}
