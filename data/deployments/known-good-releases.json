@@ -1,0 +1,6 @@
+{
+  "schema": "RDX_KNOWN_GOOD_RELEASE_REGISTRY_V1",
+  "policy": "FAIL_CLOSED",
+  "active_release": null,
+  "releases": []
+}

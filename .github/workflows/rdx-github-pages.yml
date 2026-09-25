@@ -138,3 +138,13 @@ jobs:
           name: rdx-production-proof-registration-proposal
           path: artifacts/rdx-production-proof-registration-proposal.json
           retention-days: 90
+      - name: Build known-good rollback baseline proposal
+        run: node scripts/build-known-good-release-proposal.mjs
+      - name: Validate known-good rollback baseline proposal
+        run: node scripts/validate-known-good-release-proposal.mjs
+      - name: Upload known-good rollback baseline proposal
+        uses: actions/upload-artifact@v4
+        with:
+          name: rdx-known-good-release-registration-proposal
+          path: artifacts/rdx-known-good-release-registration-proposal.json
+          retention-days: 90

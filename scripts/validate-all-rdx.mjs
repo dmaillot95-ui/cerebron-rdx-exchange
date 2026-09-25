@@ -22,6 +22,8 @@ const commands=[
   ['node',['scripts/validate-release-attestation.mjs']],
   ['node',['scripts/validate-production-promotion.mjs']],
   ['node',['scripts/validate-production-fail-closed-negative.mjs']],
+  ['node',['scripts/validate-production-rollback-negative.mjs']],
+  ['node',['scripts/validate-production-rollback.mjs']],
   ['node',['scripts/validate-static-links.mjs']],
   ['node',['scripts/validate-static-release-build.mjs']],
   ['node',['scripts/validate-reproducible-build.mjs']],

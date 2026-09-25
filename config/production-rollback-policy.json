@@ -1,0 +1,12 @@
+{
+  "schema": "RDX_PRODUCTION_ROLLBACK_POLICY_V1",
+  "mode": "FAIL_CLOSED",
+  "require_known_good_for_verified_production": true,
+  "require_registered_live_proof": true,
+  "require_signed_release_attestation": true,
+  "require_signed_live_proof": true,
+  "require_source_commit_match": true,
+  "require_release_aggregate_match": true,
+  "registration_mode": "PROPOSAL_ONLY_NO_AUTO_APPLY",
+  "note": "A verified production release must have a registered known-good baseline tied to its signed live proof. Future deployments can retain prior known-good entries as rollback candidates."
+}

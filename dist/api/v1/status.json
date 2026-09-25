@@ -8,7 +8,7 @@
   "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
-  "last_updated": "2026-09-25T20:08:00Z",
+  "last_updated": "2026-09-25T20:47:00Z",
   "architecton_40_registry": "/api/v1/architecton-40.json",
   "architecton_40_total": 40,
   "architecton_40_mode": "CONTROLLED_MANUAL",
@@ -136,5 +136,11 @@
   "live_deployment_requires_signed_release_attestation": true,
   "live_deployment_proof_sigstore_attestation_required": true,
   "live_deployment_proof_sigstore_verification_required": true,
-  "production_registration_proposal_validator": "scripts/validate-production-proof-registration-proposal.mjs"
+  "production_registration_proposal_validator": "scripts/validate-production-proof-registration-proposal.mjs",
+  "production_rollback_gate_enabled": true,
+  "production_rollback_policy": "config/production-rollback-policy.json",
+  "known_good_release_registry": "data/deployments/known-good-releases.json",
+  "production_rollback_mode": "FAIL_CLOSED_PROPOSAL_ONLY",
+  "known_good_release_count": 0,
+  "active_known_good_release": null
 }
