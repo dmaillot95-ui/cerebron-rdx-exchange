@@ -5,6 +5,7 @@ const htmlFiles=[
   'dist/status.html',
   'dist/api.html',
   'dist/privacy.html',
+  'dist/verify.html',
   'dist/dossiers/index.html',
   'dist/dossiers/RDX-000001.html'
 ];

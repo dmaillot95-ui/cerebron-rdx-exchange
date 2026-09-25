@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vérifier la release — CÉRÉBRON RDX</title>
+  <style>
+    :root{--bg:#070a12;--panel:#101624;--text:#f3f6fb;--muted:#9ca9bd;--line:#263247;--aqua:#6ee7d8;--red:#ff8585;--amber:#f2c66d}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,sans-serif}.wrap{width:min(1050px,calc(100% - 32px));margin:auto;padding:38px 0}a{color:var(--aqua)}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin:18px 0}.muted{color:var(--muted)}.ok{color:var(--aqua)}.bad{color:var(--red)}.hold{color:var(--amber)}button{border:0;border-radius:10px;background:var(--aqua);color:#061310;font-weight:800;padding:11px 17px;cursor:pointer}.row{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;border-top:1px solid var(--line);padding:10px 0}.hash{font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere}.summary{font-size:1.3rem;font-weight:800}@media(max-width:700px){.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <a href="index.html">← RDX</a>
+  <h1>Vérifier la release publique</h1>
+  <p class="muted">Cette page recalcule localement les SHA-256 des fichiers publics et les compare au manifeste de release. Aucun fichier n’est envoyé ailleurs.</p>
+  <div class="panel">
+    <div id="summary" class="summary hold">En attente de vérification.</div>
+    <p id="detail" class="muted">Le manifeste est généré pendant le build de release.</p>
+    <button id="verifyBtn" type="button">Vérifier maintenant</button>
+  </div>
+  <div class="panel">
+    <div><b>SHA agrégé attendu</b></div>
+    <div id="expected" class="hash muted">—</div>
+    <div style="height:10px"></div>
+    <div><b>SHA agrégé recalculé</b></div>
+    <div id="actual" class="hash muted">—</div>
+  </div>
+  <div id="files" class="panel"><span class="muted">Aucun fichier vérifié.</span></div>
+</main>
+<script>
+const SITE_BASE=new URL('./',window.location.href);
+const $=id=>document.getElementById(id);
+const hex=buffer=>Array.from(new Uint8Array(buffer),b=>b.toString(16).padStart(2,'0')).join('');
+async function hashBytes(bytes){return hex(await crypto.subtle.digest('SHA-256',bytes))}
+function canonicalSort(a,b){return a.path<b.path?-1:a.path>b.path?1:0}
+async function verifyRelease(){
+  $('verifyBtn').disabled=true;
+  $('summary').className='summary hold';
+  $('summary').textContent='Vérification en cours…';
+  $('files').textContent='';
+  try{
+    const manifestUrl=new URL('api/v1/release-manifest.json',SITE_BASE);
+    const mr=await fetch(manifestUrl,{cache:'no-store'});
+    if(!mr.ok) throw new Error('manifeste indisponible (HTTP '+mr.status+')');
+    const manifest=await mr.json();
+    if(manifest.schema!=='RDX_RELEASE_MANIFEST_V1'||manifest.hash_algorithm!=='SHA-256') throw new Error('contrat de manifeste invalide');
+    $('expected').textContent=manifest.aggregate_sha256||'—';
+    const results=[];
+    for(const entry of manifest.files||[]){
+      const url=new URL(entry.path,SITE_BASE);
+      const res=await fetch(url,{cache:'no-store'});
+      if(!res.ok){results.push({path:entry.path,ok:false,reason:'HTTP '+res.status});continue}
+      const bytes=await res.arrayBuffer();
+      const digest=await hashBytes(bytes);
+      results.push({path:entry.path,ok:digest===entry.sha256,sha256:digest,expected:entry.sha256,bytes:bytes.byteLength});
+    }
+    const canonical=results.filter(x=>x.sha256).map(x=>({path:x.path,bytes:x.bytes,sha256:x.sha256})).sort(canonicalSort).map(x=>x.sha256+' '+x.bytes+' '+x.path).join('\n')+'\n';
+    const aggregate=await hashBytes(new TextEncoder().encode(canonical));
+    $('actual').textContent=aggregate;
+    const filePass=results.length===(manifest.files||[]).length&&results.every(x=>x.ok);
+    const aggregatePass=filePass&&aggregate===manifest.aggregate_sha256;
+    $('summary').className='summary '+(aggregatePass?'ok':'bad');
+    $('summary').textContent=aggregatePass?'PASS — release conforme au manifeste':'FAIL — différence détectée';
+    $('detail').textContent=(manifest.files||[]).length+' fichiers attendus · '+results.filter(x=>x.ok).length+' conformes.';
+    for(const r of results){
+      const row=document.createElement('div');row.className='row';
+      const left=document.createElement('div');
+      const name=document.createElement('b');name.textContent=r.path;
+      const hash=document.createElement('div');hash.className='hash muted';hash.textContent=r.sha256||r.reason||'non vérifié';
+      left.append(name,hash);
+      const state=document.createElement('strong');state.className=r.ok?'ok':'bad';state.textContent=r.ok?'PASS':'FAIL';
+      row.append(left,state);$('files').appendChild(row);
+    }
+  }catch(e){
+    $('summary').className='summary bad';
+    $('summary').textContent='Vérification impossible';
+    $('detail').textContent=String(e.message||e);
+    $('files').innerHTML='<span class="muted">Aucun résultat fiable n’est déduit.</span>';
+  }finally{
+    $('verifyBtn').disabled=false;
+  }
+}
+$('verifyBtn').addEventListener('click',verifyRelease);
+</script>
+</body>
+</html>

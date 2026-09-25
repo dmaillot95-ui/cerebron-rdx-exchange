@@ -8,7 +8,7 @@
   "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
-  "last_updated": "2026-09-25T18:25:00Z",
+  "last_updated": "2026-09-25T18:31:00Z",
   "architecton_40_registry": "/api/v1/architecton-40.json",
   "architecton_40_total": 40,
   "architecton_40_mode": "CONTROLLED_MANUAL",
@@ -113,5 +113,7 @@
   "live_deployment_verifier_configured": true,
   "live_deployment_proof_schema": "RDX_PRODUCTION_DEPLOYMENT_PROOF_V1",
   "live_deployment_proof_artifact": "rdx-production-deployment-proof",
-  "live_deployment_verification_status": "WAITING_FOR_FIRST_REAL_DEPLOYMENT"
+  "live_deployment_verification_status": "WAITING_FOR_FIRST_REAL_DEPLOYMENT",
+  "release_verification_page": "verify.html",
+  "release_verification_mode": "CLIENT_SIDE_SHA256_ALL_PUBLIC_FILES"
 }
