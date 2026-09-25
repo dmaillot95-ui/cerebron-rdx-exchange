@@ -1,0 +1,35 @@
+{
+  "schema_version": "RDX-API-1.0",
+  "generated_at": "2026-09-25T13:27:00Z",
+  "production_mode": "CONTROLLED_MANUAL",
+  "automatic_ai_execution": false,
+  "packs": [
+    {
+      "id": "RDX-000001",
+      "title": "Direct-to-chip ou immersion à forte densité ?",
+      "vertical": "data_center_cooling",
+      "status": "DRAFT",
+      "access_class": "PREVIEW",
+      "evidence_summary": "E0_UNPUBLISHED",
+      "price_test_eur": 249
+    },
+    {
+      "id": "RDX-000002",
+      "title": "Quand la récupération de chaleur devient-elle viable ?",
+      "vertical": "data_center_heat_reuse",
+      "status": "DRAFT",
+      "access_class": "PREVIEW",
+      "evidence_summary": "E0_UNPUBLISHED",
+      "price_test_eur": 249
+    },
+    {
+      "id": "RDX-000003",
+      "title": "Batteries ou groupes pour la continuité courte ?",
+      "vertical": "data_center_power",
+      "status": "DRAFT",
+      "access_class": "PREVIEW",
+      "evidence_summary": "E0_UNPUBLISHED",
+      "price_test_eur": 249
+    }
+  ]
+}
