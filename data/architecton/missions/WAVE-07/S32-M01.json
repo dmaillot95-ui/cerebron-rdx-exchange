@@ -1,0 +1,77 @@
+{
+  "schema_version": "ARCHITECTON-M01-MISSION-1.0",
+  "wave": "WAVE-07",
+  "souche_id": "S32",
+  "souche_name": "TRAIN D’ATTERRISSAGE INTELLIGENT & FREINS CARBONE Ω",
+  "mission_status": "READY_TO_ASSIGN",
+  "registry_status_required_before_execution": "QUEUED",
+  "registry_status_after_verified_start": "PRE_RND_ACTIVE",
+  "phase": "M01",
+  "automatic_start": false,
+  "automatic_spending": false,
+  "automatic_publication": false,
+  "mission_intent": "Cadrer l'instrumentation, diagnostic, maintenance et optimisation des trains d'atterrissage et freins carbone.",
+  "scope_prompts": [
+    "Définir fonctions mécaniques, capteurs, santé et maintenance.",
+    "Identifier paramètres d'usure, charge et température à sourcer/mesurer.",
+    "Séparer optimisation opérationnelle et fonction certifiable."
+  ],
+  "dependency_refs": [
+    "S33",
+    "S34",
+    "S35",
+    "S38"
+  ],
+  "rules": [
+    "REALITY > COHERENCE",
+    "EVIDENCE > CONFIDENCE",
+    "CLAIM <= EVIDENCE",
+    "UNKNOWN remains UNKNOWN",
+    "No invented number, source, performance, patent, simulation or execution",
+    "Do not credit a farm/model/agent without a verifiable EXEC trace",
+    "M01 is preparation, not F01"
+  ],
+  "role_pool": [
+    "CHEF_DE_SOUCHE_ROUTER",
+    "RESEARCH_SCIENTIFIQUE",
+    "RESEARCH_INDUSTRIEL",
+    "STANDARDS_REGLEMENTATION",
+    "PRIOR_ART_IP",
+    "ARCHITECTURE_SYSTEME",
+    "INTERFACES",
+    "PHYSIQUE_MATH",
+    "DATA_CALCULATION",
+    "MODELLING_SIMULATION",
+    "FAILURE_RELIABILITY",
+    "INDUSTRIALISATION",
+    "COST_OPERATIONS",
+    "TEST_VALIDATION",
+    "RED_TEAM",
+    "CONTRE_AUDITEUR",
+    "EVIDENCE_KEEPER",
+    "SYNTHESEUR"
+  ],
+  "required_outputs": [
+    "IDENTITY",
+    "INDUSTRIAL_PROBLEM",
+    "MISSION_AND_SCOPE",
+    "INITIAL_REQUIREMENTS",
+    "INITIAL_MAJOR_CLAIMS_3_TO_7",
+    "INITIAL_UNKNOWN_BANK",
+    "INITIAL_RISK_REGISTER",
+    "PRIORITY_RD_QUESTIONS_MAX_20",
+    "M01_DECISION_PASS_NARROW_HOLD_KILL",
+    "ATOMIC_OBJECT_HANDOFF"
+  ],
+  "required_object_prefixes": [
+    "REQ-",
+    "UNK-",
+    "RISK-",
+    "CLAIM-",
+    "DEC-",
+    "EXEC-"
+  ],
+  "handoff_template": "templates/architecton-rd-handoff-v1.json",
+  "ingest_contract": "docs/ARCHITECTON_RDX_INGEST_CONTRACT.md",
+  "coordination_protocol": "docs/CEREBRON_ARCHITECTON_RDX_COORDINATION.md"
+}
