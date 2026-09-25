@@ -1,0 +1,6 @@
+{
+  "schema": "RDX_PRODUCTION_PROOF_REGISTRY_V1",
+  "policy": "FAIL_CLOSED",
+  "latest_verified": null,
+  "proofs": []
+}

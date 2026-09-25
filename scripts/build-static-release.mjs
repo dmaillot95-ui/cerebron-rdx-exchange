@@ -21,6 +21,7 @@ const commands=[
   ['node',['scripts/validate-release-manifest.mjs']],
   ['node',['scripts/build-release-attestation.mjs']],
   ['node',['scripts/validate-release-attestation.mjs']],
+  ['node',['scripts/validate-production-promotion.mjs']],
   ['node',['scripts/validate-static-links.mjs']]
 ];
 

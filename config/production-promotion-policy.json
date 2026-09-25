@@ -1,0 +1,13 @@
+{
+  "schema": "RDX_PRODUCTION_PROMOTION_POLICY_V1",
+  "required_live_proof_schema": "RDX_PRODUCTION_DEPLOYMENT_PROOF_V2",
+  "require_live_proof_status": "PASS",
+  "require_source_commit_match": true,
+  "require_release_aggregate_match": true,
+  "require_manifest_aggregate_match": true,
+  "require_provenance_match": true,
+  "require_github_sha_match_when_present": true,
+  "require_signed_release_attestation": true,
+  "public_static_status_default": false,
+  "note": "A static source bundle must not claim production verification without an ingested live proof. Verification state is control-plane evidence, not inferred from build success."
+}
