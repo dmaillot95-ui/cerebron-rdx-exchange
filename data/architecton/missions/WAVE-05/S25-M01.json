@@ -1,0 +1,79 @@
+{
+  "schema_version": "ARCHITECTON-M01-MISSION-1.0",
+  "wave": "WAVE-05",
+  "souche_id": "S25",
+  "souche_name": "CONFIANCE, PREUVE & QUALIFICATION SPATIALES VÉRIFIÉES Ω",
+  "mission_status": "READY_TO_ASSIGN",
+  "registry_status_required_before_execution": "QUEUED",
+  "registry_status_after_verified_start": "PRE_RND_ACTIVE",
+  "phase": "M01",
+  "automatic_start": false,
+  "automatic_spending": false,
+  "automatic_publication": false,
+  "mission_intent": "Cadrer une infrastructure de preuve, traçabilité, qualification et autorisation des capacités spatiales.",
+  "scope_prompts": [
+    "Définir objets de preuve, provenance, version et audit.",
+    "Séparer simulation, test, qualification et historique opérationnel.",
+    "Identifier comment les décisions de S23/S24/S26/S27 consomment ces preuves."
+  ],
+  "dependency_refs": [
+    "S11",
+    "S21",
+    "S23",
+    "S24",
+    "S26",
+    "S27"
+  ],
+  "rules": [
+    "REALITY > COHERENCE",
+    "EVIDENCE > CONFIDENCE",
+    "CLAIM <= EVIDENCE",
+    "UNKNOWN remains UNKNOWN",
+    "No invented number, source, performance, patent, simulation or execution",
+    "Do not credit a farm/model/agent without a verifiable EXEC trace",
+    "M01 is preparation, not F01"
+  ],
+  "role_pool": [
+    "CHEF_DE_SOUCHE_ROUTER",
+    "RESEARCH_SCIENTIFIQUE",
+    "RESEARCH_INDUSTRIEL",
+    "STANDARDS_REGLEMENTATION",
+    "PRIOR_ART_IP",
+    "ARCHITECTURE_SYSTEME",
+    "INTERFACES",
+    "PHYSIQUE_MATH",
+    "DATA_CALCULATION",
+    "MODELLING_SIMULATION",
+    "FAILURE_RELIABILITY",
+    "INDUSTRIALISATION",
+    "COST_OPERATIONS",
+    "TEST_VALIDATION",
+    "RED_TEAM",
+    "CONTRE_AUDITEUR",
+    "EVIDENCE_KEEPER",
+    "SYNTHESEUR"
+  ],
+  "required_outputs": [
+    "IDENTITY",
+    "INDUSTRIAL_PROBLEM",
+    "MISSION_AND_SCOPE",
+    "INITIAL_REQUIREMENTS",
+    "INITIAL_MAJOR_CLAIMS_3_TO_7",
+    "INITIAL_UNKNOWN_BANK",
+    "INITIAL_RISK_REGISTER",
+    "PRIORITY_RD_QUESTIONS_MAX_20",
+    "M01_DECISION_PASS_NARROW_HOLD_KILL",
+    "ATOMIC_OBJECT_HANDOFF"
+  ],
+  "required_object_prefixes": [
+    "REQ-",
+    "UNK-",
+    "RISK-",
+    "CLAIM-",
+    "DEC-",
+    "EXEC-"
+  ],
+  "handoff_template": "templates/architecton-rd-handoff-v1.json",
+  "ingest_contract": "docs/ARCHITECTON_RDX_INGEST_CONTRACT.md",
+  "coordination_protocol": "docs/CEREBRON_ARCHITECTON_RDX_COORDINATION.md"
+}
