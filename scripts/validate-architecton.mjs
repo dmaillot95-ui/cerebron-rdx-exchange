@@ -177,8 +177,19 @@ for (const file of missionFiles) {
 const missionSoucheIds = missionFiles.map(f => path.basename(f).slice(0,3));
 const foundMissionIds = new Set(missionSoucheIds);
 if (foundMissionIds.size !== missionSoucheIds.length) fail('M01 work orders: duplicate souche mission file detected');
+if (foundMissionIds.size !== 40) fail(`M01 work orders: expected exactly 40 unique missions, found ${foundMissionIds.size}`);
 for (const id of foundMissionIds) if (!ids.has(id)) fail(`M01 work orders: unexpected souche ${id}`);
-for (const id of ['S01','S02','S03','S04','S05']) if (!foundMissionIds.has(id)) fail(`WAVE-01: missing M01 work order for ${id}`);
+for (const id of ids) if (!foundMissionIds.has(id)) fail(`M01 work orders: missing mission for ${id}`);
+
+for (const [wave,members] of Object.entries(registry.waves || {})) {
+  const expected = new Set(members || []);
+  const actual = new Set(missionFiles
+    .filter(f => f.includes(`/${wave}/`))
+    .map(f => path.basename(f).slice(0,3)));
+  if (actual.size !== 5) fail(`${wave}: expected exactly 5 M01 work orders, found ${actual.size}`);
+  for (const id of expected) if (!actual.has(id)) fail(`${wave}: missing M01 work order for ${id}`);
+  for (const id of actual) if (!expected.has(id)) fail(`${wave}: unexpected M01 work order for ${id}`);
+}
 
 warnings.forEach(w => console.warn(`WARN ${w}`));
 errors.forEach(e => console.error(`FAIL ${e}`));
