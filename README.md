@@ -17,3 +17,7 @@ Le site est volontairement séparé du dépôt principal CÉRÉBRON et ne modifi
 ## Hébergement
 
 Le prototype peut être publié indépendamment sur Vercel depuis le dossier `dist`. ChatGPT Sites reste une prévisualisation secondaire et n'est pas l'unique hébergement du projet.
+
+## Contrôle IA
+
+Le socle de contrôle de Phase 1 est documenté dans `docs/AI_CONTROL_PLANE.md`. Le modèle PostgreSQL initial se trouve dans `schema/rdx-v1.sql`. Aucun agent, paiement ou fournisseur payant n'est déclenché automatiquement à ce stade.
