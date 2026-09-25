@@ -1,0 +1,48 @@
+{
+  "schema_version": "ARCHITECTON-RD-OBJECTS-1.0",
+  "canonical_id_prefixes": {
+    "source": "SRC-",
+    "requirement": "REQ-",
+    "unknown": "UNK-",
+    "data": "DAT-",
+    "formula": "FORMULA-",
+    "calculation": "CALC-",
+    "architecture": "ARCH-",
+    "risk": "RISK-",
+    "failure": "FAIL-",
+    "model": "MODEL-",
+    "simulation": "SIM-",
+    "result": "RESULT-",
+    "concept": "CONCEPT-",
+    "ip": "IP-",
+    "claim": "CLAIM-",
+    "test": "TEST-",
+    "contradiction": "CTR-",
+    "alternative": "ALT-",
+    "limitation": "LIM-",
+    "decision": "DEC-",
+    "execution": "EXEC-"
+  },
+  "execution_trace_required": [
+    "EXEC_ID",
+    "SOUCHE_ID",
+    "FERME",
+    "MODEL_OR_AGENT",
+    "ROLE",
+    "MISSION",
+    "INPUT_HASH",
+    "OUTPUT_HASH",
+    "START",
+    "END",
+    "ARTIFACT",
+    "STATUS"
+  ],
+  "hard_rules": [
+    "A simulation is never a real test.",
+    "A planned calculation is not an executed calculation.",
+    "An unexecuted agent or farm cannot be credited.",
+    "F72 and AFAH may appear only with a verifiable execution trace.",
+    "Unknown remains unknown until evidence changes it.",
+    "Every numerical result must be traceable to inputs, formula or method, and output."
+  ]
+}
