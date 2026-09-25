@@ -1,0 +1,122 @@
+{
+  "schema_version": "ARCHITECTON-F01-F08-GATES-1.0",
+  "mode": "CONTROLLED_MANUAL",
+  "auto_start": false,
+  "auto_freeze": false,
+  "prerequisite_status": "READY_FOR_F01_F08",
+  "sheets": [
+    {
+      "id": "F01",
+      "name": "CADRAGE_REQUIREMENTS_UNKNOWNS",
+      "canonical_contents": [
+        "scope_ref",
+        "requirement_refs",
+        "unknown_refs",
+        "risk_refs",
+        "decision_refs"
+      ]
+    },
+    {
+      "id": "F02",
+      "name": "STATE_OF_ART_BENCHMARK_PRIOR_ART",
+      "canonical_contents": [
+        "source_refs",
+        "benchmark_refs",
+        "prior_art_refs",
+        "contradiction_refs",
+        "decision_refs"
+      ]
+    },
+    {
+      "id": "F03",
+      "name": "ARCHITECTURE_INTERFACES_FAILURES",
+      "canonical_contents": [
+        "architecture_refs",
+        "interface_refs",
+        "failure_refs",
+        "risk_refs",
+        "decision_refs"
+      ]
+    },
+    {
+      "id": "F04",
+      "name": "DATA_PHYSICS_CALCULATIONS",
+      "canonical_contents": [
+        "data_refs",
+        "formula_refs",
+        "calculation_refs",
+        "limitation_refs",
+        "decision_refs"
+      ]
+    },
+    {
+      "id": "F05",
+      "name": "MODELS_SIMULATIONS_EXECUTED",
+      "canonical_contents": [
+        "model_refs",
+        "simulation_refs",
+        "result_refs",
+        "limitation_refs",
+        "decision_refs"
+      ]
+    },
+    {
+      "id": "F06",
+      "name": "CONCEPTS_INVENTIONS_IP_KNOWHOW",
+      "canonical_contents": [
+        "concept_refs",
+        "ip_refs",
+        "risk_refs",
+        "test_refs",
+        "decision_refs"
+      ]
+    },
+    {
+      "id": "F07",
+      "name": "CLAIM_VALIDATION_EVIDENCE",
+      "canonical_contents": [
+        "claim_refs",
+        "reference_ids",
+        "test_refs",
+        "contradiction_refs",
+        "limitation_refs",
+        "decision_refs"
+      ]
+    },
+    {
+      "id": "F08",
+      "name": "INDUSTRIALIZATION_BUSINESS_RED_TEAM_TRANSFER",
+      "canonical_contents": [
+        "industrialization_refs",
+        "business_evidence_refs",
+        "risk_refs",
+        "test_refs",
+        "decision_refs",
+        "transfer_requirements"
+      ]
+    }
+  ],
+  "hard_rules": [
+    "F01→F08 may not start before canonical status READY_FOR_F01_F08.",
+    "PRE-R&D freeze package reference is mandatory.",
+    "F07 references canonical calculations, models, results, sources and tests; it does not duplicate them.",
+    "Every business number in F08 requires source or explicit estimation method, range and uncertainty.",
+    "PATENT_CANDIDATE is not a granted patent.",
+    "A simulation is not a test.",
+    "ARCHITECTON_FROZEN does not imply RDX PUBLISHED.",
+    "No automatic publication."
+  ],
+  "freeze_requirements": [
+    "F01_COMPLETE",
+    "F02_COMPLETE",
+    "F03_COMPLETE",
+    "F04_COMPLETE",
+    "F05_COMPLETE",
+    "F06_COMPLETE",
+    "F07_COMPLETE",
+    "F08_COMPLETE",
+    "RED_TEAM_RECORDED",
+    "FINAL_DECISION_RECORDED",
+    "REFERENCE_INTEGRITY_PASS"
+  ]
+}
