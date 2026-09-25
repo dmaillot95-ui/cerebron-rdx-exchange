@@ -1,0 +1,88 @@
+{
+  "service": "CEREBRON_RDX_EXCHANGE",
+  "resource": "ARCHITECTON_WAVE_01",
+  "read_only": true,
+  "canonical_registry": "data/architecton/portfolio-40.json",
+  "mission_plan": "data/architecton/missions/architecton-40-plan.json",
+  "wave": "WAVE-01",
+  "total_souches": 5,
+  "execution_claims": 0,
+  "status": "READY_TO_ASSIGN",
+  "note": "No farm, model or agent is credited as executed until a verifiable EXEC trace is registered.",
+  "souches": [
+    {
+      "id": "S01",
+      "name": "LANCEURS SPATIAUX Ω",
+      "phase": "M01",
+      "mission_status": "READY_TO_ASSIGN",
+      "registry_status": "QUEUED",
+      "intent": "Cadrer la souche lanceurs spatiaux comme système d'accès à l'espace, identifier le problème industriel, les utilisateurs/acheteurs potentiels, le périmètre technologique, les exigences initiales, les inconnues et les risques avant tout choix d'architecture.",
+      "dependency_refs": [
+        "S03",
+        "S10",
+        "S11"
+      ]
+    },
+    {
+      "id": "S02",
+      "name": "VAISSEAU-LANCEUR TITAN WAGONSHIP Ω",
+      "phase": "M01",
+      "mission_status": "READY_TO_ASSIGN",
+      "registry_status": "QUEUED",
+      "intent": "Cadrer TITAN WAGONSHIP comme architecture de transport/lancement modulaire, définir sa mission exacte, ses interfaces avec les wagons et les autres moyens de transport, ainsi que les exigences et inconnues capables de tuer le concept.",
+      "dependency_refs": [
+        "S01",
+        "S03",
+        "S04",
+        "S11"
+      ]
+    },
+    {
+      "id": "S03",
+      "name": "MOTEURS-FUSÉES & ÉTAGES Ω",
+      "phase": "M01",
+      "mission_status": "READY_TO_ASSIGN",
+      "registry_status": "QUEUED",
+      "intent": "Cadrer la souche propulsion et étages : familles de missions, architectures propulsives possibles, exigences mesurables, interfaces et verrous physiques/industriels sans choisir prématurément une technologie.",
+      "dependency_refs": [
+        "S01",
+        "S02",
+        "S11",
+        "S17",
+        "S18"
+      ]
+    },
+    {
+      "id": "S04",
+      "name": "PETITS CONVOYEURS MONOWAGON & TRIAGE ORBITAL Ω",
+      "phase": "M01",
+      "mission_status": "READY_TO_ASSIGN",
+      "registry_status": "QUEUED",
+      "intent": "Cadrer le Monowagon comme petit convoyeur orbital destiné à décharger/transporter des wagons un par un et à contribuer à la composition/décomposition de trains spatiaux, puis identifier les exigences, inconnues et risques avant architecture détaillée.",
+      "dependency_refs": [
+        "S02",
+        "S05",
+        "S06",
+        "S11",
+        "S12",
+        "S13"
+      ]
+    },
+    {
+      "id": "S05",
+      "name": "CONVOYEURS / TRAINS SPATIAUX MODULAIRES Ω",
+      "phase": "M01",
+      "mission_status": "READY_TO_ASSIGN",
+      "registry_status": "QUEUED",
+      "intent": "Cadrer les trains spatiaux modulaires ordinaires comme système distinct des trains alvéolaires S06, définir leur mission logistique, composition, interfaces, exploitation et critères de comparaison.",
+      "dependency_refs": [
+        "S04",
+        "S06",
+        "S11",
+        "S12",
+        "S14",
+        "S15"
+      ]
+    }
+  ]
+}
