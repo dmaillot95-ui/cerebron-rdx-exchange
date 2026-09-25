@@ -45,6 +45,13 @@ jobs:
         uses: actions/attest@v4
         with:
           subject-path: artifacts/rdx-release-attestation.json
+      - name: Verify signed GitHub provenance attestation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh attestation verify artifacts/rdx-release-attestation.json \
+            --repo "$GITHUB_REPOSITORY" \
+            --source-digest "$GITHUB_SHA"
       - name: Upload release attestation
         uses: actions/upload-artifact@v4
         with:
