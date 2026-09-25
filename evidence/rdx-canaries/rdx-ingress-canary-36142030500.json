@@ -1,0 +1,35 @@
+{
+  "schema": "CEREBRON_RDX_INGRESS_DECISION_V1",
+  "rdx_id": "RDX-CANARY-001",
+  "object_id": "CLAIM-001",
+  "object_type": "CLAIM",
+  "payload_sha256": "b0f45a68b52fe538877c695c46d265a6ec5551e478bb2c5804d6b93e2dbf05c1",
+  "memory": {
+    "admissible": true,
+    "shared": true,
+    "tenant_only": false,
+    "namespace": "RDX_SHARED",
+    "classes": ["M1","M7"],
+    "rag_available": true
+  },
+  "gold": {
+    "eligible": false,
+    "class": null,
+    "blockers": ["F72","GLOBAL_PROMOTION"]
+  },
+  "training": {
+    "eligible": false,
+    "auto_train": false,
+    "route_targets": [],
+    "weights_changed": false,
+    "claim": "NO_NEURAL_TRAINING_EXECUTED"
+  },
+  "gate_snapshot": {
+    "f72_current": "FAIL",
+    "global_promotion_state": "BLOCKED_PENDING_F72_FRESH_VALIDATION_AND_REPRODUCTION",
+    "afah_record_pass": true
+  },
+  "errors": [],
+  "claim_ceiling": "MEMORY_AND_GOLD_ELIGIBILITY_DECISION_ONLY_NO_EXTERNAL_WRITE_NO_TRAINING",
+  "receipt_sha256": "960d8cf216f31ed7d191eb2852d7bb1446180f7ae37300048b9626f2c09b8db7"
+}
