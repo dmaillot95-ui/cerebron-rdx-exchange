@@ -1,0 +1,24 @@
+{
+  "schema_version": "RDX-GOV-1.0",
+  "mode": "CONTROLLED_MANUAL",
+  "automatic_publication": false,
+  "automatic_spending": false,
+  "human_review_required_for_material_claims": true,
+  "allowed_decisions": [
+    "ACCEPTED",
+    "LIMITED",
+    "REJECTED",
+    "NEEDS_MORE_EVIDENCE"
+  ],
+  "publication_gates": [
+    "SOURCE_PRESENT",
+    "PROVENANCE_PRESENT",
+    "LICENSE_RECORDED",
+    "UNITS_COHERENT",
+    "TEST_SIMULATION_SEPARATED",
+    "RED_TEAM_RECORDED",
+    "AUDIT_RECORDED",
+    "HUMAN_REVIEW_RECORDED"
+  ],
+  "protected_systems": ["F01", "F02", "F03", "F04", "F05", "F06", "F07"]
+}
