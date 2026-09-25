@@ -4,6 +4,8 @@
   "production_mode": "CONTROLLED_MANUAL",
   "automatic_ai_execution": false,
   "automatic_publication": false,
+  "evidence_gate_enabled": true,
+  "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
   "last_updated": "2026-09-25T13:27:00Z"
