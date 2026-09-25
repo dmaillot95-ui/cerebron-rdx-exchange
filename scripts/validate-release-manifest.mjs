@@ -13,6 +13,8 @@ let m;
 try{m=JSON.parse(fs.readFileSync(file,'utf8'))}catch(e){console.error('FAIL invalid manifest: '+e.message);process.exit(1)}
 if(m.schema!=='RDX_RELEASE_MANIFEST_V1') errors.push('schema mismatch');
 if(m.hash_algorithm!=='SHA-256') errors.push('hash_algorithm must be SHA-256');
+if(!/^[0-9a-f]{40}$/.test(m.source_commit||'')) errors.push('source_commit must be 40 lowercase hex');
+if(m.provenance_path!=='api/v1/build-provenance.json') errors.push('provenance_path mismatch');
 
 function walk(dir){
   return fs.readdirSync(dir,{withFileTypes:true}).flatMap(ent=>{
@@ -28,6 +30,15 @@ for(const p of walk(root)){
   actual.set(rel,{path:rel,bytes:buf.length,sha256:crypto.createHash('sha256').update(buf).digest('hex')});
 }
 const listed=new Map((m.files||[]).map(e=>[e.path,e]));
+const provenanceEntry=listed.get('api/v1/build-provenance.json');
+if(!provenanceEntry) errors.push('manifest missing build provenance entry');
+if(fs.existsSync('dist/api/v1/build-provenance.json')){
+  try{
+    const p=JSON.parse(fs.readFileSync('dist/api/v1/build-provenance.json','utf8'));
+    if(p.schema!=='RDX_BUILD_PROVENANCE_V1') errors.push('build provenance schema mismatch');
+    if(p.source_commit!==m.source_commit) errors.push('manifest source_commit differs from build provenance');
+  }catch(e){errors.push('invalid build provenance: '+e.message)}
+}
 for(const [p,a] of actual){
   const e=listed.get(p);
   if(!e){errors.push('manifest missing '+p);continue}

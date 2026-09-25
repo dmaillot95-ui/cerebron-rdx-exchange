@@ -13,11 +13,13 @@ const checks=[
   {path:'api/v1/status.json',kind:'json',mustJson:s=>s?.service==='CEREBRON_RDX_EXCHANGE'&&s?.production_mode==='CONTROLLED_MANUAL'},
   {path:'api/v1/catalog.json',kind:'json',mustJson:c=>Array.isArray(c?.packs)&&c.packs.some(p=>p.id==='RDX-000001')},
   {path:'api/v1/packs/RDX-000001.json',kind:'json',mustJson:p=>p?.id==='RDX-000001'&&p?.publication_status==='NOT_VERIFIED_NOT_PUBLISHED'},
-  {path:'api/v1/release-manifest.json',kind:'json',mustJson:m=>m?.schema==='RDX_RELEASE_MANIFEST_V1'&&m?.hash_algorithm==='SHA-256'}
+  {path:'api/v1/build-provenance.json',kind:'json',mustJson:p=>p?.schema==='RDX_BUILD_PROVENANCE_V1'&&/^[0-9a-f]{40}$/.test(p?.source_commit||'')},
+  {path:'api/v1/release-manifest.json',kind:'json',mustJson:m=>m?.schema==='RDX_RELEASE_MANIFEST_V1'&&m?.hash_algorithm==='SHA-256'&&/^[0-9a-f]{40}$/.test(m?.source_commit||'')}
 ];
 
 const results=[];
 let manifest=null;
+let buildProvenance=null;
 for(const check of checks){
   const url=new URL(check.path,base).href;
   let res;
@@ -35,6 +37,7 @@ for(const check of checks){
       const parsed=JSON.parse(body);
       item.status=check.mustJson(parsed)?'PASS':'SEMANTIC_FAIL';
       if(check.path.endsWith('release-manifest.json')) manifest=parsed;
+      if(check.path.endsWith('build-provenance.json')) buildProvenance=parsed;
     }catch(e){
       item.status='JSON_FAIL';item.error=String(e);
     }
@@ -92,12 +95,18 @@ if(manifest&&Array.isArray(manifest.files)){
 const endpointFailures=results.filter(r=>r.status!=='PASS');
 const bundleFailures=bundleChecks.filter(r=>r.status!=='PASS');
 const manifestCountMatch=!!manifest&&bundleChecks.length===manifest.file_count;
+const provenanceMatchesManifest=!!manifest&&!!buildProvenance&&manifest.source_commit===buildProvenance.source_commit;
+const githubShaMatchesProvenance=!process.env.GITHUB_SHA||process.env.GITHUB_SHA.toLowerCase()===buildProvenance?.source_commit;
 const proof={
   schema:'RDX_PRODUCTION_DEPLOYMENT_PROOF_V2',
   verified_at:new Date().toISOString(),
   base_url:base.href,
   github_sha:process.env.GITHUB_SHA||null,
   release_manifest_schema:manifest?.schema||null,
+  build_provenance_schema:buildProvenance?.schema||null,
+  source_commit:buildProvenance?.source_commit||null,
+  provenance_matches_manifest:provenanceMatchesManifest,
+  github_sha_matches_provenance:githubShaMatchesProvenance,
   expected_release_aggregate_sha256:manifest?.aggregate_sha256||null,
   actual_release_aggregate_sha256:actualAggregate,
   release_file_count_expected:manifest?.file_count??null,
@@ -106,7 +115,7 @@ const proof={
   manifest_aggregate_match:manifestAggregateMatch,
   endpoint_checks:results,
   bundle_file_checks:bundleChecks,
-  status:(!endpointFailures.length&&!bundleFailures.length&&manifestAggregateMatch)?'PASS':'FAIL'
+  status:(!endpointFailures.length&&!bundleFailures.length&&manifestAggregateMatch&&provenanceMatchesManifest&&githubShaMatchesProvenance)?'PASS':'FAIL'
 };
 const canonicalProof=JSON.stringify(proof);
 proof.proof_sha256=crypto.createHash('sha256').update(canonicalProof).digest('hex');
