@@ -8,6 +8,7 @@ on:
       - 'scripts/validate-deployment-readiness.mjs'
       - 'scripts/validate-site-contract.mjs'
       - 'scripts/validate-hosting-portability.mjs'
+      - 'scripts/validate-static-security.mjs'
       - 'dist/api/v1/packs/**'
       - 'dist/dossiers/**'
       - '.github/workflows/rdx-public-pack-projection.yml'
@@ -33,3 +34,4 @@ jobs:
       - run: node scripts/validate-deployment-readiness.mjs
       - run: node scripts/validate-site-contract.mjs
       - run: node scripts/validate-hosting-portability.mjs
+      - run: node scripts/validate-static-security.mjs
