@@ -1,9 +1,15 @@
 {
   "service": "CEREBRON_RDX_EXCHANGE",
   "resource": "ARCHITECTON_40_REGISTRY",
+  "projection_schema_version": "ARCHITECTON-PUBLIC-PROJECTION-1.0",
   "projection": true,
   "read_only": true,
   "canonical_source": "data/architecton/portfolio-40.json",
+  "source_versions": {
+    "registry_schema_version": "ARCHITECTON-40-REGISTRY-1.0",
+    "registry_updated_at": "2026-09-25",
+    "mission_plan_schema_version": "ARCHITECTON-40-MISSION-PLAN-1.0"
+  },
   "schema_version": "ARCHITECTON-40-REGISTRY-1.0",
   "program": "ARCHITECTON Ω",
   "mode": "CONTROLLED_MANUAL",
@@ -77,6 +83,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -86,6 +93,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -95,6 +103,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -104,6 +113,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -113,6 +123,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -122,6 +133,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -131,6 +143,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -140,6 +153,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -149,6 +163,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -158,6 +173,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -167,6 +183,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -176,6 +193,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -185,6 +203,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -194,6 +213,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -203,6 +223,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -212,6 +233,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -221,6 +243,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -230,6 +253,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -239,6 +263,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -248,6 +273,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -257,6 +283,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -266,6 +293,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -275,6 +303,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -284,6 +313,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -293,6 +323,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -302,6 +333,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -311,6 +343,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -320,6 +353,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -329,6 +363,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -338,6 +373,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -347,6 +383,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -356,6 +393,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -365,6 +403,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -374,6 +413,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -383,6 +423,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -392,6 +433,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -401,6 +443,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -410,6 +453,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -419,6 +463,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     },
     {
@@ -428,6 +473,7 @@
       "status": "QUEUED",
       "phase": null,
       "evidence_max": "E0",
+      "execution_count": 0,
       "next_evidence_gate": null
     }
   ]
