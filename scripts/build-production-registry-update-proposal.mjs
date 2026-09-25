@@ -20,6 +20,13 @@ if(candidate.proof_sha256!==review.live_proof_sha256) errors.push('review/live p
 if(candidate.source_commit!==review.source_commit) errors.push('review/source mismatch');
 if(candidate.expected_release_aggregate_sha256!==review.release_aggregate_sha256) errors.push('review/aggregate mismatch');
 if((registry.proofs||[]).some(p=>p.id===candidate.id)) errors.push('candidate already exists in registry');
+if(candidate.synthetic_canary===true) errors.push('synthetic canary forbidden in registry update proposal');
+if(typeof candidate.evidence_class==='string'&&candidate.evidence_class.startsWith('SYNTHETIC_')) errors.push('synthetic evidence class forbidden in registry update proposal');
+try{
+  if(candidate.base_url&&new URL(candidate.base_url).hostname.endsWith('.invalid')) errors.push('invalid-domain deployment URL forbidden in registry update proposal');
+}catch{
+  errors.push('invalid candidate base_url');
+}
 if(errors.length){errors.forEach(e=>console.error('FAIL '+e));console.error('RDX Production Registry Update Proposal: FAIL');process.exit(1)}
 
 const proposedRegistry={...registry,latest_verified:candidate.id,proofs:[...(registry.proofs||[]),candidate]};

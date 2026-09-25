@@ -23,6 +23,13 @@ const candidate=(proposal.proposed_registry?.proofs||[]).find(x=>x.id===proposal
 if(!candidate) errors.push('candidate missing from proposed registry');
 if(candidate?.human_review?.review_sha256!==review.review_sha256) errors.push('candidate human review mismatch');
 if((registry.proofs||[]).some(x=>x.id===proposal.candidate_id)) errors.push('current registry already contains candidate');
+if(candidate?.synthetic_canary===true) errors.push('synthetic canary forbidden in registry update proposal');
+if(typeof candidate?.evidence_class==='string'&&candidate.evidence_class.startsWith('SYNTHETIC_')) errors.push('synthetic evidence class forbidden in registry update proposal');
+try{
+  if(candidate?.base_url&&new URL(candidate.base_url).hostname.endsWith('.invalid')) errors.push('invalid-domain deployment URL forbidden in registry update proposal');
+}catch{
+  errors.push('invalid candidate base_url');
+}
 const claims={...proposal};delete claims.proposal_sha256;
 const expected=crypto.createHash('sha256').update(JSON.stringify(claims)).digest('hex');
 if(proposal.proposal_sha256!==expected) errors.push('proposal sha256 mismatch');
