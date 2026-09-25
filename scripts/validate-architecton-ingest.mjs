@@ -36,7 +36,7 @@ let submitted=0;
 
 for(const file of handoffs){
   const h=readJson(file); if(!h) continue;
-  if(h.schema_version!=='ARCHITECTON-RD-HANDOFF-1.0') fail(`${file}: bad schema_version`);
+  if(h.schema_version!=='ARCHITECTON-RD-HANDOFF-1.1') fail(`${file}: bad schema_version`);
   if(!registryIds.has(h.souche_id)) fail(`${file}: unknown souche_id ${h.souche_id}`);
   if(!/^M0[1-6]$/.test(h.phase||'')) fail(`${file}: invalid phase ${h.phase}`);
   if(!['DRAFT','SUBMITTED','VALIDATED','REJECTED'].includes(h.handoff_status)) fail(`${file}: invalid handoff_status`);
@@ -67,18 +67,25 @@ for(const file of handoffs){
     if(globalObjectIds.has(oid)) fail(`${file}: object_id ${oid} appears in multiple handoffs`);
     globalObjectIds.add(oid);
 
-    if(o.evidence_level!==undefined && !/^E[0-8]$/.test(o.evidence_level)) fail(`${file}: ${oid}: invalid evidence_level`);
+    if(o.evidence_level!==undefined) fail(`${file}: ${oid}: ambiguous evidence_level is forbidden in ARCHITECTON handoffs; use architecton_evidence_level`);
+    if(!/^E[0-8]$/.test(o.architecton_evidence_level||'')) fail(`${file}: ${oid}: invalid architecton_evidence_level`);
     if(!Array.isArray(o.source_refs)) fail(`${file}: ${oid}: source_refs must be array`);
     if(!Array.isArray(o.execution_refs)) fail(`${file}: ${oid}: execution_refs must be array`);
+    if(!Array.isArray(o.evidence_object_refs)) fail(`${file}: ${oid}: evidence_object_refs must be array`);
     if(typeof o.content!=='object' || o.content===null || Array.isArray(o.content)) fail(`${file}: ${oid}: content must be object`);
 
     for(const ref of o.source_refs||[]) if(!/^SRC-[0-9]{6}$/.test(ref)) fail(`${file}: ${oid}: invalid source ref ${ref}`);
     for(const ref of o.execution_refs||[]) if(!/^EXEC-[0-9]{6}$/.test(ref)) fail(`${file}: ${oid}: invalid execution ref ${ref}`);
+    for(const ref of o.evidence_object_refs||[]) if(!/^(SRC|REQ|UNK|DAT|FORMULA|CALC|ARCH|RISK|FAIL|MODEL|SIM|RESULT|CONCEPT|IP|CLAIM|TEST|CTR|ALT|LIM|DEC|EXEC)-[0-9]{6}$/.test(ref)) fail(`${file}: ${oid}: invalid evidence object ref ${ref}`);
 
     if(type==='CLAIM'){
-      const e=Number((o.evidence_level||'E0').slice(1));
-      if(e>=2 && (o.source_refs||[]).length===0 && (o.execution_refs||[]).length===0){
-        fail(`${file}: ${oid}: E2+ claim requires source or execution evidence`);
+      const level=o.architecton_evidence_level||'E0';
+      const refs=o.evidence_object_refs||[];
+      if(level==='E2' && !refs.some(r=>r.startsWith('CALC-'))){
+        fail(`${file}: ${oid}: ARCHITECTON E2 claim requires at least one CALC- evidence object ref`);
+      }
+      if(level==='E3' && !refs.some(r=>r.startsWith('SIM-'))){
+        fail(`${file}: ${oid}: ARCHITECTON E3 claim requires at least one SIM- evidence object ref`);
       }
     }
     if(type==='CALC'){
