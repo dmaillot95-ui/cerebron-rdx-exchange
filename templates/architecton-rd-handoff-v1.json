@@ -1,5 +1,5 @@
 {
-  "schema_version": "ARCHITECTON-RD-HANDOFF-1.0",
+  "schema_version": "ARCHITECTON-RD-HANDOFF-1.1",
   "souche_id": "SXX",
   "phase": "M01",
   "produced_at": null,
@@ -10,15 +10,18 @@
       "object_id": "TYPE-000001",
       "object_type": "SRC|REQ|UNK|DAT|FORMULA|CALC|ARCH|RISK|FAIL|MODEL|SIM|RESULT|CONCEPT|IP|CLAIM|TEST|CTR|ALT|LIM|DEC",
       "status": "UNKNOWN",
-      "evidence_level": "E0",
       "source_refs": [],
       "execution_refs": [],
       "artifact_ref": null,
-      "content": {}
+      "content": {},
+      "architecton_evidence_level": "E0",
+      "evidence_basis": [],
+      "evidence_object_refs": []
     }
   ],
   "open_questions": [],
   "contradictions": [],
   "next_actions": [],
-  "notes": "Template only. Replace placeholders; do not treat as executed R&D."
+  "notes": "Template only. Replace placeholders; do not treat as executed R&D. ARCHITECTON evidence level is distinct from RDX evidence_level.",
+  "handoff_status": "DRAFT"
 }
