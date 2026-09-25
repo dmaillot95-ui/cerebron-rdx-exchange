@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ARCHITECTON-RD-HANDOFF-1.0",
+  "title": "ARCHITECTON R&D Handoff",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "souche_id",
+    "phase",
+    "handoff_status",
+    "produced_at",
+    "producer_execution_ids",
+    "objects"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ARCHITECTON-RD-HANDOFF-1.0"
+    },
+    "souche_id": {
+      "pattern": "^S(?:0[1-9]|[1-3][0-9]|40)$"
+    },
+    "phase": {
+      "enum": [
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05",
+        "M06"
+      ]
+    },
+    "handoff_status": {
+      "enum": [
+        "DRAFT",
+        "SUBMITTED",
+        "VALIDATED",
+        "REJECTED"
+      ]
+    },
+    "produced_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "producer_execution_ids": {
+      "type": "array",
+      "items": {
+        "pattern": "^EXEC-[0-9]{6}$"
+      },
+      "uniqueItems": true
+    },
+    "decision": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "object_id",
+          "object_type",
+          "status",
+          "source_refs",
+          "execution_refs",
+          "content"
+        ],
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "minLength": 4
+          },
+          "object_type": {
+            "enum": [
+              "SRC",
+              "REQ",
+              "UNK",
+              "DAT",
+              "FORMULA",
+              "CALC",
+              "ARCH",
+              "RISK",
+              "FAIL",
+              "MODEL",
+              "SIM",
+              "RESULT",
+              "CONCEPT",
+              "IP",
+              "CLAIM",
+              "TEST",
+              "CTR",
+              "ALT",
+              "LIM",
+              "DEC",
+              "EXEC"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_level": {
+            "pattern": "^E[0-8]$"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "pattern": "^SRC-[0-9]{6}$"
+            },
+            "uniqueItems": true
+          },
+          "execution_refs": {
+            "type": "array",
+            "items": {
+              "pattern": "^EXEC-[0-9]{6}$"
+            },
+            "uniqueItems": true
+          },
+          "artifact_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "content": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "open_questions": {
+      "type": "array"
+    },
+    "contradictions": {
+      "type": "array"
+    },
+    "next_actions": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}
