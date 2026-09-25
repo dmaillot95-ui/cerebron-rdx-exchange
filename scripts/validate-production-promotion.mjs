@@ -56,6 +56,9 @@ for(const p of proofs){
   if(p.release_attestation_signed!==true) errors.push((p.id||'proof')+' signed release attestation not verified');
   if(!/^[0-9a-f]{64}$/.test(p.release_attestation_sha256||'')) errors.push((p.id||'proof')+' invalid release attestation sha256');
   if(p.live_proof_signed!==true) errors.push((p.id||'proof')+' signed live deployment proof not verified');
+  if(p.synthetic_canary===true) errors.push((p.id||'proof')+' synthetic canary proof forbidden in production registry');
+  if(typeof p.evidence_class==='string'&&p.evidence_class.startsWith('SYNTHETIC_')) errors.push((p.id||'proof')+' synthetic evidence class forbidden in production registry');
+  try{if(p.base_url&&new URL(p.base_url).hostname.endsWith('.invalid')) errors.push((p.id||'proof')+' invalid-domain deployment URL forbidden in production registry')}catch{errors.push((p.id||'proof')+' invalid base_url')}
 }
 
 if(status.production_deployment_verified===true){

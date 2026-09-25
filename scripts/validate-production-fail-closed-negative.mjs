@@ -100,6 +100,18 @@ try{
     'latest proof release aggregate differs from current manifest'
   );
 
+  const syntheticProof=makeProof({id:'NEG-SYNTHETIC-CANARY'});
+  syntheticProof.synthetic_canary=true;
+  syntheticProof.evidence_class='SYNTHETIC_PIPELINE_CANARY_NOT_LIVE_EVIDENCE';
+  syntheticProof.base_url='https://rdx-post-deploy-canary.invalid/';
+  syntheticProof.proof_sha256=canonicalProofHash(syntheticProof);
+  runPromotionExpectFail(
+    'SYNTHETIC_CANARY_IN_REGISTRY',
+    {...baseStatus,production_deployment_verified:true},
+    {schema:'RDX_PRODUCTION_PROOF_REGISTRY_V1',policy:'FAIL_CLOSED',latest_verified:syntheticProof.id,proofs:[syntheticProof]},
+    'synthetic canary proof forbidden in production registry'
+  );
+
   const unsignedProof=makeProof({id:'NEG-UNSIGNED-LIVE',liveSigned:false});
   runPromotionExpectFail(
     'UNSIGNED_LIVE_PROOF',
@@ -126,7 +138,7 @@ try{
   }
   console.log('NEGATIVE PASS UNSIGNED_REGISTRATION_PROPOSAL');
 
-  console.log('RDX Production Fail-Closed Negative Canaries: PASS (5/5 rejected)');
+  console.log('RDX Production Fail-Closed Negative Canaries: PASS (6/6 rejected)');
 }catch(e){
   console.error('RDX Production Fail-Closed Negative Canaries: FAIL');
   console.error(e?.stack||String(e));

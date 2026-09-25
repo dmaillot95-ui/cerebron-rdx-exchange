@@ -44,6 +44,9 @@ for(const r of releases){
   if(!r.live_proof_id) errors.push((r.id||'release')+' missing live_proof_id');
   if(r.release_attestation_signed!==true) errors.push((r.id||'release')+' release attestation must be signed');
   if(r.live_proof_signed!==true) errors.push((r.id||'release')+' live proof must be signed');
+  if(r.synthetic_canary===true) errors.push((r.id||'release')+' synthetic canary known-good forbidden');
+  if(typeof r.evidence_class==='string'&&r.evidence_class.startsWith('SYNTHETIC_')) errors.push((r.id||'release')+' synthetic evidence class forbidden in known-good registry');
+  try{if(r.deployment_base_url&&new URL(r.deployment_base_url).hostname.endsWith('.invalid')) errors.push((r.id||'release')+' invalid-domain deployment URL forbidden in known-good registry')}catch{errors.push((r.id||'release')+' invalid deployment_base_url')}
   const proof=proofs.find(p=>p.id===r.live_proof_id);
   if(!proof) errors.push((r.id||'release')+' references unregistered live proof '+r.live_proof_id);
   if(proof){
@@ -51,6 +54,8 @@ for(const r of releases){
     if(proof.expected_release_aggregate_sha256!==r.release_aggregate_sha256) errors.push((r.id||'release')+' aggregate differs from live proof');
     if(proof.release_attestation_sha256!==r.release_attestation_sha256) errors.push((r.id||'release')+' attestation differs from live proof');
     if(proof.release_attestation_signed!==true||proof.live_proof_signed!==true) errors.push((r.id||'release')+' proof signatures are not verified');
+    if(proof.synthetic_canary===true) errors.push((r.id||'release')+' referenced proof is synthetic canary');
+    if(typeof proof.evidence_class==='string'&&proof.evidence_class.startsWith('SYNTHETIC_')) errors.push((r.id||'release')+' referenced proof has synthetic evidence class');
   }
 }
 
