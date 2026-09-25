@@ -1,9 +1,15 @@
 {
   "service": "CEREBRON_RDX_EXCHANGE",
   "resource": "ARCHITECTON_WAVE_01",
+  "projection_schema_version": "ARCHITECTON-PUBLIC-PROJECTION-1.0",
   "read_only": true,
   "canonical_registry": "data/architecton/portfolio-40.json",
   "mission_plan": "data/architecton/missions/architecton-40-plan.json",
+  "source_versions": {
+    "registry_schema_version": "ARCHITECTON-40-REGISTRY-1.0",
+    "registry_updated_at": "2026-09-25",
+    "mission_plan_schema_version": "ARCHITECTON-40-MISSION-PLAN-1.0"
+  },
   "wave": "WAVE-01",
   "total_souches": 5,
   "execution_claims": 0,
