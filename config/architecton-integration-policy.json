@@ -1,0 +1,24 @@
+{
+  "schema_version": "ARCHITECTON-INTEGRATION-POLICY-1.0",
+  "allowed_decisions": [
+    "PENDING",
+    "APPROVED",
+    "PARTIAL",
+    "REJECTED",
+    "NEEDS_MORE_EVIDENCE"
+  ],
+  "unlocking_decision": "APPROVED",
+  "auto_approve": false,
+  "auto_apply": false,
+  "auto_publish": false,
+  "rules": [
+    "Only APPROVED may unlock the next phase.",
+    "PARTIAL does not unlock the next phase unless a later APPROVED decision supersedes it.",
+    "A decision must reference one immutable handoff file and its SHA-256.",
+    "Accepted object IDs must be canonicalized before APPROVED is recorded.",
+    "Rejected and deferred objects remain preserved in the raw handoff.",
+    "Reviewer and decided_at are mandatory for any non-PENDING decision.",
+    "All five checks must be true for APPROVED.",
+    "The integration log is append-only by integration_id."
+  ]
+}
