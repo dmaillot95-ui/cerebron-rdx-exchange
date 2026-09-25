@@ -36,7 +36,7 @@ for(const [p,a] of actual){
 }
 for(const p of listed.keys()) if(!actual.has(p)) errors.push('manifest lists absent file '+p);
 if(m.file_count!==actual.size) errors.push(`file_count expected ${actual.size}, got ${m.file_count}`);
-const entries=[...actual.values()].sort((a,b)=>a.path.localeCompare(b.path));
+const entries=[...actual.values()].sort((a,b)=>a.path<b.path?-1:a.path>b.path?1:0);
 const canonical=entries.map(e=>`${e.sha256} ${e.bytes} ${e.path}`).join('\n')+'\n';
 const aggregate=crypto.createHash('sha256').update(canonical).digest('hex');
 if(m.aggregate_sha256!==aggregate) errors.push('aggregate_sha256 mismatch');
