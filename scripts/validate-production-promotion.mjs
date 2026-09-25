@@ -37,6 +37,7 @@ function canonicalProofHash(proof){
   const clone={...proof};
   delete clone.proof_sha256;
   delete clone.id;
+  delete clone.live_proof_signed;
   return crypto.createHash('sha256').update(JSON.stringify(clone)).digest('hex');
 }
 
@@ -53,6 +54,8 @@ for(const p of proofs){
   if(!/^[0-9a-f]{64}$/.test(p.proof_sha256||'')) errors.push((p.id||'proof')+' invalid proof_sha256');
   else if(canonicalProofHash(p)!==p.proof_sha256) errors.push((p.id||'proof')+' proof_sha256 mismatch');
   if(p.release_attestation_signed!==true) errors.push((p.id||'proof')+' signed release attestation not verified');
+  if(!/^[0-9a-f]{64}$/.test(p.release_attestation_sha256||'')) errors.push((p.id||'proof')+' invalid release attestation sha256');
+  if(p.live_proof_signed!==true) errors.push((p.id||'proof')+' signed live deployment proof not verified');
 }
 
 if(status.production_deployment_verified===true){
@@ -62,6 +65,7 @@ if(status.production_deployment_verified===true){
     if(latest.source_commit!==provenance.source_commit) errors.push('latest proof source_commit differs from current build provenance');
     if(latest.expected_release_aggregate_sha256!==manifest.aggregate_sha256) errors.push('latest proof release aggregate differs from current manifest');
     if(latest.release_attestation_signed!==true) errors.push('latest proof lacks signed release attestation verification');
+    if(latest.live_proof_signed!==true) errors.push('latest proof lacks signed live deployment proof verification');
   }
 }else{
   if(latest && latest.status==='PASS'){

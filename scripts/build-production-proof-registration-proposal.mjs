@@ -6,6 +6,7 @@ if(!fs.existsSync(proofPath)){
   process.exit(1);
 }
 const proof=JSON.parse(fs.readFileSync(proofPath,'utf8'));
+const signedLiveProofVerified=process.env.RDX_SIGNED_LIVE_PROOF_VERIFIED==='true';
 const errors=[];
 if(proof.schema!=='RDX_PRODUCTION_DEPLOYMENT_PROOF_V2') errors.push('proof schema mismatch');
 if(proof.status!=='PASS') errors.push('proof status must be PASS');
@@ -16,6 +17,7 @@ if(!/^[0-9a-f]{40}$/.test(proof.source_commit||'')) errors.push('invalid source 
 if(proof.manifest_aggregate_match!==true) errors.push('manifest aggregate mismatch');
 if(proof.provenance_matches_manifest!==true) errors.push('provenance mismatch');
 if(proof.github_sha && proof.github_sha_matches_provenance!==true) errors.push('github sha mismatch');
+if(!signedLiveProofVerified) errors.push('signed live deployment proof must be verified before registration proposal');
 if(errors.length){
   errors.forEach(e=>console.error('FAIL '+e));
   console.error('RDX Production Proof Registration Proposal: FAIL');
@@ -28,10 +30,11 @@ const proposal={
   auto_apply:false,
   target_registry:'data/deployments/production-proof-registry.json',
   candidate_latest_verified:id,
-  candidate_proof:{id,...proof},
+  candidate_proof:{id,live_proof_signed:true,...proof},
   required_review:[
     'Confirm deployment URL belongs to the intended RDX production surface.',
     'Confirm GitHub/Sigstore release attestation verification passed in the same workflow.',
+    'Confirm GitHub/Sigstore live deployment proof verification passed in the same workflow.',
     'Confirm proof status is PASS and source commit/aggregate match the deployed bundle.',
     'Only then integrate candidate_proof into the fail-closed registry.'
   ]
