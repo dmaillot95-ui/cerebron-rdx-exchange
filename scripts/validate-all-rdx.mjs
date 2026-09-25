@@ -12,6 +12,7 @@ const commands=[
   ['node',['scripts/validate-deployment-readiness.mjs']],
   ['node',['scripts/validate-site-contract.mjs']],
   ['node',['scripts/validate-hosting-portability.mjs']],
+  ['node',['scripts/validate-browser-js.mjs']],
   ['node',['scripts/build-release-manifest.mjs']],
   ['node',['scripts/validate-release-manifest.mjs']],
   ['node',['--check','scripts/verify-live-deployment.mjs']]
