@@ -78,3 +78,7 @@ Le formulaire public produit localement un objet `RDX_CLIENT_REQUEST_V1` téléc
 
 - `/status.html` affiche le statut réel des capacités et blocages à partir de `/api/v1/status.json`.
 - `/api.html` documente les projections JSON publiques en lecture seule.
+
+## Catalogue dynamique
+
+La page d'accueil et `/dossiers/` lisent `/api/v1/catalog.json`. Les futurs packs publics peuvent donc apparaître dans le site sans duplication manuelle de cartes HTML.
