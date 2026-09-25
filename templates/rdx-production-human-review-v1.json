@@ -1,0 +1,15 @@
+{
+  "schema": "RDX_PRODUCTION_HUMAN_REVIEW_V1",
+  "decision": "PENDING",
+  "reviewer_id": "UNASSIGNED",
+  "reviewed_at": null,
+  "registration_proposal_sha256": null,
+  "live_proof_sha256": null,
+  "source_commit": null,
+  "release_aggregate_sha256": null,
+  "signed_live_proof_verified": false,
+  "signed_registration_proposal_verified": false,
+  "auto_apply": false,
+  "review_sha256": null,
+  "note": "Template only. PENDING decisions are never admissible to the production proof registry."
+}

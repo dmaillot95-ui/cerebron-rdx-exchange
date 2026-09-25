@@ -12,5 +12,9 @@
   "note": "A static source bundle must not claim production verification without an ingested live proof. Verification state is control-plane evidence, not inferred from build success.",
   "require_signed_live_proof": true,
   "require_signed_registration_proposal": true,
-  "registration_proposal_auto_apply": false
+  "registration_proposal_auto_apply": false,
+  "require_human_review": true,
+  "human_review_schema": "RDX_PRODUCTION_HUMAN_REVIEW_V1",
+  "require_human_review_decision": "APPROVE",
+  "human_review_auto_apply": false
 }

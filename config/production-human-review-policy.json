@@ -1,0 +1,21 @@
+{
+  "schema": "RDX_PRODUCTION_HUMAN_REVIEW_POLICY_V1",
+  "required": true,
+  "review_schema": "RDX_PRODUCTION_HUMAN_REVIEW_V1",
+  "allowed_decisions": [
+    "APPROVE",
+    "REJECT"
+  ],
+  "required_for_registry_entry": true,
+  "approved_decision_required_for_production": true,
+  "require_reviewer_id": true,
+  "require_reviewed_at": true,
+  "require_registration_proposal_sha256": true,
+  "require_live_proof_sha256_match": true,
+  "require_source_commit_match": true,
+  "require_release_aggregate_match": true,
+  "require_signed_live_proof_verified": true,
+  "require_signed_registration_proposal_verified": true,
+  "auto_apply": false,
+  "note": "Human review is a control-plane decision. It never substitutes for live deployment evidence or cryptographic verification."
+}

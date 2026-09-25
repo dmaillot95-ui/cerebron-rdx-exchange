@@ -4,12 +4,13 @@ import crypto from 'node:crypto';
 const statusPath='dist/api/v1/status.json';
 const registryPath='data/deployments/production-proof-registry.json';
 const policyPath='config/production-promotion-policy.json';
+const humanReviewPolicyPath='config/production-human-review-policy.json';
 const attestationPath='artifacts/rdx-release-attestation.json';
 const manifestPath='dist/api/v1/release-manifest.json';
 const provenancePath='dist/api/v1/build-provenance.json';
 const errors=[];
 
-for(const f of [statusPath,registryPath,policyPath,manifestPath,provenancePath]){
+for(const f of [statusPath,registryPath,policyPath,humanReviewPolicyPath,manifestPath,provenancePath]){
   if(!fs.existsSync(f)) errors.push('missing '+f);
 }
 if(errors.length){
@@ -21,6 +22,7 @@ if(errors.length){
 const status=JSON.parse(fs.readFileSync(statusPath,'utf8'));
 const registry=JSON.parse(fs.readFileSync(registryPath,'utf8'));
 const policy=JSON.parse(fs.readFileSync(policyPath,'utf8'));
+const humanReviewPolicy=JSON.parse(fs.readFileSync(humanReviewPolicyPath,'utf8'));
 const manifest=JSON.parse(fs.readFileSync(manifestPath,'utf8'));
 const provenance=JSON.parse(fs.readFileSync(provenancePath,'utf8'));
 
@@ -28,6 +30,9 @@ if(registry.schema!=='RDX_PRODUCTION_PROOF_REGISTRY_V1') errors.push('registry s
 if(registry.policy!=='FAIL_CLOSED') errors.push('registry policy must be FAIL_CLOSED');
 if(policy.schema!=='RDX_PRODUCTION_PROMOTION_POLICY_V1') errors.push('promotion policy schema mismatch');
 if(policy.required_live_proof_schema!=='RDX_PRODUCTION_DEPLOYMENT_PROOF_V2') errors.push('required live proof schema mismatch');
+if(policy.require_human_review!==true) errors.push('production policy must require human review');
+if(policy.human_review_schema!=='RDX_PRODUCTION_HUMAN_REVIEW_V1') errors.push('production policy human review schema mismatch');
+if(humanReviewPolicy.schema!=='RDX_PRODUCTION_HUMAN_REVIEW_POLICY_V1'||humanReviewPolicy.required!==true) errors.push('human review policy mismatch');
 
 const proofs=Array.isArray(registry.proofs)?registry.proofs:[];
 const latestId=registry.latest_verified;
@@ -38,6 +43,7 @@ function canonicalProofHash(proof){
   delete clone.proof_sha256;
   delete clone.id;
   delete clone.live_proof_signed;
+  delete clone.human_review;
   return crypto.createHash('sha256').update(JSON.stringify(clone)).digest('hex');
 }
 
@@ -59,6 +65,36 @@ for(const p of proofs){
   if(p.synthetic_canary===true) errors.push((p.id||'proof')+' synthetic canary proof forbidden in production registry');
   if(typeof p.evidence_class==='string'&&p.evidence_class.startsWith('SYNTHETIC_')) errors.push((p.id||'proof')+' synthetic evidence class forbidden in production registry');
   try{if(p.base_url&&new URL(p.base_url).hostname.endsWith('.invalid')) errors.push((p.id||'proof')+' invalid-domain deployment URL forbidden in production registry')}catch{errors.push((p.id||'proof')+' invalid base_url')}
+  const hr=p.human_review;
+  if(!hr||typeof hr!=='object') errors.push((p.id||'proof')+' human review missing');
+  if(hr&&typeof hr==='object'){
+    if(hr.schema!=='RDX_PRODUCTION_HUMAN_REVIEW_V1') errors.push((p.id||'proof')+' human review schema mismatch');
+    if(hr.decision!=='APPROVE') errors.push((p.id||'proof')+' human review decision must be APPROVE');
+    if(typeof hr.reviewer_id!=='string'||!hr.reviewer_id.trim()||hr.reviewer_id==='UNASSIGNED') errors.push((p.id||'proof')+' human reviewer id missing');
+    if(typeof hr.reviewed_at!=='string'||Number.isNaN(Date.parse(hr.reviewed_at))) errors.push((p.id||'proof')+' human review timestamp invalid');
+    if(!/^[0-9a-f]{64}$/.test(hr.registration_proposal_sha256||'')) errors.push((p.id||'proof')+' human review proposal sha256 invalid');
+    if(hr.live_proof_sha256!==p.proof_sha256) errors.push((p.id||'proof')+' human review live proof hash mismatch');
+    if(hr.source_commit!==p.source_commit) errors.push((p.id||'proof')+' human review source commit mismatch');
+    if(hr.release_aggregate_sha256!==p.expected_release_aggregate_sha256) errors.push((p.id||'proof')+' human review release aggregate mismatch');
+    if(hr.signed_live_proof_verified!==true) errors.push((p.id||'proof')+' human review missing signed live proof verification');
+    if(hr.signed_registration_proposal_verified!==true) errors.push((p.id||'proof')+' human review missing signed registration proposal verification');
+    if(hr.auto_apply!==false) errors.push((p.id||'proof')+' human review auto_apply must be false');
+    const reviewClaims={
+      schema:hr.schema,
+      decision:hr.decision,
+      reviewer_id:hr.reviewer_id,
+      reviewed_at:hr.reviewed_at,
+      registration_proposal_sha256:hr.registration_proposal_sha256,
+      live_proof_sha256:hr.live_proof_sha256,
+      source_commit:hr.source_commit,
+      release_aggregate_sha256:hr.release_aggregate_sha256,
+      signed_live_proof_verified:hr.signed_live_proof_verified,
+      signed_registration_proposal_verified:hr.signed_registration_proposal_verified,
+      auto_apply:hr.auto_apply
+    };
+    const expectedReviewHash=crypto.createHash('sha256').update(JSON.stringify(reviewClaims)).digest('hex');
+    if(hr.review_sha256!==expectedReviewHash) errors.push((p.id||'proof')+' human review sha256 mismatch');
+  }
 }
 
 if(status.production_deployment_verified===true){

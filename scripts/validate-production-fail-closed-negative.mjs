@@ -27,6 +27,23 @@ function canonicalProofHash(proof){
   delete clone.live_proof_signed;
   return crypto.createHash('sha256').update(JSON.stringify(clone)).digest('hex');
 }
+function makeHumanReview(p,{decision='APPROVE'}={}){
+  const hr={
+    schema:'RDX_PRODUCTION_HUMAN_REVIEW_V1',
+    decision,
+    reviewer_id:'NEGATIVE-CANARY-REVIEWER',
+    reviewed_at:'2026-09-25T00:00:00Z',
+    registration_proposal_sha256:'b'.repeat(64),
+    live_proof_sha256:p.proof_sha256,
+    source_commit:p.source_commit,
+    release_aggregate_sha256:p.expected_release_aggregate_sha256,
+    signed_live_proof_verified:true,
+    signed_registration_proposal_verified:true,
+    auto_apply:false
+  };
+  hr.review_sha256=crypto.createHash('sha256').update(JSON.stringify(hr)).digest('hex');
+  return hr;
+}
 function makeProof({id='NEGATIVE-CANARY',source=manifest.source_commit,aggregate=manifest.aggregate_sha256,liveSigned=true}={}){
   const p={
     id,
@@ -44,6 +61,7 @@ function makeProof({id='NEGATIVE-CANARY',source=manifest.source_commit,aggregate
     live_proof_signed:liveSigned
   };
   p.proof_sha256=canonicalProofHash(p);
+  p.human_review=makeHumanReview(p);
   return p;
 }
 function runPromotionExpectFail(label,status,registry,expectedText){
@@ -112,6 +130,24 @@ try{
     'synthetic canary proof forbidden in production registry'
   );
 
+  const missingReviewProof=makeProof({id:'NEG-MISSING-HUMAN-REVIEW'});
+  delete missingReviewProof.human_review;
+  runPromotionExpectFail(
+    'MISSING_HUMAN_REVIEW',
+    {...baseStatus,production_deployment_verified:true},
+    {schema:'RDX_PRODUCTION_PROOF_REGISTRY_V1',policy:'FAIL_CLOSED',latest_verified:missingReviewProof.id,proofs:[missingReviewProof]},
+    'human review missing'
+  );
+
+  const rejectedReviewProof=makeProof({id:'NEG-HUMAN-REVIEW-REJECTED'});
+  rejectedReviewProof.human_review=makeHumanReview(rejectedReviewProof,{decision:'REJECT'});
+  runPromotionExpectFail(
+    'HUMAN_REVIEW_NOT_APPROVED',
+    {...baseStatus,production_deployment_verified:true},
+    {schema:'RDX_PRODUCTION_PROOF_REGISTRY_V1',policy:'FAIL_CLOSED',latest_verified:rejectedReviewProof.id,proofs:[rejectedReviewProof]},
+    'human review decision must be APPROVE'
+  );
+
   const unsignedProof=makeProof({id:'NEG-UNSIGNED-LIVE',liveSigned:false});
   runPromotionExpectFail(
     'UNSIGNED_LIVE_PROOF',
@@ -138,7 +174,7 @@ try{
   }
   console.log('NEGATIVE PASS UNSIGNED_REGISTRATION_PROPOSAL');
 
-  console.log('RDX Production Fail-Closed Negative Canaries: PASS (6/6 rejected)');
+  console.log('RDX Production Fail-Closed Negative Canaries: PASS (8/8 rejected)');
 }catch(e){
   console.error('RDX Production Fail-Closed Negative Canaries: FAIL');
   console.error(e?.stack||String(e));

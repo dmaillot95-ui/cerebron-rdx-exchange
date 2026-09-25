@@ -20,6 +20,7 @@ const commands=[
   ['node',['scripts/validate-release-manifest.mjs']],
   ['node',['scripts/build-release-attestation.mjs']],
   ['node',['scripts/validate-release-attestation.mjs']],
+  ['node',['scripts/validate-production-human-review-contract.mjs']],
   ['node',['scripts/validate-production-promotion.mjs']],
   ['node',['scripts/validate-production-fail-closed-negative.mjs']],
   ['node',['scripts/validate-production-rollback-negative.mjs']],
