@@ -18,6 +18,10 @@ on:
       - 'scripts/build-rdx-public-packs.mjs'
       - 'dist/api/v1/packs/**'
       - 'dist/dossiers/**'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 jobs:
