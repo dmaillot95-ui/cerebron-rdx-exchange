@@ -52,6 +52,8 @@ jobs:
     needs: validate
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
     runs-on: ubuntu-latest
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -63,3 +65,23 @@ jobs:
       - name: Deploy public RDX site
         id: deployment
         uses: actions/deploy-pages@v4
+
+  verify-live:
+    needs: deploy
+    if: ${{ needs.deploy.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify deployed RDX endpoints
+        env:
+          RDX_BASE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: node scripts/verify-live-deployment.mjs
+      - name: Upload production deployment proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: rdx-production-deployment-proof
+          path: artifacts/rdx-production-deployment-proof.json
+          retention-days: 90
