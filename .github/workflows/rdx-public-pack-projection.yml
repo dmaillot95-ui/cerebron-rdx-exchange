@@ -5,6 +5,10 @@ on:
     paths:
       - 'data/packs/**'
       - 'scripts/build-rdx-public-packs.mjs'
+      - 'scripts/validate-deployment-readiness.mjs'
+      - 'scripts/validate-site-contract.mjs'
+      - 'scripts/validate-deployment-readiness.mjs'
+      - 'scripts/validate-site-contract.mjs'
       - 'dist/api/v1/packs/**'
       - 'dist/dossiers/**'
       - '.github/workflows/rdx-public-pack-projection.yml'
@@ -28,3 +32,4 @@ jobs:
       - run: git diff --exit-code -- dist/api/v1/packs dist/dossiers
       - run: node scripts/validate-rdx.mjs
       - run: node scripts/validate-deployment-readiness.mjs
+      - run: node scripts/validate-site-contract.mjs
