@@ -1,0 +1,102 @@
+name: RDX Production Human Review
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: 'Successful RDX GitHub Pages run that produced signed live proof/proposal artifacts'
+        required: true
+        type: string
+      decision:
+        description: 'Human production decision'
+        required: true
+        type: choice
+        options:
+          - APPROVE
+          - REJECT
+      reviewer_id:
+        description: 'Human reviewer identifier'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+  attestations: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Download signed live proof artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: gh run download "$SOURCE_RUN_ID" -n rdx-production-deployment-proof -D artifacts/input/live
+      - name: Download signed registration proposal artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: gh run download "$SOURCE_RUN_ID" -n rdx-production-proof-registration-proposal -D artifacts/input/proposal
+      - name: Extract reviewed source commit
+        run: |
+          echo "RDX_REVIEW_SOURCE_COMMIT=$(node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('artifacts/input/live/rdx-production-deployment-proof.json','utf8'));process.stdout.write(p.source_commit)")" >> "$GITHUB_ENV"
+      - name: Verify signed live deployment proof
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh attestation verify artifacts/input/live/rdx-production-deployment-proof.json --repo "$GITHUB_REPOSITORY" --source-digest "$RDX_REVIEW_SOURCE_COMMIT"
+      - name: Verify signed registration proposal
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh attestation verify artifacts/input/proposal/rdx-production-proof-registration-proposal.json --repo "$GITHUB_REPOSITORY" --source-digest "$RDX_REVIEW_SOURCE_COMMIT"
+      - name: Build human review decision
+        env:
+          RDX_HUMAN_DECISION: ${{ inputs.decision }}
+          RDX_HUMAN_REVIEWER_ID: ${{ inputs.reviewer_id }}
+          RDX_SIGNED_LIVE_PROOF_VERIFIED: 'true'
+          RDX_SIGNED_REGISTRATION_PROPOSAL_VERIFIED: 'true'
+        run: node scripts/build-production-human-review.mjs
+      - name: Validate human review decision
+        run: node scripts/validate-production-human-review.mjs
+      - name: Sign human review decision
+        uses: actions/attest@v4
+        with:
+          subject-path: artifacts/rdx-production-human-review.json
+      - name: Verify signed human review decision
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh attestation verify artifacts/rdx-production-human-review.json --repo "$GITHUB_REPOSITORY" --source-digest "$GITHUB_SHA"
+      - name: Upload human review
+        uses: actions/upload-artifact@v4
+        with:
+          name: rdx-production-human-review
+          path: artifacts/rdx-production-human-review.json
+          retention-days: 90
+      - name: Build registry update proposal
+        if: ${{ inputs.decision == 'APPROVE' }}
+        run: node scripts/build-production-registry-update-proposal.mjs
+      - name: Validate registry update proposal
+        if: ${{ inputs.decision == 'APPROVE' }}
+        run: node scripts/validate-production-registry-update-proposal.mjs
+      - name: Sign registry update proposal
+        if: ${{ inputs.decision == 'APPROVE' }}
+        uses: actions/attest@v4
+        with:
+          subject-path: artifacts/rdx-production-registry-update-proposal.json
+      - name: Verify signed registry update proposal
+        if: ${{ inputs.decision == 'APPROVE' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh attestation verify artifacts/rdx-production-registry-update-proposal.json --repo "$GITHUB_REPOSITORY" --source-digest "$GITHUB_SHA"
+      - name: Upload registry update proposal
+        if: ${{ inputs.decision == 'APPROVE' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rdx-production-registry-update-proposal
+          path: artifacts/rdx-production-registry-update-proposal.json
+          retention-days: 90
