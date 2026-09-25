@@ -33,6 +33,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify source deployment workflow identity
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          META="$(gh run view "$SOURCE_RUN_ID" --json name,conclusion,event,headBranch,headSha)"
+          test "$(jq -r .name <<<"$META")" = "RDX GitHub Pages Public Preview"
+          test "$(jq -r .conclusion <<<"$META")" = "success"
+          test "$(jq -r .event <<<"$META")" = "workflow_dispatch"
+          test "$(jq -r .headBranch <<<"$META")" = "main"
+          echo "RDX_REVIEW_SOURCE_RUN_SHA=$(jq -r .headSha <<<"$META")" >> "$GITHUB_ENV"
       - name: Download signed live proof artifact
         env:
           GH_TOKEN: ${{ github.token }}
@@ -46,6 +57,8 @@ jobs:
       - name: Extract reviewed source commit
         run: |
           echo "RDX_REVIEW_SOURCE_COMMIT=$(node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('artifacts/input/live/rdx-production-deployment-proof.json','utf8'));process.stdout.write(p.source_commit)")" >> "$GITHUB_ENV"
+      - name: Bind live proof to source run
+        run: test "$RDX_REVIEW_SOURCE_COMMIT" = "$RDX_REVIEW_SOURCE_RUN_SHA"
       - name: Verify signed live deployment proof
         env:
           GH_TOKEN: ${{ github.token }}

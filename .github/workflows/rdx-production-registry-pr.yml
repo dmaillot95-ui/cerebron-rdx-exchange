@@ -28,6 +28,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify source human review workflow identity
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
+        run: |
+          META="$(gh run view "$SOURCE_REVIEW_RUN_ID" --json name,conclusion,event,headBranch,headSha)"
+          test "$(jq -r .name <<<"$META")" = "RDX Production Human Review"
+          test "$(jq -r .conclusion <<<"$META")" = "success"
+          test "$(jq -r .event <<<"$META")" = "workflow_dispatch"
+          test "$(jq -r .headBranch <<<"$META")" = "main"
+          echo "RDX_REVIEW_WORKFLOW_SHA=$(jq -r .headSha <<<"$META")" >> "$GITHUB_ENV"
       - name: Download signed human review
         env:
           GH_TOKEN: ${{ github.token }}
@@ -38,11 +49,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
         run: gh run download "$SOURCE_REVIEW_RUN_ID" -n rdx-production-registry-update-proposal -D artifacts/input/update
-      - name: Resolve review workflow source commit
-        env:
-          GH_TOKEN: ${{ github.token }}
-          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
-        run: echo "RDX_REVIEW_WORKFLOW_SHA=$(gh run view "$SOURCE_REVIEW_RUN_ID" --json headSha --jq .headSha)" >> "$GITHUB_ENV"
       - name: Verify signed human review
         env:
           GH_TOKEN: ${{ github.token }}

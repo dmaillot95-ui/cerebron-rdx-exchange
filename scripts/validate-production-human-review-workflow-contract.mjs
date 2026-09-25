@@ -15,6 +15,12 @@ if(fs.existsSync(workflow)){
   for(const marker of [
     'workflow_dispatch:',
     'source_run_id:',
+    'Verify source deployment workflow identity',
+    '"RDX GitHub Pages Public Preview"',
+    '"workflow_dispatch"',
+    'RDX_REVIEW_SOURCE_RUN_SHA=',
+    'Bind live proof to source run',
+    'test "$RDX_REVIEW_SOURCE_COMMIT" = "$RDX_REVIEW_SOURCE_RUN_SHA"',
     'decision:',
     'reviewer_id:',
     'gh run download "$SOURCE_RUN_ID" -n rdx-production-deployment-proof',

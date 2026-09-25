@@ -9,6 +9,10 @@ if(fs.existsSync(workflow)){
   const required=[
     'workflow_dispatch:',
     'source_review_run_id:',
+    'Verify source human review workflow identity',
+    '"RDX Production Human Review"',
+    '"workflow_dispatch"',
+    'RDX_REVIEW_WORKFLOW_SHA=',
     'operator_id:',
     'Verify signed human review',
     'Verify signed registry update proposal',
