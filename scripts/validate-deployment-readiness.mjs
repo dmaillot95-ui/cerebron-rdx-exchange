@@ -74,7 +74,7 @@ if(fs.existsSync('dist/api/v1/status.json')){
 
 if(fs.existsSync('dist/index.html')){
   const html=fs.readFileSync('dist/index.html','utf8');
-  for(const marker of ['ARCHITECTON Ω','architectonWaveFilter','/api/v1/architecton-missions.json','/api/v1/architecton-pipeline.json','RDX_CLIENT_REQUEST_V1','/privacy.html','/status.html','/api.html','/api/v1/catalog.json']){
+  for(const marker of ['ARCHITECTON Ω','architectonWaveFilter',"rdxUrl('/api/v1/architecton-missions.json')","rdxUrl('/api/v1/architecton-pipeline.json')",'RDX_CLIENT_REQUEST_V1','privacy.html','status.html','api.html',"rdxUrl('/api/v1/catalog.json')"]){
     if(!html.includes(marker)) fail(`dist/index.html missing marker: ${marker}`);
   }
 }

@@ -10,7 +10,7 @@ const commands=[
   ['node',['scripts/validate-architecton-rdx-normalization.mjs']],
   ['node',['scripts/validate-rdx.mjs']],
   ['node',['scripts/validate-deployment-readiness.mjs']],
-  ['node',['scripts/validate-site-contract.mjs']]
+  ['node',['scripts/validate-site-contract.mjs',\n  'scripts/validate-hosting-portability.mjs']]
 ];
 
 for(const [cmd,args] of commands){
