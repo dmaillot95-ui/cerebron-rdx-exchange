@@ -108,7 +108,7 @@ Runs GitHub SUCCESS connus :
 - Integration Decision Gate : 36152460892.
 - Pipeline Projection Gate : 36152552835.
 
-Le Deployment Readiness Gate existe ; vérifier son dernier run avant de le déclarer PASS.
+Deployment Readiness Gate : 36152684707 — SUCCESS.
 
 ## 8. Site / API source
 
@@ -131,6 +131,7 @@ La page `dist/index.html` contient :
 
 `vercel.json` publie `dist`.
 
+Le bundle source est validé par le Deployment Readiness Gate.
 Ne pas affirmer que la dernière version est en production sans preuve de déploiement.
 Les accès Vercel disponibles à cette session ne permettent pas encore de confirmer le projet distant.
 
