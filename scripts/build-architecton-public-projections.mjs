@@ -1,7 +1,5 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import crypto from 'node:crypto';
-
 const root='dist/api/v1';
 const registryPath='data/architecton/portfolio-40.json';
 const planPath='data/architecton/missions/architecton-40-plan.json';
@@ -10,12 +8,6 @@ const rawRegistry=fs.readFileSync(registryPath,'utf8');
 const rawPlan=fs.readFileSync(planPath,'utf8');
 const registry=JSON.parse(rawRegistry);
 const plan=JSON.parse(rawPlan);
-
-const sha=v=>crypto.createHash('sha256').update(v).digest('hex');
-const sourceHashes={
-  portfolio_40_sha256:sha(rawRegistry),
-  mission_plan_sha256:sha(rawPlan)
-};
 
 const counts=(registry.souches||[]).reduce((a,s)=>{
   a[s.status]=(a[s.status]||0)+1;
@@ -29,7 +21,7 @@ const publicRegistry={
   projection:true,
   read_only:true,
   canonical_source:registryPath,
-  source_hashes:sourceHashes,
+  source_versions:{registry_schema_version:registry.schema_version,registry_updated_at:registry.updated_at,mission_plan_schema_version:plan.schema_version},
   schema_version:registry.schema_version,
   program:registry.program,
   mode:registry.mode,
@@ -55,7 +47,7 @@ const publicMissions={
   read_only:true,
   canonical_registry:registryPath,
   mission_plan:planPath,
-  source_hashes:sourceHashes,
+  source_versions:{registry_schema_version:registry.schema_version,registry_updated_at:registry.updated_at,mission_plan_schema_version:plan.schema_version},
   total_missions:(plan.waves||[]).reduce((n,w)=>n+(w.souches||[]).length,0),
   ready_to_assign:(plan.waves||[]).reduce((n,w)=>n+(w.souches||[]).filter(s=>s.mission_status==='PLANNED').length,0),
   active:(registry.souches||[]).filter(s=>s.status==='PRE_RND_ACTIVE').length,
@@ -86,7 +78,7 @@ const publicWave01={
   read_only:true,
   canonical_registry:registryPath,
   mission_plan:planPath,
-  source_hashes:sourceHashes,
+  source_versions:{registry_schema_version:registry.schema_version,registry_updated_at:registry.updated_at,mission_plan_schema_version:plan.schema_version},
   wave:'WAVE-01',
   total_souches:(wave01?.souches||[]).length,
   execution_claims:(registry.souches||[])
