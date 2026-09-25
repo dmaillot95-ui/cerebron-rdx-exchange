@@ -1,0 +1,409 @@
+{
+  "schema_version": "ARCHITECTON-40-MISSION-PLAN-1.0",
+  "program": "ARCHITECTON Ω",
+  "status": "PLANNED",
+  "execution_plane": "CEREBRON_RD_EXECUTION_PLANE",
+  "registry_plane": "RDX_REGISTRY_INTEGRATION_PLANE",
+  "automatic_start": false,
+  "automatic_spending": false,
+  "automatic_publication": false,
+  "instructions": [
+    "Do not mark a souche PRE_RND_ACTIVE until at least one verifiable execution trace exists.",
+    "Use coalition minimale utile; 12-20 roles is a target envelope, not an agent-count objective.",
+    "Run M01→M06 before F01→F08.",
+    "Deposit outputs using ARCHITECTON-RD-HANDOFF-1.0.",
+    "Never credit unavailable agents, farms, F72 or AFAH without execution traces."
+  ],
+  "default_role_pool": [
+    "CHEF_DE_SOUCHE_ROUTER",
+    "RESEARCH_SCIENTIFIQUE",
+    "RESEARCH_INDUSTRIEL",
+    "STANDARDS_REGLEMENTATION",
+    "PRIOR_ART_IP",
+    "ARCHITECTURE_SYSTEME",
+    "INTERFACES",
+    "PHYSIQUE_MATH",
+    "DATA_CALCULATION",
+    "MODELLING_SIMULATION",
+    "FAILURE_RELIABILITY",
+    "INDUSTRIALISATION",
+    "COST_OPERATIONS",
+    "TEST_VALIDATION",
+    "RED_TEAM",
+    "CONTRE_AUDITEUR",
+    "EVIDENCE_KEEPER",
+    "SYNTHESEUR"
+  ],
+  "phases": [
+    {
+      "id": "M01",
+      "name": "CADRAGE_TOTAL"
+    },
+    {
+      "id": "M02",
+      "name": "ETAT_ART_SOURCES_BENCHMARK_PRIOR_ART"
+    },
+    {
+      "id": "M03",
+      "name": "ARCHITECTURES_INTERFACES_FAILURE_MODES"
+    },
+    {
+      "id": "M04",
+      "name": "DATA_PHYSIQUE_FORMULES_CALCULS"
+    },
+    {
+      "id": "M05",
+      "name": "MODELES_SIMULATIONS_CONCEPTS_IP_TESTS"
+    },
+    {
+      "id": "M06",
+      "name": "RED_TEAM_AUDIT_FREEZE"
+    }
+  ],
+  "waves": [
+    {
+      "wave": "WAVE-01",
+      "priority": 1,
+      "status": "PLANNED",
+      "parallelism_target": 5,
+      "souches": [
+        {
+          "id": "S01",
+          "name": "LANCEURS SPATIAUX Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S02",
+          "name": "VAISSEAU-LANCEUR TITAN WAGONSHIP Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S03",
+          "name": "MOTEURS-FUSÉES & ÉTAGES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S04",
+          "name": "PETITS CONVOYEURS MONOWAGON & TRIAGE ORBITAL Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S05",
+          "name": "CONVOYEURS / TRAINS SPATIAUX MODULAIRES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-02",
+      "priority": 2,
+      "status": "PLANNED",
+      "parallelism_target": 5,
+      "souches": [
+        {
+          "id": "S06",
+          "name": "CONVOYEURS / TRAINS SPATIAUX ALVÉOLAIRES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S07",
+          "name": "VAISSEAUX CARGO & LOGISTIQUE ORBITALE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S08",
+          "name": "REMORQUEURS & MANŒUVRIERS ORBITAUX Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S09",
+          "name": "ATTERRISSEURS & NAVETTES SURFACE–ORBITE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S10",
+          "name": "SPATIOPORTS & INFRASTRUCTURES DE LANCEMENT Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-03",
+      "priority": 3,
+      "status": "PLANNED",
+      "parallelism_target": 5,
+      "souches": [
+        {
+          "id": "S11",
+          "name": "STANDARDS & INTERFACES SPATIALES UNIVERSELLES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S12",
+          "name": "GARES & PORTS SPATIAUX MODULAIRES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S13",
+          "name": "GARES SPATIALES ALVÉOLAIRES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S14",
+          "name": "DÉPÔTS & TERMINAUX DE RESSOURCES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S15",
+          "name": "INFRASTRUCTURES DE MAINTENANCE & SERVICE SPATIAL Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-04",
+      "priority": 4,
+      "status": "PLANNED",
+      "parallelism_target": 5,
+      "souches": [
+        {
+          "id": "S16",
+          "name": "ÉNERGIE SPATIALE & RÉSEAUX DE PUISSANCE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S17",
+          "name": "SYSTÈMES THERMIQUES & CRYOGÉNIQUES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S18",
+          "name": "RÉSEAUX DE FLUIDES & TRANSFERT D’ERGOLS Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S19",
+          "name": "ROBOTIQUE SPATIALE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S20",
+          "name": "USINES SPATIALES MODULAIRES & FABRICATION ORBITALE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-05",
+      "priority": 5,
+      "status": "PLANNED",
+      "parallelism_target": 5,
+      "souches": [
+        {
+          "id": "S21",
+          "name": "RÉPARATION SPATIALE / REMANUFACTURING / SECONDE VIE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S22",
+          "name": "PLATEFORME ORBITALE MULTI-SERVICES & MULTI-CLIENTS Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S23",
+          "name": "ORCHESTRATION AUTONOME DES RESSOURCES & DE LA LOGISTIQUE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S24",
+          "name": "RÉCUPÉRATION & REQUALIFICATION AUTONOMES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S25",
+          "name": "CONFIANCE, PREUVE & QUALIFICATION SPATIALES VÉRIFIÉES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-06",
+      "priority": 6,
+      "status": "PLANNED",
+      "parallelism_target": 5,
+      "souches": [
+        {
+          "id": "S26",
+          "name": "COMPILATION MISSION → INFRASTRUCTURE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S27",
+          "name": "INTELLIGENCE INDUSTRIELLE SPATIALE VÉRIFIÉE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S28",
+          "name": "DISPONIBILITÉ LEAP & USINE MRO Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S29",
+          "name": "JUMEAU NUMÉRIQUE MOTEUR & SANTÉ PRÉDICTIVE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S30",
+          "name": "INSPECTION ROBOTISÉE DES MOTEURS & RÉPARATION AVANCÉE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-07",
+      "priority": 7,
+      "status": "PLANNED",
+      "parallelism_target": 5,
+      "souches": [
+        {
+          "id": "S31",
+          "name": "RISE / OPEN FAN & TECHNOLOGIES DE CŒUR COMPACT Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S32",
+          "name": "TRAIN D’ATTERRISSAGE INTELLIGENT & FREINS CARBONE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S33",
+          "name": "SANTÉ AÉRONEF, STRUCTURES & OPÉRATIONS PRÉDICTIVES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S34",
+          "name": "DOSSIERS TECHNIQUES NUMÉRIQUES & NAVIGABILITÉ AUTOMATISÉE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S35",
+          "name": "DISPONIBILITÉ FLOTTE & OPTIMISATION DES PIÈCES Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "wave": "WAVE-08",
+      "priority": 8,
+      "status": "PLANNED",
+      "parallelism_target": 5,
+      "souches": [
+        {
+          "id": "S36",
+          "name": "RÉSEAU MONDIAL DE RÉPARATION & INSPECTION AUTOMATISÉE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S37",
+          "name": "CYBERSÉCURITÉ AÉRONAUTIQUE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S38",
+          "name": "NOYAU DE SÛRETÉ POUR AUTONOMIE CERTIFIABLE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S39",
+          "name": "MOTEUR DE CADENCE INDUSTRIELLE & DE COÛTS ARIANE 6 Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        },
+        {
+          "id": "S40",
+          "name": "CAPACITÉ AÉRO-SPATIALE VÉRIFIÉE Ω",
+          "registry_status": "QUEUED",
+          "next_phase": "M01",
+          "mission_status": "PLANNED"
+        }
+      ]
+    }
+  ]
+}
