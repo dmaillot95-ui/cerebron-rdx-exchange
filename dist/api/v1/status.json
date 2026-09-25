@@ -8,7 +8,7 @@
   "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
-  "last_updated": "2026-09-25T17:56:00Z",
+  "last_updated": "2026-09-25T18:06:00Z",
   "architecton_40_registry": "/api/v1/architecton-40.json",
   "architecton_40_total": 40,
   "architecton_40_mode": "CONTROLLED_MANUAL",
@@ -101,6 +101,8 @@
     "deploy_job": "FAIL_PERMISSION",
     "activation_required": true,
     "activation_url": "https://github.com/dmaillot95-ui/cerebron-rdx-exchange/settings/pages",
-    "required_setting": "Build and deployment -> Source: GitHub Actions"
+    "required_setting": "Build and deployment -> Source: GitHub Actions",
+    "deploy_mode": "MANUAL_WORKFLOW_DISPATCH_AFTER_OWNER_ENABLEMENT",
+    "push_behavior": "VALIDATE_AND_BUILD_ONLY"
   }
 }
