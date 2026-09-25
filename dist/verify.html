@@ -20,6 +20,12 @@
     <button id="verifyBtn" type="button">Vérifier maintenant</button>
   </div>
   <div class="panel">
+    <div><b>Commit source</b></div>
+    <div id="sourceCommit" class="hash muted">—</div>
+    <div style="height:10px"></div>
+    <div><b>Provenance</b></div>
+    <div id="provenanceState" class="hash muted">—</div>
+    <div style="height:10px"></div>
     <div><b>SHA agrégé attendu</b></div>
     <div id="expected" class="hash muted">—</div>
     <div style="height:10px"></div>
@@ -41,10 +47,21 @@ async function verifyRelease(){
   $('files').textContent='';
   try{
     const manifestUrl=new URL('api/v1/release-manifest.json',SITE_BASE);
-    const mr=await fetch(manifestUrl,{cache:'no-store'});
+    const provenanceUrl=new URL('api/v1/build-provenance.json',SITE_BASE);
+    const [mr,pr]=await Promise.all([
+      fetch(manifestUrl,{cache:'no-store'}),
+      fetch(provenanceUrl,{cache:'no-store'})
+    ]);
     if(!mr.ok) throw new Error('manifeste indisponible (HTTP '+mr.status+')');
+    if(!pr.ok) throw new Error('provenance indisponible (HTTP '+pr.status+')');
     const manifest=await mr.json();
+    const provenance=await pr.json();
     if(manifest.schema!=='RDX_RELEASE_MANIFEST_V1'||manifest.hash_algorithm!=='SHA-256') throw new Error('contrat de manifeste invalide');
+    if(provenance.schema!=='RDX_BUILD_PROVENANCE_V1'||!/^[0-9a-f]{40}$/.test(provenance.source_commit||'')) throw new Error('contrat de provenance invalide');
+    const provenancePass=manifest.source_commit===provenance.source_commit;
+    $('sourceCommit').textContent=provenance.source_commit||'—';
+    $('provenanceState').className='hash '+(provenancePass?'ok':'bad');
+    $('provenanceState').textContent=provenancePass?'PASS — manifeste lié au même commit source':'FAIL — commit source incohérent';
     $('expected').textContent=manifest.aggregate_sha256||'—';
     const results=[];
     for(const entry of manifest.files||[]){
@@ -60,9 +77,10 @@ async function verifyRelease(){
     $('actual').textContent=aggregate;
     const filePass=results.length===(manifest.files||[]).length&&results.every(x=>x.ok);
     const aggregatePass=filePass&&aggregate===manifest.aggregate_sha256;
-    $('summary').className='summary '+(aggregatePass?'ok':'bad');
-    $('summary').textContent=aggregatePass?'PASS — release conforme au manifeste':'FAIL — différence détectée';
-    $('detail').textContent=(manifest.files||[]).length+' fichiers attendus · '+results.filter(x=>x.ok).length+' conformes.';
+    const releasePass=aggregatePass&&provenancePass;
+    $('summary').className='summary '+(releasePass?'ok':'bad');
+    $('summary').textContent=releasePass?'PASS — release et provenance conformes':'FAIL — différence détectée';
+    $('detail').textContent=(manifest.files||[]).length+' fichiers attendus · '+results.filter(x=>x.ok).length+' conformes · provenance '+(provenancePass?'cohérente':'incohérente')+'.';
     for(const r of results){
       const row=document.createElement('div');row.className='row';
       const left=document.createElement('div');

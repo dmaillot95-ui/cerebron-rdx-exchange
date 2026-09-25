@@ -8,7 +8,7 @@
   "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
-  "last_updated": "2026-09-25T18:46:00Z",
+  "last_updated": "2026-09-25T19:02:00Z",
   "architecton_40_registry": "/api/v1/architecton-40.json",
   "architecton_40_total": 40,
   "architecton_40_mode": "CONTROLLED_MANUAL",
@@ -115,7 +115,7 @@
   "live_deployment_proof_artifact": "rdx-production-deployment-proof",
   "live_deployment_verification_status": "WAITING_FOR_FIRST_REAL_DEPLOYMENT",
   "release_verification_page": "verify.html",
-  "release_verification_mode": "CLIENT_SIDE_SHA256_ALL_PUBLIC_FILES",
+  "release_verification_mode": "CLIENT_SIDE_SHA256_ALL_PUBLIC_FILES_PLUS_SOURCE_COMMIT_PROVENANCE",
   "live_deployment_verification_mode": "ENDPOINT_SEMANTICS_PLUS_FULL_PUBLIC_BUNDLE_SHA256",
   "live_deployment_file_hash_verification": true,
   "live_deployment_aggregate_hash_verification": true,
@@ -123,5 +123,7 @@
   "build_provenance_schema": "RDX_BUILD_PROVENANCE_V1",
   "build_provenance_endpoint": "/api/v1/build-provenance.json",
   "release_manifest_source_commit_bound": true,
-  "live_deployment_source_commit_verification": true
+  "live_deployment_source_commit_verification": true,
+  "client_side_provenance_verification": true,
+  "client_side_manifest_source_commit_match": true
 }
