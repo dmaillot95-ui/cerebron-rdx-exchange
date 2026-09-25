@@ -11,7 +11,9 @@ const commands=[
   ['node',['scripts/validate-rdx.mjs']],
   ['node',['scripts/validate-deployment-readiness.mjs']],
   ['node',['scripts/validate-site-contract.mjs']],
-  ['node',['scripts/validate-hosting-portability.mjs']]
+  ['node',['scripts/validate-hosting-portability.mjs']],
+  ['node',['scripts/build-release-manifest.mjs']],
+  ['node',['scripts/validate-release-manifest.mjs']]
 ];
 
 for(const [cmd,args] of commands){

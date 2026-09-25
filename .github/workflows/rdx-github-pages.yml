@@ -41,6 +41,8 @@ jobs:
         run: |
           node scripts/build-rdx-public-packs.mjs
           git diff --exit-code -- dist/api/v1/packs dist/dossiers
+      - name: Release manifest gate
+        run: node scripts/validate-release-manifest.mjs
       - name: Upload public dist
         uses: actions/upload-pages-artifact@v4
         with:
