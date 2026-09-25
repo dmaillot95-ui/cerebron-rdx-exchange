@@ -13,6 +13,9 @@ on:
       - 'scripts/**'
       - 'vercel.json'
       - '.github/workflows/cerebron-rdx-full-validation.yml'
+      - '.github/workflows/rdx-github-pages.yml'
+      - '.github/workflows/rdx-public-pack-projection.yml'
+      - '.github/workflows/rdx-deployment-readiness.yml'
   pull_request:
     paths:
       - 'data/architecton/**'
