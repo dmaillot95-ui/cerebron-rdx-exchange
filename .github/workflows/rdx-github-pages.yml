@@ -35,14 +35,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Full RDX validation
-        run: node scripts/validate-all-rdx.mjs
-      - name: Verify public pack projection is current
-        run: |
-          node scripts/build-rdx-public-packs.mjs
-          git diff --exit-code -- dist/api/v1/packs dist/dossiers
-      - name: Release manifest gate
-        run: node scripts/validate-release-manifest.mjs
+      - name: Build shared RDX static release
+        run: node scripts/build-static-release.mjs
+      - name: Verify canonical public projections remain synchronized
+        run: git diff --exit-code -- dist/api/v1/packs dist/dossiers dist/api/v1/architecton-40.json dist/api/v1/architecton-missions.json dist/api/v1/architecton-wave-01.json dist/api/v1/architecton-pipeline.json
       - name: Upload public dist
         uses: actions/upload-pages-artifact@v4
         with:

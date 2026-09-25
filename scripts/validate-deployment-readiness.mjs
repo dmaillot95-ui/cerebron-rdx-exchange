@@ -16,6 +16,7 @@ const required=[
   'dist/api/v1/architecton-missions.json',
   'dist/api/v1/architecton-wave-01.json',
   'dist/api/v1/architecton-pipeline.json',
+  'scripts/build-static-release.mjs',
   'vercel.json'
 ];
 
@@ -32,6 +33,8 @@ if(fs.existsSync('vercel.json')){
   try{
     const v=JSON.parse(fs.readFileSync('vercel.json','utf8'));
     if(v.outputDirectory!=='dist') fail('vercel.json outputDirectory must be dist');
+    if(v.buildCommand!=='node scripts/build-static-release.mjs') fail('vercel.json buildCommand must use shared RDX static release builder');
+    if(v.installCommand!=='') fail('vercel.json installCommand must remain empty for dependency-free static build');
     if(v.cleanUrls!==true) warn('vercel.json cleanUrls is not true');
     if(v.trailingSlash!==false) warn('vercel.json trailingSlash is not false');
     const globalHeaders=(v.headers||[]).find(h=>h.source==='/(.*)')?.headers||[];
