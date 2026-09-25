@@ -3,6 +3,7 @@ import fs from 'node:fs';
 const required=[
   'dist/index.html',
   'dist/api/v1/status.json',
+  'dist/api/v1/catalog.json',
   'dist/api/v1/request-schema.json',
   'dist/privacy.html',
   'dist/status.html',
@@ -73,9 +74,29 @@ if(fs.existsSync('dist/api/v1/status.json')){
 
 if(fs.existsSync('dist/index.html')){
   const html=fs.readFileSync('dist/index.html','utf8');
-  for(const marker of ['ARCHITECTON Ω','architectonWaveFilter','/api/v1/architecton-missions.json','/api/v1/architecton-pipeline.json','/dossiers/RDX-000001.html','RDX_CLIENT_REQUEST_V1','/privacy.html','/status.html','/api.html','/api/v1/catalog.json']){
+  for(const marker of ['ARCHITECTON Ω','architectonWaveFilter','/api/v1/architecton-missions.json','/api/v1/architecton-pipeline.json','RDX_CLIENT_REQUEST_V1','/privacy.html','/status.html','/api.html','/api/v1/catalog.json']){
     if(!html.includes(marker)) fail(`dist/index.html missing marker: ${marker}`);
   }
+}
+
+if(fs.existsSync('dist/api/v1/catalog.json')){
+  try{
+    const catalog=JSON.parse(fs.readFileSync('dist/api/v1/catalog.json','utf8'));
+    if(!Array.isArray(catalog.packs)) fail('catalog packs must be an array');
+    for(const pack of catalog.packs||[]){
+      if(pack.detail_url){
+        const detail='dist'+pack.detail_url;
+        if(!fs.existsSync(detail)) fail(`catalog detail_url missing file: ${detail}`);
+      }
+      if(pack.api_url){
+        const api='dist'+pack.api_url;
+        if(!fs.existsSync(api)) fail(`catalog api_url missing file: ${api}`);
+      }
+    }
+    const first=(catalog.packs||[]).find(p=>p.id==='RDX-000001');
+    if(!first) fail('catalog missing RDX-000001');
+    if(first && first.status==='SOURCED' && !first.detail_url) fail('SOURCED RDX-000001 must expose detail_url');
+  }catch(e){fail('invalid catalog.json: '+e.message)}
 }
 
 warnings.forEach(w=>console.warn('WARN '+w));
