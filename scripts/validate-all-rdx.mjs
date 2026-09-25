@@ -9,7 +9,8 @@ const commands=[
   ['node',['scripts/validate-architecton-f01-f08.mjs']],
   ['node',['scripts/validate-architecton-rdx-normalization.mjs']],
   ['node',['scripts/validate-rdx.mjs']],
-  ['node',['scripts/validate-deployment-readiness.mjs']]
+  ['node',['scripts/validate-deployment-readiness.mjs']],
+  ['node',['scripts/validate-site-contract.mjs']]
 ];
 
 for(const [cmd,args] of commands){
