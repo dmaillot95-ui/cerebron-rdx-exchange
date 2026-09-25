@@ -1,0 +1,68 @@
+{
+  "schema_version": "ARCHITECTON-F01-F08-PACKAGE-1.0",
+  "souche_id": "SXX",
+  "status": "DRAFT",
+  "pre_rd_freeze_ref": null,
+  "canonical_object_registry": "data/architecton/object-registry.json",
+  "source_registry": "data/architecton/portfolio-40.json",
+  "sheets": {
+    "F01": {
+      "status": "NOT_STARTED",
+      "references": {}
+    },
+    "F02": {
+      "status": "NOT_STARTED",
+      "references": {}
+    },
+    "F03": {
+      "status": "NOT_STARTED",
+      "references": {}
+    },
+    "F04": {
+      "status": "NOT_STARTED",
+      "references": {}
+    },
+    "F05": {
+      "status": "NOT_STARTED",
+      "references": {}
+    },
+    "F06": {
+      "status": "NOT_STARTED",
+      "references": {}
+    },
+    "F07": {
+      "status": "NOT_STARTED",
+      "references": {
+        "claim_refs": [],
+        "reference_ids": [],
+        "test_refs": [],
+        "contradiction_refs": [],
+        "limitation_refs": [],
+        "decision_refs": []
+      },
+      "duplicated_results_forbidden": true
+    },
+    "F08": {
+      "status": "NOT_STARTED",
+      "references": {
+        "industrialization_refs": [],
+        "business_evidence_refs": [],
+        "risk_refs": [],
+        "test_refs": [],
+        "decision_refs": [],
+        "transfer_requirements": []
+      },
+      "business_case_status": "NOT_CLOSED",
+      "business_numbers": []
+    }
+  },
+  "red_team_refs": [],
+  "human_review": {
+    "completed": false,
+    "reviewer": null,
+    "reviewed_at": null
+  },
+  "final_decision": null,
+  "frozen_at": null,
+  "notes": "Template only. It is not an executed or frozen ARCHITECTON dossier."
+}
