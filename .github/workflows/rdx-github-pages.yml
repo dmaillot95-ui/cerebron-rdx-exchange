@@ -1,0 +1,54 @@
+name: RDX GitHub Pages Public Preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/**'
+      - 'data/packs/**'
+      - 'scripts/validate-*.mjs'
+      - 'scripts/build-rdx-public-packs.mjs'
+      - 'vercel.json'
+      - '.github/workflows/rdx-github-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: rdx-github-pages
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Full RDX validation
+        run: node scripts/validate-all-rdx.mjs
+      - name: Verify public pack projection is current
+        run: |
+          node scripts/build-rdx-public-packs.mjs
+          git diff --exit-code -- dist/api/v1/packs dist/dossiers
+      - name: Upload public dist
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy public RDX site
+        id: deployment
+        uses: actions/deploy-pages@v4
