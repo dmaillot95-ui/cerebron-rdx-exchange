@@ -1,5 +1,5 @@
 {
-  "schema_version": "RDX-PUBLIC-PACK-1.0",
+  "schema_version": "RDX-PUBLIC-PACK-1.1",
   "id": "RDX-000001",
   "title": "Direct-to-chip ou immersion à forte densité ?",
   "decision_question": "Pour un centre de données européen, dans quelles conditions le direct-to-chip devient-il préférable à l'immersion entre 80 et 200 kW par rack ?",
@@ -27,37 +27,114 @@
     {
       "id": "CLM-000001",
       "evidence_level": 2,
-      "statement": "La comparaison économique doit inclure l'infrastructure du bâtiment et les équipements de refroidissement, et non le seul coût du rack."
+      "statement": "La comparaison économique doit inclure l'infrastructure du bâtiment et les équipements de refroidissement, et non le seul coût du rack.",
+      "evidence": [
+        {
+          "source_id": "SRC-000001",
+          "execution_id": null,
+          "relation": "SUPPORTS",
+          "independence_group": "ASHRAE_TC_9_9_2021",
+          "extract_locator": "pages 20-21, first-cost comparison and densification"
+        }
+      ]
     },
     {
       "id": "CLM-000002",
       "evidence_level": 2,
-      "statement": "Le direct-to-chip peut fonctionner avec des boucles d'eau relativement chaudes et augmenter les heures potentielles d'économisation, sous réserve des températures admissibles du matériel."
+      "statement": "Le direct-to-chip peut fonctionner avec des boucles d'eau relativement chaudes et augmenter les heures potentielles d'économisation, sous réserve des températures admissibles du matériel.",
+      "evidence": [
+        {
+          "source_id": "SRC-000002",
+          "execution_id": null,
+          "relation": "SUPPORTS",
+          "independence_group": "ASHRAE_AI_FRAMEWORK_2026",
+          "extract_locator": "Energy and Thermal Efficiency, recommendation 6"
+        },
+        {
+          "source_id": "SRC-000001",
+          "execution_id": null,
+          "relation": "QUALIFIES",
+          "independence_group": "ASHRAE_TC_9_9_2021",
+          "extract_locator": "pages 16-17, future facility-water temperature constraints"
+        }
+      ]
     },
     {
       "id": "CLM-000003",
       "evidence_level": 2,
-      "statement": "Une solution d'immersion exige une vérification de compatibilité entre le fluide diélectrique, les matériaux, le matériel informatique et les garanties applicables."
+      "statement": "Une solution d'immersion exige une vérification de compatibilité entre le fluide diélectrique, les matériaux, le matériel informatique et les garanties applicables.",
+      "evidence": [
+        {
+          "source_id": "SRC-000001",
+          "execution_id": null,
+          "relation": "SUPPORTS",
+          "independence_group": "ASHRAE_TC_9_9_2021",
+          "extract_locator": "page 22, immersion deployment and service considerations"
+        },
+        {
+          "source_id": "SRC-000002",
+          "execution_id": null,
+          "relation": "SUPPORTS",
+          "independence_group": "ASHRAE_AI_FRAMEWORK_2026",
+          "extract_locator": "Energy and Thermal Efficiency, recommendation 6"
+        }
+      ]
     },
     {
       "id": "CLM-000004",
       "evidence_level": 2,
-      "statement": "L'évaluation doit couvrir le système thermique complet : boucles côté IT et bâtiment, CDU, pompes, vannes, rejet de chaleur, capteurs et contrôles."
+      "statement": "L'évaluation doit couvrir le système thermique complet : boucles côté IT et bâtiment, CDU, pompes, vannes, rejet de chaleur, capteurs et contrôles.",
+      "evidence": [
+        {
+          "source_id": "SRC-000002",
+          "execution_id": null,
+          "relation": "SUPPORTS",
+          "independence_group": "ASHRAE_AI_FRAMEWORK_2026",
+          "extract_locator": "Energy and Thermal Efficiency, TCS core elements"
+        }
+      ]
     },
     {
       "id": "CLM-000005",
       "evidence_level": 2,
-      "statement": "Dans certains serveurs denses refroidis par air, la puissance des ventilateurs peut représenter 10 à 20 % de la puissance totale du serveur."
+      "statement": "Dans certains serveurs denses refroidis par air, la puissance des ventilateurs peut représenter 10 à 20 % de la puissance totale du serveur.",
+      "evidence": [
+        {
+          "source_id": "SRC-000001",
+          "execution_id": null,
+          "relation": "SUPPORTS",
+          "independence_group": "ASHRAE_TC_9_9_2021",
+          "extract_locator": "page 13, fan power as percentage of server power"
+        }
+      ]
     },
     {
       "id": "CLM-000006",
       "evidence_level": 2,
-      "statement": "La part du refroidissement dans la consommation électrique totale varie fortement selon le type et l'efficacité du centre de données."
+      "statement": "La part du refroidissement dans la consommation électrique totale varie fortement selon le type et l'efficacité du centre de données.",
+      "evidence": [
+        {
+          "source_id": "SRC-000004",
+          "execution_id": null,
+          "relation": "SUPPORTS",
+          "independence_group": "IEA_ENERGY_AND_AI_2025",
+          "extract_locator": "Energy demand from AI, equipment breakdown"
+        }
+      ]
     },
     {
       "id": "CLM-000007",
       "evidence_level": 2,
-      "statement": "Le choix direct-to-chip doit intégrer les exigences d'interopérabilité des fluides, raccords, boucles et procédures de maintenance."
+      "statement": "Le choix direct-to-chip doit intégrer les exigences d'interopérabilité des fluides, raccords, boucles et procédures de maintenance.",
+      "evidence": [
+        {
+          "source_id": "SRC-000003",
+          "execution_id": null,
+          "relation": "SUPPORTS",
+          "independence_group": "OCP_COOLING_ENVIRONMENTS",
+          "extract_locator": "Cold Plate workstreams and accepted contributions"
+        }
+      ]
     }
   ],
   "sources": [

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 
 const checks=[
   ['dist/index.html',['RDX_CLIENT_REQUEST_V1','/api/v1/catalog.json','/privacy.html','/status.html','/api.html']],
-  ['dist/dossiers/RDX-000001.html',['RDX-000001','SOURCED_OR_DRAFT_PREVIEW_ONLY_NO_VERIFIED_DECISION_CLAIM','CLM-000001','SRC-000001']],
+  ['dist/dossiers/RDX-000001.html',['RDX-000001','SOURCED_OR_DRAFT_PREVIEW_ONLY_NO_VERIFIED_DECISION_CLAIM','Claims et preuves liées','CLM-000001','SUPPORTS','SRC-000001','Locator :']],
   ['dist/privacy.html',['RDX_CLIENT_REQUEST_V1','ne transmet pas cette demande à un serveur']],
   ['dist/status.html',['/api/v1/status.json','Déploiement production vérifié']],
   ['dist/api.html',['/api/v1/packs/RDX-000001.json','/api/v1/request-schema.json']],
