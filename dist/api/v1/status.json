@@ -1,0 +1,10 @@
+{
+  "service": "CEREBRON_RDX_EXCHANGE",
+  "status": "ONLINE",
+  "production_mode": "CONTROLLED_MANUAL",
+  "automatic_ai_execution": false,
+  "automatic_publication": false,
+  "payment_enabled": false,
+  "database_enabled": false,
+  "last_updated": "2026-09-25T13:27:00Z"
+}
