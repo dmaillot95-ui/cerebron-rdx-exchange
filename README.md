@@ -21,3 +21,7 @@ Le prototype peut être publié indépendamment sur Vercel depuis le dossier `di
 ## Contrôle IA
 
 Le socle de contrôle de Phase 1 est documenté dans `docs/AI_CONTROL_PLANE.md`. Le modèle PostgreSQL initial se trouve dans `schema/rdx-v1.sql`. Aucun agent, paiement ou fournisseur payant n'est déclenché automatiquement à ce stade.
+
+## Evidence Gate exécutable
+
+`node scripts/validate-rdx.mjs` contrôle les dossiers de `data/packs`. GitHub Actions exécute ce contrôle à chaque modification d'un dossier. Un brouillon peut rester incomplet ; une publication est refusée si les preuves, licences, audits, empreintes ou validations humaines obligatoires manquent.
