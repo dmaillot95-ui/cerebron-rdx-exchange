@@ -25,7 +25,7 @@
   </main>
   <footer class="footer"><div class="wrap footin"><span>© 2026 CÉRÉBRON R&D Exchange</span><span><a href="status.html">Statut</a> · <a href="api.html">API</a> · <a href="privacy.html">Confidentialité</a> · Prototype Phase 1</span></div></footer>
   <script>
-    const RDX_BASE=new URL('./',window.location.href); const rdxUrl=p=>new URL(String(p).replace(/^[/]+/,'')),RDX_BASE).href;
+    const RDX_BASE=new URL('./',window.location.href); const rdxUrl=p=>new URL(String(p).replace(/^[/]+/,''),RDX_BASE).href;
     const search=document.querySelector('#search'),filter=document.querySelector('#filter'),empty=document.querySelector('#empty'),cardsRoot=document.querySelector('#cards');
     let catalogCards=[];
     function catalogCategory(vertical){
