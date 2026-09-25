@@ -1,0 +1,70 @@
+{
+  "schema": "CEREBRON_RDX_EMAIL_HUMAN_GATEWAY_V1",
+  "date": "2026-09-25",
+  "mode": "HUMAN_IN_THE_LOOP",
+  "purpose": "Route inbound R&D requests to the owner by email while keeping final R&D transmission under explicit human control.",
+  "inbound": {
+    "channel": "EMAIL",
+    "destination_address": "UNCONFIGURED_OWNER_EMAIL",
+    "accepted_content": [
+      "R&D_REQUEST",
+      "TECHNICAL_QUESTION",
+      "PROJECT_BRIEF",
+      "ATTACHMENTS",
+      "FOLLOW_UP"
+    ],
+    "on_receive": [
+      "CREATE_RDX_REQUEST_ID",
+      "STORE_OR_REFERENCE_ORIGINAL_MESSAGE",
+      "HASH_ATTACHMENTS_WHEN_INGESTED",
+      "EXTRACT_REQUEST_WITHOUT_CHANGING_MEANING",
+      "QUEUE_FOR_HUMAN_AND_CEREBRON_REVIEW"
+    ],
+    "automatic_client_reply": false
+  },
+  "processing": {
+    "cerebron_may": [
+      "CLASSIFY_REQUEST",
+      "PREPARE_R&D",
+      "RUN_ALLOWED_EVIDENCE_GATES",
+      "BUILD_DELIVERABLE",
+      "PREPARE_EMAIL_DRAFT",
+      "PREPARE_ATTACHMENT_PACKAGE"
+    ],
+    "cerebron_must_not": [
+      "SEND_FINAL_R&D_TO_CLIENT",
+      "COMMIT_OWNER_TO_A_PRICE_OR_DEADLINE",
+      "CHANGE_CLIENT_SCOPE_WITHOUT_HUMAN_APPROVAL",
+      "DISCLOSE_PRIVATE_MEMORY_OR_OTHER_CLIENT_DATA"
+    ]
+  },
+  "outbound": {
+    "mode": "HUMAN_SEND_ONLY",
+    "automatic_send": false,
+    "automatic_forward": false,
+    "automatic_reply": false,
+    "draft_generation_allowed": true,
+    "final_sender": "OWNER",
+    "human_approval_required": true,
+    "release_sequence": [
+      "R&D_COMPLETE",
+      "EVIDENCE_AND_LIMITATIONS_ATTACHED",
+      "CLIENT_SCOPE_CHECK",
+      "HUMAN_REVIEW",
+      "HUMAN_SEND"
+    ]
+  },
+  "privacy": {
+    "client_private_data": "TENANT_SCOPED",
+    "shared_training_default": "DENY",
+    "secrets": "NEVER_TRAIN",
+    "cross_tenant_leakage": "DENY"
+  },
+  "training": {
+    "email_content_is_training_data_by_default": false,
+    "client_content_requires_explicit_rights_for_training": true,
+    "m6_training": "DENY"
+  },
+  "status": "POLICY_CONFIGURED_EMAIL_ADDRESS_NOT_YET_BOUND",
+  "claim_ceiling": "EMAIL_HUMAN_GATEWAY_POLICY_ONLY_NO_MAILBOX_CONNECTION_YET"
+}
