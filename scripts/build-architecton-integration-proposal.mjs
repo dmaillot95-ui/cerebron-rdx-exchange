@@ -3,6 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 
 const root='data/architecton/inbox';
+const canonicalObjectRegistryPath='data/architecton/object-registry.json';
 const outDir='artifacts';
 const outFile=path.join(outDir,'architecton-integration-proposal.json');
 
@@ -17,6 +18,8 @@ function sha256(v){return crypto.createHash('sha256').update(v).digest('hex')}
 
 const files=walk(root).filter(f=>/handoff.*\.json$/i.test(path.basename(f)) || /M0[1-6].*\.handoff\.json$/i.test(path.basename(f))).sort();
 const handoffs=[];
+const canonical=fs.existsSync(canonicalObjectRegistryPath)?JSON.parse(fs.readFileSync(canonicalObjectRegistryPath,'utf8')):{objects:{}};
+const canonicalIds=new Set(Object.keys(canonical.objects||{}));
 
 for(const file of files){
   const raw=fs.readFileSync(file,'utf8');
@@ -31,6 +34,7 @@ for(const file of files){
     produced_at:h.produced_at,
     producer_execution_ids:h.producer_execution_ids||[],
     object_ids:(h.objects||[]).map(o=>o.object_id),
+    collisions_with_canonical:(h.objects||[]).map(o=>o.object_id).filter(id=>canonicalIds.has(id)),
     object_count:(h.objects||[]).length,
     decision:h.decision??null
   });
@@ -45,6 +49,7 @@ const proposal={
   canonical_registry:'data/architecton/portfolio-40.json',
   handoff_count:handoffs.length,
   object_count:handoffs.reduce((n,h)=>n+h.object_count,0),
+  canonical_collision_count:handoffs.reduce((n,h)=>n+h.collisions_with_canonical.length,0),
   handoffs,
   required_human_actions:[
     'Review source and execution provenance.',
