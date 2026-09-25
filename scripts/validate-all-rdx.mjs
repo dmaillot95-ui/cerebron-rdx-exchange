@@ -22,6 +22,7 @@ const commands=[
   ['node',['scripts/validate-release-attestation.mjs']],
   ['node',['scripts/validate-production-human-review-contract.mjs']],
   ['node',['scripts/validate-production-human-review-workflow-contract.mjs']],
+  ['node',['scripts/validate-production-registry-pr-workflow-contract.mjs']],
   ['node',['scripts/validate-production-promotion.mjs']],
   ['node',['scripts/validate-production-fail-closed-negative.mjs']],
   ['node',['scripts/validate-human-review-pre-registry-negative.mjs']],

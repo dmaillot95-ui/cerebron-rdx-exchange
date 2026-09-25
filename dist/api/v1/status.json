@@ -8,7 +8,7 @@
   "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
-  "last_updated": "2026-09-25T20:52:00Z",
+  "last_updated": "2026-09-25T21:17:00Z",
   "architecton_40_registry": "/api/v1/architecton-40.json",
   "architecton_40_total": 40,
   "architecton_40_mode": "CONTROLLED_MANUAL",
@@ -146,5 +146,10 @@
   "signed_production_proof_registration_proposal_required": true,
   "signed_known_good_rollback_proposal_required": true,
   "live_promotion_chain_contract_enabled": true,
-  "live_promotion_chain_auto_apply": false
+  "live_promotion_chain_auto_apply": false,
+  "production_registry_review_workflow": ".github/workflows/rdx-production-human-review.yml",
+  "production_registry_pr_workflow": ".github/workflows/rdx-production-registry-pr.yml",
+  "production_registry_apply_mode": "MANUAL_SIGNED_ARTIFACTS_TO_PR_ONLY",
+  "production_registry_direct_main_write": false,
+  "production_registry_auto_merge": false
 }

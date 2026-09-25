@@ -1,0 +1,87 @@
+name: RDX Production Registry PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_review_run_id:
+        description: 'Successful RDX Production Human Review run with APPROVE decision'
+        required: true
+        type: string
+      operator_id:
+        description: 'Operator requesting the reviewed registry PR'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+  attestations: read
+
+jobs:
+  propose-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Download signed human review
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
+        run: gh run download "$SOURCE_REVIEW_RUN_ID" -n rdx-production-human-review -D artifacts/input/review
+      - name: Download signed registry update proposal
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
+        run: gh run download "$SOURCE_REVIEW_RUN_ID" -n rdx-production-registry-update-proposal -D artifacts/input/update
+      - name: Resolve review workflow source commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
+        run: echo "RDX_REVIEW_WORKFLOW_SHA=$(gh run view "$SOURCE_REVIEW_RUN_ID" --json headSha --jq .headSha)" >> "$GITHUB_ENV"
+      - name: Verify signed human review
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh attestation verify artifacts/input/review/rdx-production-human-review.json --repo "$GITHUB_REPOSITORY" --source-digest "$RDX_REVIEW_WORKFLOW_SHA"
+      - name: Verify signed registry update proposal
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh attestation verify artifacts/input/update/rdx-production-registry-update-proposal.json --repo "$GITHUB_REPOSITORY" --source-digest "$RDX_REVIEW_WORKFLOW_SHA"
+      - name: Apply reviewed proposal to worktree only
+        env:
+          RDX_SIGNED_HUMAN_REVIEW_VERIFIED: 'true'
+          RDX_SIGNED_REGISTRY_UPDATE_PROPOSAL_VERIFIED: 'true'
+          RDX_APPLY_REGISTRY_PROPOSAL: 'true'
+        run: node scripts/apply-production-registry-update-proposal.mjs
+      - name: Validate fail-closed production registry
+        run: node scripts/validate-production-promotion.mjs
+      - name: Ensure only production registry changed
+        run: |
+          test "$(git status --porcelain | wc -l)" -eq 1
+          git status --porcelain | grep -q "data/deployments/production-proof-registry.json"
+      - name: Commit reviewed registry change to PR branch
+        id: commit
+        env:
+          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
+          OPERATOR_ID: ${{ inputs.operator_id }}
+        run: |
+          BRANCH="review/rdx-production-proof-${SOURCE_REVIEW_RUN_ID}-${GITHUB_RUN_ID}"
+          git config user.name "cerebron-rdx-review-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add data/deployments/production-proof-registry.json
+          git commit -m "review: register approved RDX production proof"
+          git push origin "$BRANCH"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+      - name: Open review PR without auto-merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.commit.outputs.branch }}
+          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
+          OPERATOR_ID: ${{ inputs.operator_id }}
+        run: |
+          gh pr create --base main --head "$BRANCH"             --title "Register reviewed RDX production proof"             --body "Manual reviewed production-proof registry proposal. Source review run: $SOURCE_REVIEW_RUN_ID. Operator: $OPERATOR_ID. No auto-merge; normal PR checks and human review remain required."
