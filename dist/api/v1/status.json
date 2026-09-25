@@ -8,9 +8,15 @@
   "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
-  "last_updated": "2026-09-25T13:55:00Z",
+  "last_updated": "2026-09-25T14:22:00Z",
   "architecton_40_registry": "/api/v1/architecton-40.json",
   "architecton_40_total": 40,
   "architecton_40_mode": "CONTROLLED_MANUAL",
-  "architecton_40_automatic_execution": false
+  "architecton_40_automatic_execution": false,
+  "architecton_registry_gate_enabled": true,
+  "architecton_registry_gate_workflow": ".github/workflows/architecton-registry-gate.yml",
+  "architecton_ingest_contract": "docs/ARCHITECTON_RDX_INGEST_CONTRACT.md",
+  "architecton_rd_relay": "docs/RELAY_RD_EXECUTION_PLANE.md",
+  "architecton_handoff_template": "templates/architecton-rd-handoff-v1.json",
+  "architecton_freeze_template": "templates/architecton-pre-rd-freeze-v1.json"
 }
