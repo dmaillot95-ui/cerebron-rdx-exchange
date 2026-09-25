@@ -1,0 +1,30 @@
+name: RDX Public Pack Projection Gate
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/packs/**'
+      - 'scripts/build-rdx-public-packs.mjs'
+      - 'dist/api/v1/packs/**'
+      - 'dist/dossiers/**'
+      - '.github/workflows/rdx-public-pack-projection.yml'
+  pull_request:
+    paths:
+      - 'data/packs/**'
+      - 'scripts/build-rdx-public-packs.mjs'
+      - 'dist/api/v1/packs/**'
+      - 'dist/dossiers/**'
+permissions:
+  contents: read
+jobs:
+  projection:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/build-rdx-public-packs.mjs
+      - run: git diff --exit-code -- dist/api/v1/packs dist/dossiers
+      - run: node scripts/validate-rdx.mjs
+      - run: node scripts/validate-deployment-readiness.mjs

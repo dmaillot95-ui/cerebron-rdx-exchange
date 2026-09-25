@@ -3,6 +3,8 @@ import fs from 'node:fs';
 const required=[
   'dist/index.html',
   'dist/api/v1/status.json',
+  'dist/api/v1/packs/RDX-000001.json',
+  'dist/dossiers/RDX-000001.html',
   'dist/api/v1/architecton-40.json',
   'dist/api/v1/architecton-missions.json',
   'dist/api/v1/architecton-wave-01.json',
@@ -59,7 +61,7 @@ if(fs.existsSync('dist/api/v1/status.json')){
 
 if(fs.existsSync('dist/index.html')){
   const html=fs.readFileSync('dist/index.html','utf8');
-  for(const marker of ['ARCHITECTON Ω','architectonWaveFilter','/api/v1/architecton-missions.json','/api/v1/architecton-pipeline.json']){
+  for(const marker of ['ARCHITECTON Ω','architectonWaveFilter','/api/v1/architecton-missions.json','/api/v1/architecton-pipeline.json','/dossiers/RDX-000001.html']){
     if(!html.includes(marker)) fail(`dist/index.html missing marker: ${marker}`);
   }
 }

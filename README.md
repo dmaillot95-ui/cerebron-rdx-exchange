@@ -60,3 +60,12 @@ Les niveaux de preuve ARCHITECTON `E0→E8` sont distincts du champ RDX `evidenc
 - `/api/v1/architecton-wave-01.json`
 - `/api/v1/architecton-pipeline.json`
 - `/api/v1/status.json`
+
+## Fiches publiques RDX
+
+Les packs canoniques de `data/packs` sont projetés vers des vues publiques minimales par `scripts/build-rdx-public-packs.mjs`.
+
+- `/api/v1/packs/RDX-000001.json`
+- `/dossiers/RDX-000001.html`
+
+Une fiche `SOURCED` reste explicitement non vérifiée et non publiée. La projection n'élève jamais le niveau de preuve du pack source.

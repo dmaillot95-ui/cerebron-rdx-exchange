@@ -1,6 +1,6 @@
 {
-  "schema_version": "RDX-API-1.0",
-  "generated_at": "2026-09-25T13:27:00Z",
+  "schema_version": "RDX-API-1.1",
+  "generated_at": "2026-09-25T17:00:00Z",
   "production_mode": "CONTROLLED_MANUAL",
   "automatic_ai_execution": false,
   "packs": [
@@ -8,9 +8,11 @@
       "id": "RDX-000001",
       "title": "Direct-to-chip ou immersion à forte densité ?",
       "vertical": "data_center_cooling",
-      "status": "DRAFT",
+      "status": "SOURCED",
       "access_class": "PREVIEW",
-      "evidence_summary": "E0_UNPUBLISHED",
+      "evidence_summary": "E2_SOURCE_LINKED_NOT_VERIFIED",
+      "detail_url": "/dossiers/RDX-000001.html",
+      "api_url": "/api/v1/packs/RDX-000001.json",
       "price_test_eur": 249
     },
     {
