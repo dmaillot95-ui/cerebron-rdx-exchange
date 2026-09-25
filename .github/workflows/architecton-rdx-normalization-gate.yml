@@ -1,0 +1,38 @@
+name: ARCHITECTON RDX Normalization Gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/architecton/normalization/**'
+      - 'data/architecton/object-registry.json'
+      - 'config/architecton-rdx-normalization.json'
+      - 'config/evidence-semantics-bridge.json'
+      - 'templates/architecton-rdx-normalization-v1.json'
+      - 'scripts/validate-architecton-rdx-normalization.mjs'
+      - '.github/workflows/architecton-rdx-normalization-gate.yml'
+  pull_request:
+    paths:
+      - 'data/architecton/normalization/**'
+      - 'data/architecton/object-registry.json'
+      - 'config/architecton-rdx-normalization.json'
+      - 'config/evidence-semantics-bridge.json'
+      - 'templates/architecton-rdx-normalization-v1.json'
+      - 'scripts/validate-architecton-rdx-normalization.mjs'
+      - '.github/workflows/architecton-rdx-normalization-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate ARCHITECTON to RDX normalization
+        run: node scripts/validate-architecton-rdx-normalization.mjs
