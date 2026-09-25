@@ -1,0 +1,32 @@
+name: RDX Evidence Gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/packs/**'
+      - 'scripts/validate-rdx.mjs'
+      - '.github/workflows/rdx-evidence-gate.yml'
+  pull_request:
+    paths:
+      - 'data/packs/**'
+      - 'scripts/validate-rdx.mjs'
+      - '.github/workflows/rdx-evidence-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate all RDX packs
+        run: node scripts/validate-rdx.mjs
