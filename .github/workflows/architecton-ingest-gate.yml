@@ -1,0 +1,32 @@
+name: ARCHITECTON Ingest Gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/architecton/inbox/**'
+      - 'schema/architecton-rd-handoff-v1.schema.json'
+      - 'scripts/validate-architecton-ingest.mjs'
+      - '.github/workflows/architecton-ingest-gate.yml'
+  pull_request:
+    paths:
+      - 'data/architecton/inbox/**'
+      - 'schema/architecton-rd-handoff-v1.schema.json'
+      - 'scripts/validate-architecton-ingest.mjs'
+      - '.github/workflows/architecton-ingest-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate R&D handoffs
+        run: node scripts/validate-architecton-ingest.mjs
