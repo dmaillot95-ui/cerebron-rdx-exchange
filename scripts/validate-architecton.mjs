@@ -153,7 +153,9 @@ for (const file of missionFiles) {
   const id = m.souche_id || 'S??';
   if (m.schema_version !== 'ARCHITECTON-M01-MISSION-1.0') fail(`${file}: unexpected schema_version`);
   if (!ids.has(id)) fail(`${file}: unknown souche_id ${id}`);
-  if (m.wave !== 'WAVE-01') fail(`${file}: current M01 work orders are limited to WAVE-01`);
+  if (!/^WAVE-0[1-8]$/.test(m.wave || '')) fail(`${file}: invalid wave ${m.wave}`);
+  const expectedWave = Object.entries(registry.waves || {}).find(([,members]) => (members || []).includes(id))?.[0];
+  if (expectedWave && m.wave !== expectedWave) fail(`${file}: wave ${m.wave} does not match canonical ${expectedWave}`);
   if (m.phase !== 'M01') fail(`${file}: phase must be M01`);
   if (m.mission_status !== 'READY_TO_ASSIGN') fail(`${file}: mission_status must be READY_TO_ASSIGN, not an execution claim`);
   if (m.registry_status_required_before_execution !== 'QUEUED') fail(`${file}: must require QUEUED before execution`);
@@ -172,10 +174,11 @@ for (const file of missionFiles) {
   }
 }
 
-const wave01Expected = new Set(['S01','S02','S03','S04','S05']);
-const wave01Found = new Set(missionFiles.map(f => path.basename(f).slice(0,3)));
-for (const id of wave01Expected) if (!wave01Found.has(id)) fail(`WAVE-01: missing M01 work order for ${id}`);
-for (const id of wave01Found) if (!wave01Expected.has(id)) fail(`WAVE-01: unexpected M01 work order for ${id}`);
+const missionSoucheIds = missionFiles.map(f => path.basename(f).slice(0,3));
+const foundMissionIds = new Set(missionSoucheIds);
+if (foundMissionIds.size !== missionSoucheIds.length) fail('M01 work orders: duplicate souche mission file detected');
+for (const id of foundMissionIds) if (!ids.has(id)) fail(`M01 work orders: unexpected souche ${id}`);
+for (const id of ['S01','S02','S03','S04','S05']) if (!foundMissionIds.has(id)) fail(`WAVE-01: missing M01 work order for ${id}`);
 
 warnings.forEach(w => console.warn(`WARN ${w}`));
 errors.forEach(e => console.error(`FAIL ${e}`));
@@ -187,5 +190,5 @@ if (errors.length) {
 
 console.log('PASS portfolio-40.json');
 console.log('PASS architecton-40-plan.json');
-console.log(`PASS WAVE-01 M01 work orders (${missionFiles.length})`);
+console.log(`PASS M01 work orders (${missionFiles.length})`);
 console.log('ARCHITECTON Registry Gate: PASS');
