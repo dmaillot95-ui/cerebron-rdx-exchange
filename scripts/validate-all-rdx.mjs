@@ -1,0 +1,23 @@
+import { spawnSync } from 'node:child_process';
+
+const commands=[
+  ['node',['scripts/validate-architecton.mjs']],
+  ['node',['scripts/validate-architecton-ingest.mjs']],
+  ['node',['scripts/validate-architecton-integration-log.mjs']],
+  ['node',['scripts/build-architecton-public-projections.mjs','--check']],
+  ['node',['scripts/build-architecton-pipeline-status.mjs','--check']],
+  ['node',['scripts/validate-architecton-f01-f08.mjs']],
+  ['node',['scripts/validate-architecton-rdx-normalization.mjs']],
+  ['node',['scripts/validate-rdx.mjs']],
+  ['node',['scripts/validate-deployment-readiness.mjs']]
+];
+
+for(const [cmd,args] of commands){
+  console.log('\n=== '+cmd+' '+args.join(' ')+' ===');
+  const r=spawnSync(cmd,args,{stdio:'inherit'});
+  if(r.status!==0){
+    console.error('\nCEREBRON RDX full validation: FAIL');
+    process.exit(r.status??1);
+  }
+}
+console.log('\nCEREBRON RDX full validation: PASS');
