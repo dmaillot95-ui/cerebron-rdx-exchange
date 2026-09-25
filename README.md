@@ -82,3 +82,9 @@ Le formulaire public produit localement un objet `RDX_CLIENT_REQUEST_V1` téléc
 ## Catalogue dynamique
 
 La page d'accueil et `/dossiers/` lisent `/api/v1/catalog.json`. Les futurs packs publics peuvent donc apparaître dans le site sans duplication manuelle de cartes HTML.
+
+## GitHub Pages activation
+
+The public bundle passes full validation and uploads successfully to the GitHub Pages artifact. The remaining deployment blocker is repository-level Pages enablement. The repository owner must enable **Settings → Pages → Build and deployment → Source: GitHub Actions** once. The workflow cannot create the Pages site with its own GITHUB_TOKEN because GitHub rejects that operation as `Resource not accessible by integration`.
+
+Latest deployment attempt: run `36170056517` — validation PASS, artifact upload PASS, site enablement blocked by repository permission.
