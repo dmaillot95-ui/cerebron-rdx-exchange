@@ -93,4 +93,6 @@ Latest deployment attempt: run `36170056517` — validation PASS, artifact uploa
 
 Every deployable public bundle now generates a deterministic `RDX_RELEASE_MANIFEST_V1` using SHA-256 for every public file plus an aggregate SHA-256. The manifest is generated during validation/deployment and is included at `api/v1/release-manifest.json` in the deployment artifact.
 
-After a real GitHub Pages deployment, `scripts/verify-live-deployment.mjs` verifies the public index, status API, catalogue, RDX-000001 projection and release manifest. A successful live verification produces the artifact `rdx-production-deployment-proof` using schema `RDX_PRODUCTION_DEPLOYMENT_PROOF_V1`.
+After a real GitHub Pages deployment, `scripts/verify-live-deployment.mjs` verifies the public index, status API, catalogue, RDX-000001 projection and release manifest. A successful live verification produces the artifact `rdx-production-deployment-proof` using schema `RDX_PRODUCTION_DEPLOYMENT_PROOF_V2`.
+
+The live deployment proof now verifies every file served by the deployed site against the release manifest (byte length + SHA-256) and reconstructs the aggregate SHA-256 before returning PASS.
