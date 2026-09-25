@@ -15,13 +15,13 @@ const htmlFiles=walk('dist').filter(f=>f.endsWith('.html')).sort();
 const errors=[];
 for(const file of htmlFiles){
   const body=fs.readFileSync(file,'utf8');
-  const cspMatch=body.match(/<meta\s+http-equiv=["']Content-Security-Policy["']\s+content=["']([^"']+)["']\s*\/?>(?:<\/meta>)?/i);
+  const cspMatch=body.match(/<meta\s+http-equiv="Content-Security-Policy"\s+content="([^"]+)"\s*\/?>(?:<\/meta>)?/i);
   if(!cspMatch){errors.push(file+' missing CSP meta');continue}
   const policy=cspMatch[1];
   for(const directive of ["default-src 'self'","style-src 'self' 'unsafe-inline'","script-src 'self' 'unsafe-inline'","img-src 'self' data:","connect-src 'self'","object-src 'none'","base-uri 'self'","form-action 'self'"]){
     if(!policy.includes(directive)) errors.push(file+' CSP missing '+directive);
   }
-  const ref=body.match(/<meta\s+name=["']referrer["']\s+content=["']([^"']+)["']\s*\/?>(?:<\/meta>)?/i)?.[1];
+  const ref=body.match(/<meta\s+name="referrer"\s+content="([^"]+)"\s*\/?>(?:<\/meta>)?/i)?.[1];
   if(ref!==requiredReferrer) errors.push(file+' referrer policy mismatch');
 }
 if(fs.existsSync('vercel.json')){
