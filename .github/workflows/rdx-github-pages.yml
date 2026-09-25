@@ -6,8 +6,12 @@ on:
     paths:
       - 'dist/**'
       - 'data/packs/**'
-      - 'scripts/validate-*.mjs'
-      - 'scripts/build-rdx-public-packs.mjs'
+      - 'data/architecton/**'
+      - 'data/deployments/**'
+      - 'config/**'
+      - 'schema/**'
+      - 'templates/**'
+      - 'scripts/**'
       - 'vercel.json'
       - '.github/workflows/rdx-github-pages.yml'
   workflow_dispatch:
