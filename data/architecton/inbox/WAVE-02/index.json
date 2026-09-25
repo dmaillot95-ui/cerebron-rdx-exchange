@@ -1,0 +1,61 @@
+{
+  "schema_version": "ARCHITECTON-INGEST-INBOX-1.0",
+  "wave": "WAVE-02",
+  "status": "OPEN_FOR_HANDOFFS",
+  "canonical_registry": "data/architecton/portfolio-40.json",
+  "ingest_contract": "docs/ARCHITECTON_RDX_INGEST_CONTRACT.md",
+  "handoff_template": "templates/architecton-rd-handoff-v1.json",
+  "rules": [
+    "Inbox content is not canonical until validated and integrated.",
+    "Do not overwrite an existing handoff.",
+    "A handoff without EXEC trace cannot credit a farm/model/agent.",
+    "RDX integration must preserve raw artifacts and provenance."
+  ],
+  "slots": [
+    {
+      "souche_id": "S06",
+      "expected_phase": "M01",
+      "status": "EMPTY",
+      "received_handoffs": [],
+      "integrated_object_ids": [],
+      "last_received_at": null,
+      "last_integrated_at": null
+    },
+    {
+      "souche_id": "S07",
+      "expected_phase": "M01",
+      "status": "EMPTY",
+      "received_handoffs": [],
+      "integrated_object_ids": [],
+      "last_received_at": null,
+      "last_integrated_at": null
+    },
+    {
+      "souche_id": "S08",
+      "expected_phase": "M01",
+      "status": "EMPTY",
+      "received_handoffs": [],
+      "integrated_object_ids": [],
+      "last_received_at": null,
+      "last_integrated_at": null
+    },
+    {
+      "souche_id": "S09",
+      "expected_phase": "M01",
+      "status": "EMPTY",
+      "received_handoffs": [],
+      "integrated_object_ids": [],
+      "last_received_at": null,
+      "last_integrated_at": null
+    },
+    {
+      "souche_id": "S10",
+      "expected_phase": "M01",
+      "status": "EMPTY",
+      "received_handoffs": [],
+      "integrated_object_ids": [],
+      "last_received_at": null,
+      "last_integrated_at": null
+    }
+  ]
+}
