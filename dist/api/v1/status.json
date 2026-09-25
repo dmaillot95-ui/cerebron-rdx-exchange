@@ -8,7 +8,7 @@
   "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
-  "last_updated": "2026-09-25T15:01:00Z",
+  "last_updated": "2026-09-25T15:02:00Z",
   "architecton_40_registry": "/api/v1/architecton-40.json",
   "architecton_40_total": 40,
   "architecton_40_mode": "CONTROLLED_MANUAL",
@@ -51,5 +51,7 @@
   "architecton_f01_f08_gate_workflow": ".github/workflows/architecton-f01-f08-gate.yml",
   "architecton_f01_f08_template": "templates/architecton-f01-f08-package-v1.json",
   "architecton_f01_f08_auto_start": false,
-  "architecton_f01_f08_verified_run": false
+  "architecton_f01_f08_verified_run": true,
+  "architecton_f01_f08_verified_run_id": 36151283439,
+  "architecton_wave_selector_enabled": true
 }
