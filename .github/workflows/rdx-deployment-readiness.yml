@@ -8,7 +8,7 @@ on:
       - 'vercel.json'
       - 'scripts/validate-deployment-readiness.mjs'
       - 'scripts/validate-hosting-portability.mjs'
-      - 'scripts/validate-hosting-portability.mjs'
+      - 'scripts/validate-static-security.mjs'
       - '.github/workflows/rdx-deployment-readiness.yml'
   pull_request:
     paths:
@@ -34,3 +34,5 @@ jobs:
         run: node scripts/validate-deployment-readiness.mjs
       - name: Validate hosting portability
         run: node scripts/validate-hosting-portability.mjs
+      - name: Validate static security policy
+        run: node scripts/validate-static-security.mjs
