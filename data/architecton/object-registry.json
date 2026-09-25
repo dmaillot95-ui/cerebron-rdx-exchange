@@ -1,0 +1,41 @@
+{
+  "schema_version": "ARCHITECTON-OBJECT-REGISTRY-1.0",
+  "mode": "CONTROLLED_MANUAL",
+  "updated_at": "2026-09-25",
+  "canonical": true,
+  "auto_ingest": false,
+  "auto_publish": false,
+  "object_count": 0,
+  "by_type": {
+    "SRC": 0,
+    "REQ": 0,
+    "UNK": 0,
+    "DAT": 0,
+    "FORMULA": 0,
+    "CALC": 0,
+    "ARCH": 0,
+    "RISK": 0,
+    "FAIL": 0,
+    "MODEL": 0,
+    "SIM": 0,
+    "RESULT": 0,
+    "CONCEPT": 0,
+    "IP": 0,
+    "CLAIM": 0,
+    "TEST": 0,
+    "CTR": 0,
+    "ALT": 0,
+    "LIM": 0,
+    "DEC": 0,
+    "EXEC": 0
+  },
+  "objects": {},
+  "rules": [
+    "Every canonical object ID is unique across all 40 souches.",
+    "A handoff is not canonical until explicitly integrated.",
+    "Raw handoffs and provenance are preserved.",
+    "Canonical objects may reference multiple souches without duplication.",
+    "No automatic evidence inflation.",
+    "No automatic publication."
+  ]
+}
