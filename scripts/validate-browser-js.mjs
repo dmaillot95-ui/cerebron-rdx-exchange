@@ -4,6 +4,7 @@ import vm from 'node:vm';
 const htmlFiles=[
   'dist/index.html',
   'dist/status.html',
+  'dist/verify.html',
   'dist/dossiers/index.html'
 ];
 
