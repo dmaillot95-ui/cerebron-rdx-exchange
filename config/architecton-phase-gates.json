@@ -1,0 +1,175 @@
+{
+  "schema_version": "ARCHITECTON-PHASE-GATES-1.0",
+  "mode": "PROPOSAL_ONLY",
+  "auto_advance": false,
+  "phases": [
+    {
+      "id": "M01",
+      "name": "CADRAGE_TOTAL",
+      "next": "M02",
+      "entry": [
+        "canonical souche status QUEUED or PRE_RND_ACTIVE",
+        "M01 work order exists"
+      ],
+      "required_outputs": [
+        "IDENTITY",
+        "INDUSTRIAL_PROBLEM",
+        "MISSION_AND_SCOPE",
+        "INITIAL_REQUIREMENTS",
+        "INITIAL_MAJOR_CLAIMS_3_TO_7",
+        "INITIAL_UNKNOWN_BANK",
+        "INITIAL_RISK_REGISTER",
+        "PRIORITY_RD_QUESTIONS_MAX_20",
+        "DECISION"
+      ],
+      "required_types": [
+        "REQ",
+        "UNK",
+        "RISK",
+        "CLAIM",
+        "DEC"
+      ],
+      "exit": "approved integration-log entry for M01"
+    },
+    {
+      "id": "M02",
+      "name": "ETAT_ART_SOURCES_BENCHMARK_PRIOR_ART",
+      "next": "M03",
+      "entry": [
+        "approved M01 integration"
+      ],
+      "required_outputs": [
+        "SOURCE_REGISTER",
+        "BENCHMARK",
+        "PRIOR_ART_MAP",
+        "BEST_IN_CLASS",
+        "LIMITATIONS",
+        "FAILURES",
+        "OPEN_PROBLEMS",
+        "DIFFERENTIATION_GAP",
+        "DECISION"
+      ],
+      "required_types": [
+        "SRC",
+        "CLAIM",
+        "CTR",
+        "ALT",
+        "DEC"
+      ],
+      "exit": "approved integration-log entry for M02"
+    },
+    {
+      "id": "M03",
+      "name": "ARCHITECTURES_INTERFACES_FAILURE_MODES",
+      "next": "M04",
+      "entry": [
+        "approved M02 integration"
+      ],
+      "required_outputs": [
+        "ARCH_A",
+        "ARCH_B",
+        "ARCH_C_IF_USEFUL",
+        "INTERFACE_MATRIX",
+        "TRADE_OFF",
+        "FAILURE_REGISTER",
+        "PRELIMINARY_FMEA",
+        "ARCH_DECISION"
+      ],
+      "required_types": [
+        "ARCH",
+        "FAIL",
+        "RISK",
+        "ALT",
+        "DEC"
+      ],
+      "exit": "approved integration-log entry for M03"
+    },
+    {
+      "id": "M04",
+      "name": "DATA_PHYSIQUE_FORMULES_CALCULS",
+      "next": "M05",
+      "entry": [
+        "approved M03 integration"
+      ],
+      "required_outputs": [
+        "DATA_REGISTER",
+        "FORMULA_REGISTER",
+        "EXECUTED_CALCULATIONS",
+        "UNCERTAINTIES",
+        "SENSITIVITIES",
+        "CROSS_CHECKS",
+        "BOTTLENECKS",
+        "EVIDENCE_UPDATE"
+      ],
+      "required_types": [
+        "DAT",
+        "FORMULA",
+        "CALC",
+        "CLAIM",
+        "CTR",
+        "LIM",
+        "DEC"
+      ],
+      "exit": "approved integration-log entry for M04"
+    },
+    {
+      "id": "M05",
+      "name": "MODELES_SIMULATIONS_CONCEPTS_IP_TESTS",
+      "next": "M06",
+      "entry": [
+        "approved M04 integration"
+      ],
+      "required_outputs": [
+        "MODEL_REGISTER",
+        "EXECUTED_SIMULATIONS",
+        "SIMULATIONS_TO_DO",
+        "CONCEPTS_3_TO_8_IF_JUSTIFIED",
+        "IP_CANDIDATES_1_TO_5_IF_JUSTIFIED",
+        "TEST_PLAN",
+        "MVD"
+      ],
+      "required_types": [
+        "MODEL",
+        "SIM",
+        "CONCEPT",
+        "IP",
+        "TEST",
+        "CLAIM",
+        "RISK",
+        "DEC"
+      ],
+      "exit": "approved integration-log entry for M05"
+    },
+    {
+      "id": "M06",
+      "name": "RED_TEAM_AUDIT_FREEZE",
+      "next": "F01_F08",
+      "entry": [
+        "approved M05 integration"
+      ],
+      "required_outputs": [
+        "RED_TEAM",
+        "COUNTER_AUDIT",
+        "ERRORS_AND_OVERCLAIMS",
+        "PRE_RD_FREEZE_PACKAGE",
+        "FINAL_PRE_RD_DECISION"
+      ],
+      "required_types": [
+        "CTR",
+        "LIM",
+        "RISK",
+        "CLAIM",
+        "TEST",
+        "DEC"
+      ],
+      "exit": "approved integration-log entry for M06 plus freeze package; only then candidate READY_FOR_F01_F08"
+    }
+  ],
+  "hard_rules": [
+    "No phase advancement from a mere submitted handoff.",
+    "Only an APPROVED integration decision can unlock the next phase proposal.",
+    "Phase proposal never modifies canonical registry.",
+    "M06 approval does not mean technology VERIFIED.",
+    "F01→F08 remains a separate synthesis stage."
+  ]
+}
