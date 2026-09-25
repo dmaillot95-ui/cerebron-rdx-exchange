@@ -32,6 +32,11 @@ if(fs.existsSync('vercel.json')){
     if(v.outputDirectory!=='dist') fail('vercel.json outputDirectory must be dist');
     if(v.cleanUrls!==true) warn('vercel.json cleanUrls is not true');
     if(v.trailingSlash!==false) warn('vercel.json trailingSlash is not false');
+    const globalHeaders=(v.headers||[]).find(h=>h.source==='/(.*)')?.headers||[];
+    const keys=new Set(globalHeaders.map(h=>h.key));
+    for(const key of ['Content-Security-Policy','X-Content-Type-Options','X-Frame-Options','Referrer-Policy','Permissions-Policy']){
+      if(!keys.has(key)) fail('vercel.json missing security header '+key);
+    }
   }catch(e){fail('invalid vercel.json: '+e.message)}
 }
 

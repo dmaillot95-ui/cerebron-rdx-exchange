@@ -30,3 +30,10 @@ if(errors.length){
   process.exit(1);
 }
 console.log('RDX Site Contract: PASS');
+
+const vercel=JSON.parse(fs.readFileSync('vercel.json','utf8'));
+const globalHeaders=(vercel.headers||[]).find(h=>h.source==='/(.*)')?.headers||[];
+const csp=globalHeaders.find(h=>h.key==='Content-Security-Policy')?.value||'';
+for(const directive of ["default-src 'self'","connect-src 'self'","object-src 'none'","frame-ancestors 'none'"]){
+  if(!csp.includes(directive)) errors.push('CSP missing '+directive);
+}
