@@ -1,6 +1,7 @@
 import { spawnSync } from 'node:child_process';
 
 const commands=[
+  ['node',['scripts/validate-source-checkout.mjs']],
   ['node',['scripts/build-architecton-public-projections.mjs']],
   ['node',['scripts/build-architecton-pipeline-status.mjs']],
   ['node',['scripts/build-rdx-public-packs.mjs']],

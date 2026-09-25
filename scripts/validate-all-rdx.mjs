@@ -1,6 +1,7 @@
 import { spawnSync } from 'node:child_process';
 
 const commands=[
+  ['node',['scripts/validate-source-checkout.mjs']],
   ['node',['scripts/validate-architecton.mjs']],
   ['node',['scripts/validate-architecton-ingest.mjs']],
   ['node',['scripts/validate-architecton-integration-log.mjs']],
