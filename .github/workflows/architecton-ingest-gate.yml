@@ -8,6 +8,8 @@ on:
       - 'schema/architecton-rd-handoff-v1.schema.json'
       - 'scripts/validate-architecton-ingest.mjs'
       - 'scripts/build-architecton-integration-proposal.mjs'
+      - 'scripts/build-architecton-phase-advance-proposal.mjs'
+      - 'config/architecton-phase-gates.json'
       - '.github/workflows/architecton-ingest-gate.yml'
   pull_request:
     paths:
@@ -38,5 +40,14 @@ jobs:
         with:
           name: architecton-integration-proposal
           path: artifacts/architecton-integration-proposal.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Build phase advance proposal
+        run: node scripts/build-architecton-phase-advance-proposal.mjs
+      - name: Upload phase advance proposal
+        uses: actions/upload-artifact@v4
+        with:
+          name: architecton-phase-advance-proposal
+          path: artifacts/architecton-phase-advance-proposal.json
           if-no-files-found: error
           retention-days: 14
