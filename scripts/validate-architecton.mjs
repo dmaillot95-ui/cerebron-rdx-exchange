@@ -1,24 +1,36 @@
 import fs from 'node:fs';
+import path from 'node:path';
 
-const path = 'data/architecton/portfolio-40.json';
+const registryPath = 'data/architecton/portfolio-40.json';
+const missionPlanPath = 'data/architecton/missions/architecton-40-plan.json';
+const missionsRoot = 'data/architecton/missions';
 const errors = [];
 const warnings = [];
 
 function fail(msg) { errors.push(msg); }
 function warn(msg) { warnings.push(msg); }
+function readJson(file) {
+  try { return JSON.parse(fs.readFileSync(file, 'utf8')); }
+  catch (error) { fail(`${file}: invalid JSON: ${error.message}`); return null; }
+}
+function walk(dir) {
+  if (!fs.existsSync(dir)) return [];
+  const out = [];
+  for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, ent.name);
+    if (ent.isDirectory()) out.push(...walk(p));
+    else out.push(p);
+  }
+  return out;
+}
 
-if (!fs.existsSync(path)) {
-  console.error(`ARCHITECTON Registry Gate: FAIL (missing ${path})`);
+if (!fs.existsSync(registryPath)) {
+  console.error(`ARCHITECTON Registry Gate: FAIL (missing ${registryPath})`);
   process.exit(1);
 }
 
-let registry;
-try {
-  registry = JSON.parse(fs.readFileSync(path, 'utf8'));
-} catch (error) {
-  console.error(`ARCHITECTON Registry Gate: FAIL (invalid JSON: ${error.message})`);
-  process.exit(1);
-}
+const registry = readJson(registryPath);
+if (!registry) process.exit(1);
 
 const souches = Array.isArray(registry.souches) ? registry.souches : [];
 const allowedStatuses = new Set(registry.allowed_statuses || []);
@@ -98,6 +110,73 @@ for (const [id, deps] of Object.entries(registry.cross_souche_dependencies || {}
   }
 }
 
+// Mission queue integrity.
+if (!fs.existsSync(missionPlanPath)) {
+  fail(`missing ${missionPlanPath}`);
+} else {
+  const plan = readJson(missionPlanPath);
+  if (plan) {
+    if (plan.schema_version !== 'ARCHITECTON-40-MISSION-PLAN-1.0') fail('mission plan: unexpected schema_version');
+    if (plan.status !== 'PLANNED') fail('mission plan: global status must remain PLANNED until verified executions exist');
+    if (plan.automatic_start !== false) fail('mission plan: automatic_start must be false');
+    if (plan.automatic_spending !== false) fail('mission plan: automatic_spending must be false');
+    if (plan.automatic_publication !== false) fail('mission plan: automatic_publication must be false');
+    if (!Array.isArray(plan.waves) || plan.waves.length !== 8) fail('mission plan: expected 8 waves');
+
+    const plannedIds = new Set();
+    for (const wave of plan.waves || []) {
+      if (!/^WAVE-0[1-8]$/.test(wave.wave || '')) fail(`mission plan: invalid wave ${wave.wave}`);
+      if (wave.status !== 'PLANNED') fail(`${wave.wave}: wave must remain PLANNED until execution is registered`);
+      if (wave.parallelism_target !== 5) warn(`${wave.wave}: parallelism_target differs from 5`);
+      if (!Array.isArray(wave.souches) || wave.souches.length !== 5) fail(`${wave.wave}: expected 5 planned souches`);
+      for (const m of wave.souches || []) {
+        if (!ids.has(m.id)) fail(`${wave.wave}: unknown planned souche ${m.id}`);
+        if (plannedIds.has(m.id)) fail(`mission plan: duplicate planned souche ${m.id}`);
+        plannedIds.add(m.id);
+        if (m.registry_status !== 'QUEUED') fail(`${m.id}: planned mission cannot override registry QUEUED state`);
+        if (m.next_phase !== 'M01') fail(`${m.id}: initial next_phase must be M01`);
+        if (m.mission_status !== 'PLANNED') fail(`${m.id}: initial mission_status must be PLANNED`);
+      }
+    }
+    if (plannedIds.size !== 40) fail(`mission plan: expected 40 unique souches, found ${plannedIds.size}`);
+  }
+}
+
+// Per-souche M01 work-order integrity.
+const missionFiles = walk(missionsRoot)
+  .filter(f => /S\d{2}-M01\.json$/.test(f))
+  .sort();
+
+for (const file of missionFiles) {
+  const m = readJson(file);
+  if (!m) continue;
+  const id = m.souche_id || 'S??';
+  if (m.schema_version !== 'ARCHITECTON-M01-MISSION-1.0') fail(`${file}: unexpected schema_version`);
+  if (!ids.has(id)) fail(`${file}: unknown souche_id ${id}`);
+  if (m.wave !== 'WAVE-01') fail(`${file}: current M01 work orders are limited to WAVE-01`);
+  if (m.phase !== 'M01') fail(`${file}: phase must be M01`);
+  if (m.mission_status !== 'READY_TO_ASSIGN') fail(`${file}: mission_status must be READY_TO_ASSIGN, not an execution claim`);
+  if (m.registry_status_required_before_execution !== 'QUEUED') fail(`${file}: must require QUEUED before execution`);
+  if (m.registry_status_after_verified_start !== 'PRE_RND_ACTIVE') fail(`${file}: verified start must map to PRE_RND_ACTIVE`);
+  if (m.automatic_start !== false || m.automatic_spending !== false || m.automatic_publication !== false) {
+    fail(`${file}: automatic start/spending/publication must all be false`);
+  }
+  if (!Array.isArray(m.role_pool) || m.role_pool.length < 12 || m.role_pool.length > 20) {
+    fail(`${file}: role_pool must contain 12 to 20 distinct useful roles`);
+  }
+  if (new Set(m.role_pool || []).size !== (m.role_pool || []).length) fail(`${file}: duplicate role in role_pool`);
+  if (!Array.isArray(m.required_outputs) || m.required_outputs.length < 8) fail(`${file}: required_outputs incomplete`);
+  for (const dep of m.dependency_refs || []) {
+    if (!ids.has(dep)) fail(`${file}: unknown dependency_ref ${dep}`);
+    if (dep === id) fail(`${file}: self dependency forbidden`);
+  }
+}
+
+const wave01Expected = new Set(['S01','S02','S03','S04','S05']);
+const wave01Found = new Set(missionFiles.map(f => path.basename(f).slice(0,3)));
+for (const id of wave01Expected) if (!wave01Found.has(id)) fail(`WAVE-01: missing M01 work order for ${id}`);
+for (const id of wave01Found) if (!wave01Expected.has(id)) fail(`WAVE-01: unexpected M01 work order for ${id}`);
+
 warnings.forEach(w => console.warn(`WARN ${w}`));
 errors.forEach(e => console.error(`FAIL ${e}`));
 
@@ -107,4 +186,6 @@ if (errors.length) {
 }
 
 console.log('PASS portfolio-40.json');
-console.log('ARCHITECTON Registry Gate: PASS (40 souches, 8 waves)');
+console.log('PASS architecton-40-plan.json');
+console.log(`PASS WAVE-01 M01 work orders (${missionFiles.length})`);
+console.log('ARCHITECTON Registry Gate: PASS');
