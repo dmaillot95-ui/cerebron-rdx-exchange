@@ -8,5 +8,7 @@
   "require_source_commit_match": true,
   "require_release_aggregate_match": true,
   "registration_mode": "PROPOSAL_ONLY_NO_AUTO_APPLY",
-  "note": "A verified production release must have a registered known-good baseline tied to its signed live proof. Future deployments can retain prior known-good entries as rollback candidates."
+  "note": "A verified production release must have a registered known-good baseline tied to its signed live proof. Future deployments can retain prior known-good entries as rollback candidates.",
+  "require_signed_known_good_proposal": true,
+  "known_good_proposal_auto_apply": false
 }

@@ -132,6 +132,17 @@ jobs:
         run: node scripts/build-production-proof-registration-proposal.mjs
       - name: Validate production proof registration proposal
         run: node scripts/validate-production-proof-registration-proposal.mjs
+      - name: Signed production proof registration proposal
+        uses: actions/attest@v4
+        with:
+          subject-path: artifacts/rdx-production-proof-registration-proposal.json
+      - name: Verify signed production proof registration proposal
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh attestation verify artifacts/rdx-production-proof-registration-proposal.json \
+            --repo "$GITHUB_REPOSITORY" \
+            --source-digest "$GITHUB_SHA"
       - name: Upload production proof registration proposal
         uses: actions/upload-artifact@v4
         with:
@@ -142,6 +153,17 @@ jobs:
         run: node scripts/build-known-good-release-proposal.mjs
       - name: Validate known-good rollback baseline proposal
         run: node scripts/validate-known-good-release-proposal.mjs
+      - name: Signed known-good rollback baseline proposal
+        uses: actions/attest@v4
+        with:
+          subject-path: artifacts/rdx-known-good-release-registration-proposal.json
+      - name: Verify signed known-good rollback baseline proposal
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh attestation verify artifacts/rdx-known-good-release-registration-proposal.json \
+            --repo "$GITHUB_REPOSITORY" \
+            --source-digest "$GITHUB_SHA"
       - name: Upload known-good rollback baseline proposal
         uses: actions/upload-artifact@v4
         with:
