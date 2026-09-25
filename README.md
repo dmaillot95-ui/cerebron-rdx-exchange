@@ -73,3 +73,8 @@ Une fiche `SOURCED` reste explicitement non vérifiée et non publiée. La proje
 ## Demandes client Phase 1
 
 Le formulaire public produit localement un objet `RDX_CLIENT_REQUEST_V1` téléchargeable. Aucun envoi serveur, stockage en base, paiement ou entraînement n'est activé. Le schéma public est disponible via `/api/v1/request-schema.json` et la politique via `/privacy.html`.
+
+## Transparence publique
+
+- `/status.html` affiche le statut réel des capacités et blocages à partir de `/api/v1/status.json`.
+- `/api.html` documente les projections JSON publiques en lecture seule.

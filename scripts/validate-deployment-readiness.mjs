@@ -5,6 +5,8 @@ const required=[
   'dist/api/v1/status.json',
   'dist/api/v1/request-schema.json',
   'dist/privacy.html',
+  'dist/status.html',
+  'dist/api.html',
   'dist/api/v1/packs/RDX-000001.json',
   'dist/dossiers/RDX-000001.html',
   'dist/api/v1/architecton-40.json',
@@ -65,7 +67,7 @@ if(fs.existsSync('dist/api/v1/status.json')){
 
 if(fs.existsSync('dist/index.html')){
   const html=fs.readFileSync('dist/index.html','utf8');
-  for(const marker of ['ARCHITECTON Ω','architectonWaveFilter','/api/v1/architecton-missions.json','/api/v1/architecton-pipeline.json','/dossiers/RDX-000001.html','RDX_CLIENT_REQUEST_V1','/privacy.html']){
+  for(const marker of ['ARCHITECTON Ω','architectonWaveFilter','/api/v1/architecton-missions.json','/api/v1/architecton-pipeline.json','/dossiers/RDX-000001.html','RDX_CLIENT_REQUEST_V1','/privacy.html','/status.html','/api.html']){
     if(!html.includes(marker)) fail(`dist/index.html missing marker: ${marker}`);
   }
 }
