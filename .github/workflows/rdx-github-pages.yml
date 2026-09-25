@@ -11,6 +11,12 @@ on:
       - 'vercel.json'
       - '.github/workflows/rdx-github-pages.yml'
   workflow_dispatch:
+    inputs:
+      deploy:
+        description: 'Deploy after repository Pages is enabled with Source = GitHub Actions'
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: read
@@ -42,6 +48,7 @@ jobs:
 
   deploy:
     needs: validate
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
