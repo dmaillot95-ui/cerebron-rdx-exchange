@@ -30,3 +30,12 @@ jobs:
           node-version: '22'
       - name: Validate R&D handoffs
         run: node scripts/validate-architecton-ingest.mjs
+      - name: Build integration proposal
+        run: node scripts/build-architecton-integration-proposal.mjs
+      - name: Upload integration proposal
+        uses: actions/upload-artifact@v4
+        with:
+          name: architecton-integration-proposal
+          path: artifacts/architecton-integration-proposal.json
+          if-no-files-found: error
+          retention-days: 14
