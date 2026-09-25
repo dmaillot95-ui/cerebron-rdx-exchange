@@ -19,6 +19,7 @@ const commands=[
   ['node',['scripts/validate-release-manifest.mjs']],
   ['node',['scripts/validate-static-links.mjs']],
   ['node',['scripts/validate-static-release-build.mjs']],
+  ['node',['scripts/validate-reproducible-build.mjs']],
   ['node',['--check','scripts/verify-live-deployment.mjs']]
 ];
 
