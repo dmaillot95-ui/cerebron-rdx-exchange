@@ -1,0 +1,38 @@
+name: ARCHITECTON F01-F08 Gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/architecton/dossiers/**'
+      - 'data/architecton/portfolio-40.json'
+      - 'data/architecton/object-registry.json'
+      - 'config/architecton-f01-f08-gates.json'
+      - 'templates/architecton-f01-f08-package-v1.json'
+      - 'scripts/validate-architecton-f01-f08.mjs'
+      - '.github/workflows/architecton-f01-f08-gate.yml'
+  pull_request:
+    paths:
+      - 'data/architecton/dossiers/**'
+      - 'data/architecton/portfolio-40.json'
+      - 'data/architecton/object-registry.json'
+      - 'config/architecton-f01-f08-gates.json'
+      - 'templates/architecton-f01-f08-package-v1.json'
+      - 'scripts/validate-architecton-f01-f08.mjs'
+      - '.github/workflows/architecton-f01-f08-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate ARCHITECTON F01-F08 dossiers
+        run: node scripts/validate-architecton-f01-f08.mjs
