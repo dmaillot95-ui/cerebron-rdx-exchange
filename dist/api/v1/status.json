@@ -1,6 +1,6 @@
 {
   "service": "CEREBRON_RDX_EXCHANGE",
-  "status": "ONLINE",
+  "status": "SOURCE_READY",
   "production_mode": "CONTROLLED_MANUAL",
   "automatic_ai_execution": false,
   "automatic_publication": false,
@@ -8,7 +8,7 @@
   "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
-  "last_updated": "2026-09-25T15:13:00Z",
+  "last_updated": "2026-09-25T15:15:00Z",
   "architecton_40_registry": "/api/v1/architecton-40.json",
   "architecton_40_total": 40,
   "architecton_40_mode": "CONTROLLED_MANUAL",
@@ -75,5 +75,10 @@
   "architecton_pipeline_projection_gate_enabled": true,
   "architecton_pipeline_projection_verified_run": true,
   "architecton_pipeline_projection_verified_run_id": 36152552835,
-  "architecton_pipeline_current_reality": "STRUCTURE_READY_WAITING_FOR_FIRST_REAL_HANDOFF"
+  "architecton_pipeline_current_reality": "STRUCTURE_READY_WAITING_FOR_FIRST_REAL_HANDOFF",
+  "source_bundle_verified": true,
+  "source_bundle_verified_run_id": 36152684707,
+  "production_deployment_verified": false,
+  "production_deployment_verification_reason": "Vercel project/deployment not accessible from current connector session.",
+  "vercel_output_directory": "dist"
 }
