@@ -99,6 +99,7 @@ R&D réelle
 ## 7. Gates vérifiés
 
 Runs GitHub SUCCESS connus :
+- Full CEREBRON RDX Validation : 36152887393 — tous les validateurs passent ensemble.
 - Registry Gate : 36150309050 — exige les 40 missions M01.
 - Ingest Gate / phase proposals : 36150501318.
 - Public Projection Gate : 36151188701.
@@ -156,3 +157,16 @@ CLAIM <= EVIDENCE
 SIMULATION != TEST  
 MEMORY != TRAINING  
 AGENT COUNT != INTELLIGENCE
+
+
+## 12. Pont vers le dépôt maître CÉRÉBRON
+
+Un relais non intrusif existe maintenant dans :
+
+`dmaillot95-ui/cerebron-omega-ai/docs/RELAY_TO_RDX_ARCHITECTON_2026-09-25.md`
+
+Il indique à l'IA qui travaille avec les fermes :
+- de continuer sa R&D ;
+- de ne pas reconstruire RDX ;
+- de ne pas toucher aux fermes Collatz F01–F07 ;
+- de transmettre les résultats via handoff 1.1 vers le dépôt RDX.
