@@ -36,6 +36,7 @@ const latest=latestId?proofs.find(p=>p.id===latestId):null;
 function canonicalProofHash(proof){
   const clone={...proof};
   delete clone.proof_sha256;
+  delete clone.id;
   return crypto.createHash('sha256').update(JSON.stringify(clone)).digest('hex');
 }
 

@@ -31,6 +31,9 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    outputs:
+      attestation_sha256: ${{ steps.attestation_meta.outputs.attestation_sha256 }}
+      signed_verified: ${{ steps.attestation_meta.outputs.signed_verified }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -52,6 +55,11 @@ jobs:
           gh attestation verify artifacts/rdx-release-attestation.json \
             --repo "$GITHUB_REPOSITORY" \
             --source-digest "$GITHUB_SHA"
+      - name: Export verified attestation metadata
+        id: attestation_meta
+        run: |
+          echo "attestation_sha256=$(node -e "const fs=require('fs');const a=JSON.parse(fs.readFileSync('artifacts/rdx-release-attestation.json','utf8'));process.stdout.write(a.attestation_sha256)")" >> "$GITHUB_OUTPUT"
+          echo "signed_verified=true" >> "$GITHUB_OUTPUT"
       - name: Upload release attestation
         uses: actions/upload-artifact@v4
         with:
@@ -82,7 +90,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   verify-live:
-    needs: deploy
+    needs: [validate, deploy]
     if: ${{ needs.deploy.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
@@ -93,10 +101,20 @@ jobs:
       - name: Verify deployed RDX endpoints
         env:
           RDX_BASE_URL: ${{ needs.deploy.outputs.page_url }}
+          RDX_SIGNED_RELEASE_ATTESTATION_VERIFIED: ${{ needs.validate.outputs.signed_verified }}
+          RDX_RELEASE_ATTESTATION_SHA256: ${{ needs.validate.outputs.attestation_sha256 }}
         run: node scripts/verify-live-deployment.mjs
       - name: Upload production deployment proof
         uses: actions/upload-artifact@v4
         with:
           name: rdx-production-deployment-proof
           path: artifacts/rdx-production-deployment-proof.json
+          retention-days: 90
+      - name: Build production proof registration proposal
+        run: node scripts/build-production-proof-registration-proposal.mjs
+      - name: Upload production proof registration proposal
+        uses: actions/upload-artifact@v4
+        with:
+          name: rdx-production-proof-registration-proposal
+          path: artifacts/rdx-production-proof-registration-proposal.json
           retention-days: 90

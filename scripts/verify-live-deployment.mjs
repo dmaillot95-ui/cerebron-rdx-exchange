@@ -97,6 +97,9 @@ const bundleFailures=bundleChecks.filter(r=>r.status!=='PASS');
 const manifestCountMatch=!!manifest&&bundleChecks.length===manifest.file_count;
 const provenanceMatchesManifest=!!manifest&&!!buildProvenance&&manifest.source_commit===buildProvenance.source_commit;
 const githubShaMatchesProvenance=!process.env.GITHUB_SHA||process.env.GITHUB_SHA.toLowerCase()===buildProvenance?.source_commit;
+const signedReleaseAttestationVerified=process.env.RDX_SIGNED_RELEASE_ATTESTATION_VERIFIED==='true';
+const releaseAttestationSha256=process.env.RDX_RELEASE_ATTESTATION_SHA256||null;
+const releaseAttestationShaValid=/^[0-9a-f]{64}$/.test(releaseAttestationSha256||'');
 const proof={
   schema:'RDX_PRODUCTION_DEPLOYMENT_PROOF_V2',
   verified_at:new Date().toISOString(),
@@ -107,6 +110,8 @@ const proof={
   source_commit:buildProvenance?.source_commit||null,
   provenance_matches_manifest:provenanceMatchesManifest,
   github_sha_matches_provenance:githubShaMatchesProvenance,
+  release_attestation_signed:signedReleaseAttestationVerified,
+  release_attestation_sha256:releaseAttestationSha256,
   expected_release_aggregate_sha256:manifest?.aggregate_sha256||null,
   actual_release_aggregate_sha256:actualAggregate,
   release_file_count_expected:manifest?.file_count??null,
@@ -115,7 +120,7 @@ const proof={
   manifest_aggregate_match:manifestAggregateMatch,
   endpoint_checks:results,
   bundle_file_checks:bundleChecks,
-  status:(!endpointFailures.length&&!bundleFailures.length&&manifestAggregateMatch&&provenanceMatchesManifest&&githubShaMatchesProvenance)?'PASS':'FAIL'
+  status:(!endpointFailures.length&&!bundleFailures.length&&manifestAggregateMatch&&provenanceMatchesManifest&&githubShaMatchesProvenance&&signedReleaseAttestationVerified&&releaseAttestationShaValid)?'PASS':'FAIL'
 };
 const canonicalProof=JSON.stringify(proof);
 proof.proof_sha256=crypto.createHash('sha256').update(canonicalProof).digest('hex');

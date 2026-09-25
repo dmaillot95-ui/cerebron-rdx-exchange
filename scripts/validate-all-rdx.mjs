@@ -24,7 +24,8 @@ const commands=[
   ['node',['scripts/validate-static-links.mjs']],
   ['node',['scripts/validate-static-release-build.mjs']],
   ['node',['scripts/validate-reproducible-build.mjs']],
-  ['node',['--check','scripts/verify-live-deployment.mjs']]
+  ['node',['--check','scripts/verify-live-deployment.mjs']],
+  ['node',['--check','scripts/build-production-proof-registration-proposal.mjs']]
 ];
 
 for(const [cmd,args] of commands){
