@@ -1,0 +1,6 @@
+{
+  "schema_version": "ARCHITECTON-INTEGRATION-LOG-1.0",
+  "mode": "APPEND_ONLY_DECISIONS",
+  "entries": [],
+  "note": "No R&D handoff has yet been integrated. Add an entry only after validation and explicit integration decision."
+}
