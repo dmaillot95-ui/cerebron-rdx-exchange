@@ -8,7 +8,7 @@
   "evidence_gate_mode": "GITHUB_ACTIONS",
   "payment_enabled": false,
   "database_enabled": false,
-  "last_updated": "2026-09-25T15:07:00Z",
+  "last_updated": "2026-09-25T15:13:00Z",
   "architecton_40_registry": "/api/v1/architecton-40.json",
   "architecton_40_total": 40,
   "architecton_40_mode": "CONTROLLED_MANUAL",
@@ -67,5 +67,13 @@
   "architecton_rdx_normalization_auto_create_pack": false,
   "architecton_rdx_normalization_auto_publish": false,
   "architecton_rdx_normalization_verified_run": true,
-  "architecton_rdx_normalization_verified_run_id": 36151638998
+  "architecton_rdx_normalization_verified_run_id": 36151638998,
+  "architecton_integration_decision_gate_enabled": true,
+  "architecton_integration_decision_verified_run": true,
+  "architecton_integration_decision_verified_run_id": 36152460892,
+  "architecton_pipeline": "/api/v1/architecton-pipeline.json",
+  "architecton_pipeline_projection_gate_enabled": true,
+  "architecton_pipeline_projection_verified_run": true,
+  "architecton_pipeline_projection_verified_run_id": 36152552835,
+  "architecton_pipeline_current_reality": "STRUCTURE_READY_WAITING_FOR_FIRST_REAL_HANDOFF"
 }
