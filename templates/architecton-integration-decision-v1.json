@@ -1,0 +1,24 @@
+{
+  "schema_version": "ARCHITECTON-INTEGRATION-DECISION-1.0",
+  "integration_id": "INT-000001",
+  "souche_id": "SXX",
+  "phase": "M01",
+  "handoff_file": null,
+  "handoff_sha256": null,
+  "decision": "PENDING",
+  "decided_at": null,
+  "reviewer": null,
+  "accepted_object_ids": [],
+  "rejected_object_ids": [],
+  "deferred_object_ids": [],
+  "canonical_object_ids_after": [],
+  "reasons": [],
+  "checks": {
+    "ingest_gate_passed": false,
+    "duplicate_check_passed": false,
+    "provenance_check_passed": false,
+    "evidence_semantics_check_passed": false,
+    "phase_output_check_passed": false
+  },
+  "notes": "Template only. PENDING does not unlock the next phase."
+}
