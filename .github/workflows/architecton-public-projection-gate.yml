@@ -1,0 +1,38 @@
+name: ARCHITECTON Public Projection Gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/architecton/portfolio-40.json'
+      - 'data/architecton/missions/**'
+      - 'dist/api/v1/architecton-40.json'
+      - 'dist/api/v1/architecton-missions.json'
+      - 'dist/api/v1/architecton-wave-01.json'
+      - 'scripts/build-architecton-public-projections.mjs'
+      - '.github/workflows/architecton-public-projection-gate.yml'
+  pull_request:
+    paths:
+      - 'data/architecton/portfolio-40.json'
+      - 'data/architecton/missions/**'
+      - 'dist/api/v1/architecton-40.json'
+      - 'dist/api/v1/architecton-missions.json'
+      - 'dist/api/v1/architecton-wave-01.json'
+      - 'scripts/build-architecton-public-projections.mjs'
+      - '.github/workflows/architecton-public-projection-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify public projections match canonical registry
+        run: node scripts/build-architecton-public-projections.mjs --check
