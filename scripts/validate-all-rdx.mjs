@@ -24,6 +24,7 @@ const commands=[
   ['node',['scripts/validate-production-human-review-workflow-contract.mjs']],
   ['node',['scripts/validate-production-promotion.mjs']],
   ['node',['scripts/validate-production-fail-closed-negative.mjs']],
+  ['node',['scripts/validate-human-review-pre-registry-negative.mjs']],
   ['node',['scripts/validate-production-rollback-negative.mjs']],
   ['node',['scripts/validate-live-promotion-chain-contract.mjs']],
   ['node',['scripts/validate-post-deploy-chain-integration-canary.mjs']],
