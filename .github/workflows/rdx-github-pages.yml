@@ -50,7 +50,7 @@ jobs:
         run: git diff --exit-code -- dist/api/v1/packs dist/dossiers dist/api/v1/architecton-40.json dist/api/v1/architecton-missions.json dist/api/v1/architecton-wave-01.json dist/api/v1/architecton-pipeline.json
       - name: Signed GitHub provenance attestation
         id: signed_attestation
-        uses: actions/attest@v4
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
         with:
           subject-path: artifacts/rdx-release-attestation.json
       - name: Verify signed GitHub provenance attestation
@@ -66,13 +66,13 @@ jobs:
           echo "attestation_sha256=$(node -e "const fs=require('fs');const a=JSON.parse(fs.readFileSync('artifacts/rdx-release-attestation.json','utf8'));process.stdout.write(a.attestation_sha256)")" >> "$GITHUB_OUTPUT"
           echo "signed_verified=true" >> "$GITHUB_OUTPUT"
       - name: Upload release attestation
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rdx-release-attestation
           path: artifacts/rdx-release-attestation.json
           retention-days: 90
       - name: Upload public dist
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         with:
           path: dist
 
@@ -87,12 +87,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
         with:
           enablement: true
       - name: Deploy public RDX site
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
 
   verify-live:
     needs: [validate, deploy]
@@ -112,7 +112,7 @@ jobs:
         run: node scripts/verify-live-deployment.mjs
       - name: Signed production deployment proof
         id: signed_live_proof
-        uses: actions/attest@v4
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
         with:
           subject-path: artifacts/rdx-production-deployment-proof.json
       - name: Verify signed production deployment proof
@@ -125,7 +125,7 @@ jobs:
       - name: Mark signed live proof verified
         run: echo "RDX_SIGNED_LIVE_PROOF_VERIFIED=true" >> "$GITHUB_ENV"
       - name: Upload production deployment proof
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rdx-production-deployment-proof
           path: artifacts/rdx-production-deployment-proof.json
@@ -135,7 +135,7 @@ jobs:
       - name: Validate production proof registration proposal
         run: node scripts/validate-production-proof-registration-proposal.mjs
       - name: Signed production proof registration proposal
-        uses: actions/attest@v4
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
         with:
           subject-path: artifacts/rdx-production-proof-registration-proposal.json
       - name: Verify signed production proof registration proposal
@@ -146,7 +146,7 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --source-digest "$GITHUB_SHA"
       - name: Upload production proof registration proposal
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rdx-production-proof-registration-proposal
           path: artifacts/rdx-production-proof-registration-proposal.json
@@ -156,7 +156,7 @@ jobs:
       - name: Validate known-good rollback baseline proposal
         run: node scripts/validate-known-good-release-proposal.mjs
       - name: Signed known-good rollback baseline proposal
-        uses: actions/attest@v4
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
         with:
           subject-path: artifacts/rdx-known-good-release-registration-proposal.json
       - name: Verify signed known-good rollback baseline proposal
@@ -167,7 +167,7 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --source-digest "$GITHUB_SHA"
       - name: Upload known-good rollback baseline proposal
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rdx-known-good-release-registration-proposal
           path: artifacts/rdx-known-good-release-registration-proposal.json

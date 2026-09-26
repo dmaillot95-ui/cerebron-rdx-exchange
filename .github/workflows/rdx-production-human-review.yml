@@ -94,7 +94,7 @@ jobs:
       - name: Validate human review decision
         run: node scripts/validate-production-human-review.mjs
       - name: Sign human review decision
-        uses: actions/attest@v4
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
         with:
           subject-path: artifacts/rdx-production-human-review.json
       - name: Verify signed human review decision
@@ -102,7 +102,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: gh attestation verify artifacts/rdx-production-human-review.json --repo "$GITHUB_REPOSITORY" --source-digest "$GITHUB_SHA"
       - name: Upload human review
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rdx-production-human-review
           path: artifacts/rdx-production-human-review.json
@@ -115,7 +115,7 @@ jobs:
         run: node scripts/validate-production-registry-update-proposal.mjs
       - name: Sign registry update proposal
         if: ${{ inputs.decision == 'APPROVE' }}
-        uses: actions/attest@v4
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
         with:
           subject-path: artifacts/rdx-production-registry-update-proposal.json
       - name: Verify signed registry update proposal
@@ -125,7 +125,7 @@ jobs:
         run: gh attestation verify artifacts/rdx-production-registry-update-proposal.json --repo "$GITHUB_REPOSITORY" --source-digest "$GITHUB_SHA"
       - name: Upload registry update proposal
         if: ${{ inputs.decision == 'APPROVE' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rdx-production-registry-update-proposal
           path: artifacts/rdx-production-registry-update-proposal.json
