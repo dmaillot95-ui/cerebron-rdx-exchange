@@ -1,12 +1,20 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import { validatePublicHttpsDeploymentUrl } from './lib/public-deployment-url.mjs';
 
 const raw=process.env.RDX_BASE_URL||process.argv[2];
 if(!raw){
   console.error('RDX_BASE_URL or URL argument is required');
   process.exit(2);
 }
-const base=new URL(raw.endsWith('/')?raw:raw+'/');
+const deploymentUrl=validatePublicHttpsDeploymentUrl(raw);
+if(!deploymentUrl.ok){
+  for(const e of deploymentUrl.errors) console.error('FAIL '+e);
+  console.error('RDX public HTTPS deployment URL policy: FAIL');
+  process.exit(2);
+}
+const normalized=deploymentUrl.url.href;
+const base=new URL(normalized.endsWith('/')?normalized:normalized+'/');
 const requestHeaders={'user-agent':'cerebron-rdx-live-verify/2'};
 const checks=[
   {path:'',kind:'text',must:['CÉRÉBRON R&D EXCHANGE','RDX_CLIENT_REQUEST_V1']},
@@ -104,6 +112,7 @@ const proof={
   schema:'RDX_PRODUCTION_DEPLOYMENT_PROOF_V2',
   verified_at:new Date().toISOString(),
   base_url:base.href,
+  public_https_surface_policy:true,
   github_sha:process.env.GITHUB_SHA||null,
   release_manifest_schema:manifest?.schema||null,
   build_provenance_schema:buildProvenance?.schema||null,

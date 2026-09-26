@@ -30,9 +30,11 @@ const commands=[
   ['node',['scripts/validate-live-promotion-chain-contract.mjs']],
   ['node',['scripts/validate-post-deploy-chain-integration-canary.mjs']],
   ['node',['scripts/validate-production-rollback.mjs']],
+  ['node',['scripts/validate-production-deployment-url-policy.mjs']],
   ['node',['scripts/validate-static-links.mjs']],
   ['node',['scripts/validate-static-release-build.mjs']],
   ['node',['scripts/validate-reproducible-build.mjs']],
+  ['node',['--check','scripts/lib/public-deployment-url.mjs']],
   ['node',['--check','scripts/verify-live-deployment.mjs']],
   ['node',['--check','scripts/build-production-proof-registration-proposal.mjs']],
   ['node',['--check','scripts/validate-production-proof-registration-proposal.mjs']]
