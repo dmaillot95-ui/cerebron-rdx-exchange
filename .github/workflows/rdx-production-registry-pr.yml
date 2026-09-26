@@ -7,10 +7,11 @@ on:
         description: 'Successful RDX Production Human Review run with APPROVE decision'
         required: true
         type: string
-      operator_id:
-        description: 'Operator requesting the reviewed registry PR'
-        required: true
-        type: string
+  workflow_run:
+    workflows:
+      - RDX Production Human Review
+    types:
+      - completed
 
 permissions:
   contents: write
@@ -20,6 +21,7 @@ permissions:
 
 jobs:
   propose-pr:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -29,27 +31,39 @@ jobs:
         with:
           node-version: '22'
           package-manager-cache: false
+      - name: Resolve source human review run
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_RUN_ID: ${{ inputs.source_review_run_id }}
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          if [ "$EVENT_NAME" = "workflow_run" ]; then
+            SOURCE_REVIEW_RUN_ID="$WORKFLOW_RUN_ID"
+          else
+            SOURCE_REVIEW_RUN_ID="$DISPATCH_RUN_ID"
+          fi
+          test -n "$SOURCE_REVIEW_RUN_ID"
+          echo "RDX_SOURCE_REVIEW_RUN_ID=$SOURCE_REVIEW_RUN_ID" >> "$GITHUB_ENV"
+          echo "RDX_OPERATOR_ID=$GITHUB_ACTOR" >> "$GITHUB_ENV"
       - name: Verify source human review workflow identity
         env:
           GH_TOKEN: ${{ github.token }}
-          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
         run: |
-          META="$(gh run view "$SOURCE_REVIEW_RUN_ID" --json name,conclusion,event,headBranch,headSha)"
+          META="$(gh run view "$RDX_SOURCE_REVIEW_RUN_ID" --json name,conclusion,event,headBranch,headSha)"
           test "$(jq -r .name <<<"$META")" = "RDX Production Human Review"
           test "$(jq -r .conclusion <<<"$META")" = "success"
-          test "$(jq -r .event <<<"$META")" = "workflow_dispatch"
+          EVENT="$(jq -r .event <<<"$META")"
+          test "$EVENT" = "workflow_dispatch" -o "$EVENT" = "workflow_run"
           test "$(jq -r .headBranch <<<"$META")" = "main"
           echo "RDX_REVIEW_WORKFLOW_SHA=$(jq -r .headSha <<<"$META")" >> "$GITHUB_ENV"
       - name: Download signed human review
         env:
           GH_TOKEN: ${{ github.token }}
-          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
-        run: gh run download "$SOURCE_REVIEW_RUN_ID" -n rdx-production-human-review -D artifacts/input/review
+        run: gh run download "$RDX_SOURCE_REVIEW_RUN_ID" -n rdx-production-human-review -D artifacts/input/review
       - name: Download signed registry update proposal
         env:
           GH_TOKEN: ${{ github.token }}
-          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
-        run: gh run download "$SOURCE_REVIEW_RUN_ID" -n rdx-production-registry-update-proposal -D artifacts/input/update
+        run: gh run download "$RDX_SOURCE_REVIEW_RUN_ID" -n rdx-production-registry-update-proposal -D artifacts/input/update
       - name: Verify signed human review
         env:
           GH_TOKEN: ${{ github.token }}
@@ -58,6 +72,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh attestation verify artifacts/input/update/rdx-production-registry-update-proposal.json --repo "$GITHUB_REPOSITORY" --source-digest "$RDX_REVIEW_WORKFLOW_SHA"
+      - name: Require approved human review
+        run: |
+          jq -e '
+            .schema == "RDX_PRODUCTION_HUMAN_REVIEW_V1" and
+            .decision == "APPROVE" and
+            .signed_live_proof_verified == true and
+            .signed_registration_proposal_verified == true and
+            .auto_apply == false
+          ' artifacts/input/review/rdx-production-human-review.json >/dev/null
       - name: Build temporary RDX static release for promotion validation
         run: node scripts/build-static-release.mjs
       - name: Apply reviewed proposal to worktree only
@@ -76,11 +99,8 @@ jobs:
           test "$(git diff --name-only)" = "data/deployments/production-proof-registry.json"
       - name: Commit reviewed registry change to PR branch
         id: commit
-        env:
-          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
-          OPERATOR_ID: ${{ inputs.operator_id }}
         run: |
-          BRANCH="review/rdx-production-proof-${SOURCE_REVIEW_RUN_ID}-${GITHUB_RUN_ID}"
+          BRANCH="review/rdx-production-proof-${RDX_SOURCE_REVIEW_RUN_ID}-${GITHUB_RUN_ID}"
           git config user.name "cerebron-rdx-review-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
@@ -92,13 +112,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ steps.commit.outputs.branch }}
-          SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
-          OPERATOR_ID: ${{ inputs.operator_id }}
         run: |
           set +e
           OUT="$(gh pr create --base main --head "$BRANCH" \
             --title "Register reviewed RDX production proof" \
-            --body "Manual reviewed production-proof registry proposal. Source review run: $SOURCE_REVIEW_RUN_ID. Operator: $OPERATOR_ID. No auto-merge; normal PR checks and human review remain required." 2>&1)"
+            --body "Reviewed production-proof registry proposal. Source review run: $RDX_SOURCE_REVIEW_RUN_ID. Operator: $RDX_OPERATOR_ID. No auto-merge; normal PR checks remain required." 2>&1)"
           RC=$?
           set -e
           if [ "$RC" -eq 0 ]; then
