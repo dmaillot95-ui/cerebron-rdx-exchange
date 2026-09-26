@@ -17,6 +17,7 @@ const commands=[
   ['node',['scripts/validate-static-security.mjs']],
   ['node',['scripts/validate-github-actions-runtime-pins.mjs']],
   ['node',['scripts/validate-production-registry-pr-validation-coverage.mjs']],
+  ['node',['scripts/validate-production-registry-pr-gate-contract.mjs']],
   ['node',['scripts/build-provenance.mjs']],
   ['node',['scripts/build-release-manifest.mjs']],
   ['node',['scripts/validate-release-manifest.mjs']],
@@ -39,7 +40,8 @@ const commands=[
   ['node',['--check','scripts/lib/public-deployment-url.mjs']],
   ['node',['--check','scripts/verify-live-deployment.mjs']],
   ['node',['--check','scripts/build-production-proof-registration-proposal.mjs']],
-  ['node',['--check','scripts/validate-production-proof-registration-proposal.mjs']]
+  ['node',['--check','scripts/validate-production-proof-registration-proposal.mjs']],
+  ['node',['--check','scripts/validate-production-registry-pr-delta.mjs']]
 ];
 
 for(const [cmd,args] of commands){

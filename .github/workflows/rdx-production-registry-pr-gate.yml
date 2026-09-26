@@ -1,0 +1,54 @@
+name: RDX Production Registry PR Gate
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'data/deployments/production-proof-registry.json'
+
+permissions:
+  contents: read
+  pull-requests: read
+  actions: read
+
+jobs:
+  validate-registry-pr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Verify PR identity and changed-file boundary
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          META="$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,files)"
+          test "$(jq -r .baseRefName <<<"$META")" = "main"
+          HEAD_REF="$(jq -r .headRefName <<<"$META")"
+          [[ "$HEAD_REF" =~ ^review/rdx-production-proof-[0-9]+-[0-9]+$ ]]
+          test "$(jq '.files | length' <<<"$META")" -eq 1
+          test "$(jq -r '.files[0].path' <<<"$META")" = "data/deployments/production-proof-registry.json"
+          SOURCE_REVIEW_RUN_ID="$(sed -E 's#^review/rdx-production-proof-([0-9]+)-[0-9]+$#\1#' <<<"$HEAD_REF")"
+          echo "RDX_SOURCE_REVIEW_RUN_ID=$SOURCE_REVIEW_RUN_ID" >> "$GITHUB_ENV"
+      - name: Verify source human review run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          META="$(gh run view "$RDX_SOURCE_REVIEW_RUN_ID" --json name,conclusion,event,headBranch,headSha)"
+          test "$(jq -r .name <<<"$META")" = "RDX Production Human Review"
+          test "$(jq -r .conclusion <<<"$META")" = "success"
+          test "$(jq -r .event <<<"$META")" = "workflow_dispatch"
+          test "$(jq -r .headBranch <<<"$META")" = "main"
+      - name: Verify registry delta is append-only
+        env:
+          RDX_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: node scripts/validate-production-registry-pr-delta.mjs
+      - name: Validate fail-closed production registry
+        run: node scripts/validate-production-promotion.mjs
