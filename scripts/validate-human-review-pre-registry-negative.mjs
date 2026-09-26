@@ -9,10 +9,12 @@ const regProposalPath=proposalDir+'/rdx-production-proof-registration-proposal.j
 const reviewPath='artifacts/rdx-production-human-review.json';
 const updatePath='artifacts/rdx-production-registry-update-proposal.json';
 const policyPath='config/production-human-review-policy.json';
+const registryPath='data/deployments/production-proof-registry.json';
 
 const policy=JSON.parse(fs.readFileSync(policyPath,'utf8'));
 const authorizedReviewer=policy.authorized_reviewers?.[0];
 if(typeof authorizedReviewer!=='string'||!authorizedReviewer) throw new Error('authorized reviewer fixture missing');
+const registryBefore=fs.readFileSync(registryPath);
 const tracked=[proofPath,regProposalPath,reviewPath,updatePath];
 const backups=new Map();
 for(const f of tracked){
@@ -107,8 +109,8 @@ try{
   r=run(process.execPath,['scripts/build-production-registry-update-proposal.mjs']);
   expectFail('REJECT_DECISION_CANNOT_BUILD_REGISTRY_UPDATE',r,'APPROVE human review required');
 
-  const registry=JSON.parse(fs.readFileSync('data/deployments/production-proof-registry.json','utf8'));
-  if((registry.proofs||[]).length!==0||registry.latest_verified!==null) throw new Error('production registry changed during synthetic pre-registry canary');
+  const registryAfter=fs.readFileSync(registryPath);
+  if(!registryAfter.equals(registryBefore)) throw new Error('production registry changed during synthetic pre-registry canary');
 
   console.log('RDX Human Review Pre-Registry Negative Canaries: PASS (3/3 rejected, registry unchanged)');
 }catch(e){
