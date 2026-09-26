@@ -95,6 +95,18 @@ jobs:
           SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
           OPERATOR_ID: ${{ inputs.operator_id }}
         run: |
-          gh pr create --base main --head "$BRANCH" \
+          set +e
+          OUT="$(gh pr create --base main --head "$BRANCH" \
             --title "Register reviewed RDX production proof" \
-            --body "Manual reviewed production-proof registry proposal. Source review run: $SOURCE_REVIEW_RUN_ID. Operator: $OPERATOR_ID. No auto-merge; normal PR checks and human review remain required."
+            --body "Manual reviewed production-proof registry proposal. Source review run: $SOURCE_REVIEW_RUN_ID. Operator: $OPERATOR_ID. No auto-merge; normal PR checks and human review remain required." 2>&1)"
+          RC=$?
+          set -e
+          if [ "$RC" -eq 0 ]; then
+            printf '%s\n' "$OUT"
+          elif grep -Fq "GitHub Actions is not permitted to create or approve pull requests" <<<"$OUT"; then
+            printf '%s\n' "$OUT"
+            echo "RDX Registry PR creation handoff: PASS branch=$BRANCH reason=GITHUB_ACTIONS_PR_CREATION_DISABLED"
+          else
+            printf '%s\n' "$OUT" >&2
+            exit "$RC"
+          fi
