@@ -39,10 +39,11 @@ jobs:
       attestation_sha256: ${{ steps.attestation_meta.outputs.attestation_sha256 }}
       signed_verified: ${{ steps.attestation_meta.outputs.signed_verified }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
+          package-manager-cache: false
       - name: Build shared RDX static release
         run: node scripts/build-static-release.mjs
       - name: Verify canonical public projections remain synchronized
@@ -98,10 +99,11 @@ jobs:
     if: ${{ needs.deploy.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
+          package-manager-cache: false
       - name: Verify deployed RDX endpoints
         env:
           RDX_BASE_URL: ${{ needs.deploy.outputs.page_url }}

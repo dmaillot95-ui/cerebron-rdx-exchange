@@ -15,6 +15,7 @@ const commands=[
   ['node',['scripts/validate-hosting-portability.mjs']],
   ['node',['scripts/validate-browser-js.mjs']],
   ['node',['scripts/validate-static-security.mjs']],
+  ['node',['scripts/validate-github-actions-runtime-pins.mjs']],
   ['node',['scripts/build-provenance.mjs']],
   ['node',['scripts/build-release-manifest.mjs']],
   ['node',['scripts/validate-release-manifest.mjs']],
