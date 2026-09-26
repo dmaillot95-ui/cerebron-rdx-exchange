@@ -58,6 +58,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh attestation verify artifacts/input/update/rdx-production-registry-update-proposal.json --repo "$GITHUB_REPOSITORY" --source-digest "$RDX_REVIEW_WORKFLOW_SHA"
+      - name: Build temporary RDX static release for promotion validation
+        run: node scripts/build-static-release.mjs
       - name: Apply reviewed proposal to worktree only
         env:
           RDX_SIGNED_HUMAN_REVIEW_VERIFIED: 'true'
@@ -66,10 +68,12 @@ jobs:
         run: node scripts/apply-production-registry-update-proposal.mjs
       - name: Validate fail-closed production registry
         run: node scripts/validate-production-promotion.mjs
+      - name: Restore generated static release outputs
+        run: git restore --worktree -- dist
       - name: Ensure only production registry changed
         run: |
-          test "$(git status --porcelain | wc -l)" -eq 1
-          git status --porcelain | grep -q "data/deployments/production-proof-registry.json"
+          test -z "$(git diff --cached --name-only)"
+          test "$(git diff --name-only)" = "data/deployments/production-proof-registry.json"
       - name: Commit reviewed registry change to PR branch
         id: commit
         env:
@@ -91,4 +95,6 @@ jobs:
           SOURCE_REVIEW_RUN_ID: ${{ inputs.source_review_run_id }}
           OPERATOR_ID: ${{ inputs.operator_id }}
         run: |
-          gh pr create --base main --head "$BRANCH"             --title "Register reviewed RDX production proof"             --body "Manual reviewed production-proof registry proposal. Source review run: $SOURCE_REVIEW_RUN_ID. Operator: $OPERATOR_ID. No auto-merge; normal PR checks and human review remain required."
+          gh pr create --base main --head "$BRANCH" \
+            --title "Register reviewed RDX production proof" \
+            --body "Manual reviewed production-proof registry proposal. Source review run: $SOURCE_REVIEW_RUN_ID. Operator: $OPERATOR_ID. No auto-merge; normal PR checks and human review remain required."
