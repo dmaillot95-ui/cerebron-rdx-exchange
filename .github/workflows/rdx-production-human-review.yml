@@ -15,7 +15,7 @@ on:
           - APPROVE
           - REJECT
       reviewer_id:
-        description: 'Human reviewer identifier'
+        description: 'GitHub reviewer login; must equal the authenticated workflow actor'
         required: true
         type: string
 
@@ -45,6 +45,14 @@ jobs:
           test "$(jq -r .event <<<"$META")" = "workflow_dispatch"
           test "$(jq -r .headBranch <<<"$META")" = "main"
           echo "RDX_REVIEW_SOURCE_RUN_SHA=$(jq -r .headSha <<<"$META")" >> "$GITHUB_ENV"
+      - name: Authenticate reviewer identity
+        env:
+          REQUESTED_REVIEWER: ${{ inputs.reviewer_id }}
+          AUTHENTICATED_REVIEWER: ${{ github.actor }}
+        run: |
+          test -n "$AUTHENTICATED_REVIEWER"
+          test "$REQUESTED_REVIEWER" = "$AUTHENTICATED_REVIEWER"
+          echo "RDX_AUTHENTICATED_REVIEWER=$AUTHENTICATED_REVIEWER" >> "$GITHUB_ENV"
       - name: Download signed live proof artifact
         env:
           GH_TOKEN: ${{ github.token }}
@@ -71,7 +79,7 @@ jobs:
       - name: Build human review decision
         env:
           RDX_HUMAN_DECISION: ${{ inputs.decision }}
-          RDX_HUMAN_REVIEWER_ID: ${{ inputs.reviewer_id }}
+          RDX_HUMAN_REVIEWER_ID: ${{ github.actor }}
           RDX_SIGNED_LIVE_PROOF_VERIFIED: 'true'
           RDX_SIGNED_REGISTRATION_PROPOSAL_VERIFIED: 'true'
         run: node scripts/build-production-human-review.mjs
