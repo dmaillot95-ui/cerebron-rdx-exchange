@@ -18,3 +18,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run rdx-production-registry-pr.yml --repo "$GITHUB_REPOSITORY" --ref main -f source_review_run_id=36225780029 -f operator_id=dmaillot95-ui
+
+# one-shot retrigger after registry PR handoff fix
