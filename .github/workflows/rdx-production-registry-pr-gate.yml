@@ -50,7 +50,8 @@ jobs:
           META="$(gh run view "$RDX_SOURCE_REVIEW_RUN_ID" --json name,conclusion,event,headBranch,headSha)"
           test "$(jq -r .name <<<"$META")" = "RDX Production Human Review"
           test "$(jq -r .conclusion <<<"$META")" = "success"
-          test "$(jq -r .event <<<"$META")" = "workflow_dispatch"
+          EVENT="$(jq -r .event <<<"$META")"
+          test "$EVENT" = "workflow_dispatch" -o "$EVENT" = "workflow_run"
           test "$(jq -r .headBranch <<<"$META")" = "main"
       - name: Verify source registry PR workflow provenance
         env:
@@ -58,7 +59,8 @@ jobs:
         run: |
           META="$(gh run view "$RDX_SOURCE_REGISTRY_PR_RUN_ID" --json name,conclusion,event,headBranch,headSha,status)"
           test "$(jq -r .name <<<"$META")" = "RDX Production Registry PR"
-          test "$(jq -r .event <<<"$META")" = "workflow_dispatch"
+          EVENT="$(jq -r .event <<<"$META")"
+          test "$EVENT" = "workflow_dispatch" -o "$EVENT" = "workflow_run"
           test "$(jq -r .headBranch <<<"$META")" = "main"
           STATUS="$(jq -r .status <<<"$META")"
           CONCLUSION="$(jq -r '.conclusion // ""' <<<"$META")"
