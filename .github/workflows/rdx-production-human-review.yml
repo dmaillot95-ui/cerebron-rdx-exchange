@@ -15,7 +15,7 @@ on:
           - APPROVE
           - REJECT
       reviewer_id:
-        description: 'GitHub reviewer login; must equal the authenticated workflow actor'
+        description: 'GitHub reviewer login; must equal the authenticated and authorized workflow actor'
         required: true
         type: string
 
@@ -53,6 +53,14 @@ jobs:
           test -n "$AUTHENTICATED_REVIEWER"
           test "$REQUESTED_REVIEWER" = "$AUTHENTICATED_REVIEWER"
           echo "RDX_AUTHENTICATED_REVIEWER=$AUTHENTICATED_REVIEWER" >> "$GITHUB_ENV"
+      - name: Authorize reviewer against production policy
+        run: |
+          jq -e --arg reviewer "$RDX_AUTHENTICATED_REVIEWER" '
+            .require_authenticated_reviewer == true and
+            .require_authorized_reviewer == true and
+            (.authorized_reviewers | type == "array") and
+            (.authorized_reviewers | index($reviewer) != null)
+          ' config/production-human-review-policy.json >/dev/null
       - name: Download signed live proof artifact
         env:
           GH_TOKEN: ${{ github.token }}

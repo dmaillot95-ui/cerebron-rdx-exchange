@@ -5,7 +5,6 @@ const statusPath='dist/api/v1/status.json';
 const registryPath='data/deployments/production-proof-registry.json';
 const policyPath='config/production-promotion-policy.json';
 const humanReviewPolicyPath='config/production-human-review-policy.json';
-const attestationPath='artifacts/rdx-release-attestation.json';
 const manifestPath='dist/api/v1/release-manifest.json';
 const provenancePath='dist/api/v1/build-provenance.json';
 const errors=[];
@@ -33,6 +32,10 @@ if(policy.required_live_proof_schema!=='RDX_PRODUCTION_DEPLOYMENT_PROOF_V2') err
 if(policy.require_human_review!==true) errors.push('production policy must require human review');
 if(policy.human_review_schema!=='RDX_PRODUCTION_HUMAN_REVIEW_V1') errors.push('production policy human review schema mismatch');
 if(humanReviewPolicy.schema!=='RDX_PRODUCTION_HUMAN_REVIEW_POLICY_V1'||humanReviewPolicy.required!==true) errors.push('human review policy mismatch');
+if(humanReviewPolicy.require_authenticated_reviewer!==true) errors.push('human review policy must require authenticated reviewer');
+if(humanReviewPolicy.require_authorized_reviewer!==true) errors.push('human review policy must require authorized reviewer');
+if(!Array.isArray(humanReviewPolicy.authorized_reviewers)||humanReviewPolicy.authorized_reviewers.length===0) errors.push('human review policy authorized reviewers missing');
+const authorizedReviewers=new Set(Array.isArray(humanReviewPolicy.authorized_reviewers)?humanReviewPolicy.authorized_reviewers:[]);
 
 const proofs=Array.isArray(registry.proofs)?registry.proofs:[];
 const latestId=registry.latest_verified;
@@ -71,6 +74,7 @@ for(const p of proofs){
     if(hr.schema!=='RDX_PRODUCTION_HUMAN_REVIEW_V1') errors.push((p.id||'proof')+' human review schema mismatch');
     if(hr.decision!=='APPROVE') errors.push((p.id||'proof')+' human review decision must be APPROVE');
     if(typeof hr.reviewer_id!=='string'||!hr.reviewer_id.trim()||hr.reviewer_id==='UNASSIGNED') errors.push((p.id||'proof')+' human reviewer id missing');
+    else if(!authorizedReviewers.has(hr.reviewer_id)) errors.push((p.id||'proof')+' human reviewer is not authorized by production policy');
     if(typeof hr.reviewed_at!=='string'||Number.isNaN(Date.parse(hr.reviewed_at))) errors.push((p.id||'proof')+' human review timestamp invalid');
     if(!/^[0-9a-f]{64}$/.test(hr.registration_proposal_sha256||'')) errors.push((p.id||'proof')+' human review proposal sha256 invalid');
     if(hr.live_proof_sha256!==p.proof_sha256) errors.push((p.id||'proof')+' human review live proof hash mismatch');
@@ -117,4 +121,4 @@ if(errors.length){
   console.error('RDX Production Promotion Gate: FAIL');
   process.exit(1);
 }
-console.log('RDX Production Promotion Gate: PASS public_claim='+String(status.production_deployment_verified)+' proofs='+proofs.length+' latest='+(latestId||'NONE'));
+console.log('RDX Production Promotion Gate: PASS public_claim='+String(status.production_deployment_verified)+' proofs='+proofs.length+' latest='+(latestId||'NONE')+' authorized_reviewers='+authorizedReviewers.size);

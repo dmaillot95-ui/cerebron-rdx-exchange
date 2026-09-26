@@ -6,6 +6,11 @@
     "APPROVE",
     "REJECT"
   ],
+  "authorized_reviewers": [
+    "dmaillot95-ui"
+  ],
+  "require_authenticated_reviewer": true,
+  "require_authorized_reviewer": true,
   "required_for_registry_entry": true,
   "approved_decision_required_for_production": true,
   "require_reviewer_id": true,
@@ -17,5 +22,5 @@
   "require_signed_live_proof_verified": true,
   "require_signed_registration_proposal_verified": true,
   "auto_apply": false,
-  "note": "Human review is a control-plane decision. It never substitutes for live deployment evidence or cryptographic verification."
+  "note": "Human review is a control-plane decision. Reviewer identity must be authenticated and explicitly authorized. It never substitutes for live deployment evidence or cryptographic verification."
 }

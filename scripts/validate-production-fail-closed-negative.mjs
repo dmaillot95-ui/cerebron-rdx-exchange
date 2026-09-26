@@ -7,10 +7,14 @@ const registryPath='data/deployments/production-proof-registry.json';
 const manifestPath='dist/api/v1/release-manifest.json';
 const proofPath='artifacts/rdx-production-deployment-proof.json';
 const proposalPath='artifacts/rdx-production-proof-registration-proposal.json';
+const humanReviewPolicyPath='config/production-human-review-policy.json';
 
 const originalStatus=fs.readFileSync(statusPath,'utf8');
 const originalRegistry=fs.readFileSync(registryPath,'utf8');
 const manifest=JSON.parse(fs.readFileSync(manifestPath,'utf8'));
+const humanReviewPolicy=JSON.parse(fs.readFileSync(humanReviewPolicyPath,'utf8'));
+const authorizedReviewer=humanReviewPolicy.authorized_reviewers?.[0];
+if(typeof authorizedReviewer!=='string'||!authorizedReviewer) throw new Error('authorized reviewer fixture missing');
 const hadProof=fs.existsSync(proofPath);
 const originalProof=hadProof?fs.readFileSync(proofPath):null;
 const hadProposal=fs.existsSync(proposalPath);
@@ -25,13 +29,14 @@ function canonicalProofHash(proof){
   delete clone.proof_sha256;
   delete clone.id;
   delete clone.live_proof_signed;
+  delete clone.human_review;
   return crypto.createHash('sha256').update(JSON.stringify(clone)).digest('hex');
 }
-function makeHumanReview(p,{decision='APPROVE'}={}){
+function makeHumanReview(p,{decision='APPROVE',reviewer=authorizedReviewer}={}){
   const hr={
     schema:'RDX_PRODUCTION_HUMAN_REVIEW_V1',
     decision,
-    reviewer_id:'NEGATIVE-CANARY-REVIEWER',
+    reviewer_id:reviewer,
     reviewed_at:'2026-09-25T00:00:00Z',
     registration_proposal_sha256:'b'.repeat(64),
     live_proof_sha256:p.proof_sha256,
@@ -148,6 +153,15 @@ try{
     'human review decision must be APPROVE'
   );
 
+  const unauthorizedReviewerProof=makeProof({id:'NEG-UNAUTHORIZED-HUMAN-REVIEWER'});
+  unauthorizedReviewerProof.human_review=makeHumanReview(unauthorizedReviewerProof,{reviewer:'UNAUTHORIZED-CANARY-REVIEWER'});
+  runPromotionExpectFail(
+    'UNAUTHORIZED_HUMAN_REVIEWER',
+    {...baseStatus,production_deployment_verified:true},
+    {schema:'RDX_PRODUCTION_PROOF_REGISTRY_V1',policy:'FAIL_CLOSED',latest_verified:unauthorizedReviewerProof.id,proofs:[unauthorizedReviewerProof]},
+    'human reviewer is not authorized by production policy'
+  );
+
   const unsignedProof=makeProof({id:'NEG-UNSIGNED-LIVE',liveSigned:false});
   runPromotionExpectFail(
     'UNSIGNED_LIVE_PROOF',
@@ -174,7 +188,7 @@ try{
   }
   console.log('NEGATIVE PASS UNSIGNED_REGISTRATION_PROPOSAL');
 
-  console.log('RDX Production Fail-Closed Negative Canaries: PASS (8/8 rejected)');
+  console.log('RDX Production Fail-Closed Negative Canaries: PASS (9/9 rejected)');
 }catch(e){
   console.error('RDX Production Fail-Closed Negative Canaries: FAIL');
   console.error(e?.stack||String(e));

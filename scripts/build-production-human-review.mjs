@@ -3,17 +3,29 @@ import crypto from 'node:crypto';
 
 const proofPath=process.env.RDX_LIVE_PROOF_PATH||'artifacts/input/live/rdx-production-deployment-proof.json';
 const proposalPath=process.env.RDX_REGISTRATION_PROPOSAL_PATH||'artifacts/input/proposal/rdx-production-proof-registration-proposal.json';
+const policyPath='config/production-human-review-policy.json';
 const decision=String(process.env.RDX_HUMAN_DECISION||'').trim().toUpperCase();
 const reviewerId=String(process.env.RDX_HUMAN_REVIEWER_ID||'').trim();
 const signedLive=process.env.RDX_SIGNED_LIVE_PROOF_VERIFIED==='true';
 const signedProposal=process.env.RDX_SIGNED_REGISTRATION_PROPOSAL_VERIFIED==='true';
 
 const errors=[];
-for(const f of [proofPath,proposalPath]) if(!fs.existsSync(f)) errors.push('missing '+f);
+for(const f of [proofPath,proposalPath,policyPath]) if(!fs.existsSync(f)) errors.push('missing '+f);
 if(!['APPROVE','REJECT'].includes(decision)) errors.push('decision must be APPROVE or REJECT');
 if(!reviewerId||reviewerId==='UNASSIGNED') errors.push('reviewer id is required');
 if(!signedLive) errors.push('signed live proof verification required');
 if(!signedProposal) errors.push('signed registration proposal verification required');
+let policy=null;
+if(fs.existsSync(policyPath)){
+  try{policy=JSON.parse(fs.readFileSync(policyPath,'utf8'))}catch{errors.push('invalid human review policy JSON')}
+}
+if(policy){
+  if(policy.schema!=='RDX_PRODUCTION_HUMAN_REVIEW_POLICY_V1') errors.push('human review policy schema mismatch');
+  if(policy.require_authenticated_reviewer!==true) errors.push('human review policy must require authenticated reviewer');
+  if(policy.require_authorized_reviewer!==true) errors.push('human review policy must require authorized reviewer');
+  if(!Array.isArray(policy.authorized_reviewers)||policy.authorized_reviewers.length===0) errors.push('human review policy authorized reviewers missing');
+  else if(!policy.authorized_reviewers.includes(reviewerId)) errors.push('reviewer is not authorized by production policy');
+}
 if(errors.length){
   errors.forEach(e=>console.error('FAIL '+e));
   console.error('RDX Production Human Review Build: FAIL');
@@ -51,4 +63,4 @@ const claims={
 const review={...claims,review_sha256:crypto.createHash('sha256').update(JSON.stringify(claims)).digest('hex')};
 fs.mkdirSync('artifacts',{recursive:true});
 fs.writeFileSync('artifacts/rdx-production-human-review.json',JSON.stringify(review,null,2)+'\n');
-console.log('RDX Production Human Review Build: PASS decision='+decision+' review='+review.review_sha256);
+console.log('RDX Production Human Review Build: PASS decision='+decision+' reviewer='+reviewerId+' review='+review.review_sha256);

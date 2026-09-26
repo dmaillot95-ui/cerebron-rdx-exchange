@@ -8,7 +8,11 @@ const proofPath=liveDir+'/rdx-production-deployment-proof.json';
 const regProposalPath=proposalDir+'/rdx-production-proof-registration-proposal.json';
 const reviewPath='artifacts/rdx-production-human-review.json';
 const updatePath='artifacts/rdx-production-registry-update-proposal.json';
+const policyPath='config/production-human-review-policy.json';
 
+const policy=JSON.parse(fs.readFileSync(policyPath,'utf8'));
+const authorizedReviewer=policy.authorized_reviewers?.[0];
+if(typeof authorizedReviewer!=='string'||!authorizedReviewer) throw new Error('authorized reviewer fixture missing');
 const tracked=[proofPath,regProposalPath,reviewPath,updatePath];
 const backups=new Map();
 for(const f of tracked){
@@ -73,7 +77,15 @@ try{
 
   let r=run(process.execPath,['scripts/build-production-human-review.mjs'],{
     RDX_HUMAN_DECISION:'APPROVE',
-    RDX_HUMAN_REVIEWER_ID:'SYNTHETIC-CANARY-REVIEWER',
+    RDX_HUMAN_REVIEWER_ID:'UNAUTHORIZED-CANARY-REVIEWER',
+    RDX_SIGNED_LIVE_PROOF_VERIFIED:'true',
+    RDX_SIGNED_REGISTRATION_PROPOSAL_VERIFIED:'true'
+  });
+  expectFail('UNAUTHORIZED_REVIEWER_BLOCKED_PRE_REVIEW',r,'reviewer is not authorized by production policy');
+
+  r=run(process.execPath,['scripts/build-production-human-review.mjs'],{
+    RDX_HUMAN_DECISION:'APPROVE',
+    RDX_HUMAN_REVIEWER_ID:authorizedReviewer,
     RDX_SIGNED_LIVE_PROOF_VERIFIED:'true',
     RDX_SIGNED_REGISTRATION_PROPOSAL_VERIFIED:'true'
   });
@@ -87,7 +99,7 @@ try{
   if(fs.existsSync(updatePath)) fs.rmSync(updatePath);
   r=run(process.execPath,['scripts/build-production-human-review.mjs'],{
     RDX_HUMAN_DECISION:'REJECT',
-    RDX_HUMAN_REVIEWER_ID:'SYNTHETIC-CANARY-REVIEWER',
+    RDX_HUMAN_REVIEWER_ID:authorizedReviewer,
     RDX_SIGNED_LIVE_PROOF_VERIFIED:'true',
     RDX_SIGNED_REGISTRATION_PROPOSAL_VERIFIED:'true'
   });
@@ -98,7 +110,7 @@ try{
   const registry=JSON.parse(fs.readFileSync('data/deployments/production-proof-registry.json','utf8'));
   if((registry.proofs||[]).length!==0||registry.latest_verified!==null) throw new Error('production registry changed during synthetic pre-registry canary');
 
-  console.log('RDX Human Review Pre-Registry Negative Canaries: PASS (2/2 rejected, registry unchanged)');
+  console.log('RDX Human Review Pre-Registry Negative Canaries: PASS (3/3 rejected, registry unchanged)');
 }catch(e){
   console.error('RDX Human Review Pre-Registry Negative Canaries: FAIL');
   console.error(e?.stack||String(e));

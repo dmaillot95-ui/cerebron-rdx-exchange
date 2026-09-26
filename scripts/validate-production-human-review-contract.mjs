@@ -16,6 +16,16 @@ if(p.required!==true) errors.push('human review must be required');
 if(p.review_schema!=='RDX_PRODUCTION_HUMAN_REVIEW_V1') errors.push('review schema mismatch');
 if(p.required_for_registry_entry!==true) errors.push('review must be required for registry entry');
 if(p.approved_decision_required_for_production!==true) errors.push('APPROVE must be required for production');
+if(p.require_authenticated_reviewer!==true) errors.push('authenticated reviewer must be required');
+if(p.require_authorized_reviewer!==true) errors.push('authorized reviewer must be required');
+if(!Array.isArray(p.authorized_reviewers)||p.authorized_reviewers.length===0) errors.push('authorized reviewers must be a non-empty array');
+else {
+  const unique=new Set(p.authorized_reviewers);
+  if(unique.size!==p.authorized_reviewers.length) errors.push('authorized reviewers must be unique');
+  for(const reviewer of p.authorized_reviewers){
+    if(typeof reviewer!=='string'||!/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(reviewer)) errors.push('invalid authorized reviewer '+String(reviewer));
+  }
+}
 if(p.require_signed_live_proof_verified!==true) errors.push('signed live proof verification must be required');
 if(p.require_signed_registration_proposal_verified!==true) errors.push('signed registration proposal verification must be required');
 if(p.auto_apply!==false) errors.push('human review policy auto_apply must be false');
@@ -30,4 +40,4 @@ if(errors.length){
   console.error('RDX Production Human Review Contract Gate: FAIL');
   process.exit(1);
 }
-console.log('RDX Production Human Review Contract Gate: PASS mode=HUMAN_APPROVAL_REQUIRED_NO_AUTO_APPLY');
+console.log('RDX Production Human Review Contract Gate: PASS mode=HUMAN_APPROVAL_REQUIRED_NO_AUTO_APPLY authorized_reviewers='+p.authorized_reviewers.length);
