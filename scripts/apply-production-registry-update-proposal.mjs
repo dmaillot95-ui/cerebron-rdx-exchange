@@ -59,7 +59,7 @@ if(candidate){
     if(review.review_sha256!==expectedReviewHash) errors.push('human review sha256 mismatch');
   }
   const proofClone={...candidate};
-  delete proofClone.id;delete proofClone.live_proof_signed;delete proofClone.human_review;
+  delete proofClone.proof_sha256;delete proofClone.id;delete proofClone.live_proof_signed;delete proofClone.human_review;
   const expectedProofHash=crypto.createHash('sha256').update(JSON.stringify(proofClone)).digest('hex');
   if(candidate.proof_sha256!==expectedProofHash) errors.push('candidate proof sha256 mismatch');
 }
