@@ -28,7 +28,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
+          test "$PR_HEAD_REPO" = "$GITHUB_REPOSITORY"
           META="$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,files)"
           test "$(jq -r .baseRefName <<<"$META")" = "main"
           HEAD_REF="$(jq -r .headRefName <<<"$META")"
@@ -36,7 +39,10 @@ jobs:
           test "$(jq '.files | length' <<<"$META")" -eq 1
           test "$(jq -r '.files[0].path' <<<"$META")" = "data/deployments/production-proof-registry.json"
           SOURCE_REVIEW_RUN_ID="$(sed -E 's#^review/rdx-production-proof-([0-9]+)-[0-9]+$#\1#' <<<"$HEAD_REF")"
+          SOURCE_REGISTRY_PR_RUN_ID="$(sed -E 's#^review/rdx-production-proof-[0-9]+-([0-9]+)$#\1#' <<<"$HEAD_REF")"
           echo "RDX_SOURCE_REVIEW_RUN_ID=$SOURCE_REVIEW_RUN_ID" >> "$GITHUB_ENV"
+          echo "RDX_SOURCE_REGISTRY_PR_RUN_ID=$SOURCE_REGISTRY_PR_RUN_ID" >> "$GITHUB_ENV"
+          echo "RDX_PR_HEAD_SHA=$PR_HEAD_SHA" >> "$GITHUB_ENV"
       - name: Verify source human review run
         env:
           GH_TOKEN: ${{ github.token }}
@@ -46,6 +52,24 @@ jobs:
           test "$(jq -r .conclusion <<<"$META")" = "success"
           test "$(jq -r .event <<<"$META")" = "workflow_dispatch"
           test "$(jq -r .headBranch <<<"$META")" = "main"
+      - name: Verify source registry PR workflow provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          META="$(gh run view "$RDX_SOURCE_REGISTRY_PR_RUN_ID" --json name,conclusion,event,headBranch,headSha,status)"
+          test "$(jq -r .name <<<"$META")" = "RDX Production Registry PR"
+          test "$(jq -r .event <<<"$META")" = "workflow_dispatch"
+          test "$(jq -r .headBranch <<<"$META")" = "main"
+          STATUS="$(jq -r .status <<<"$META")"
+          CONCLUSION="$(jq -r '.conclusion // ""' <<<"$META")"
+          if [ "$STATUS" = "completed" ]; then
+            test "$CONCLUSION" = "success"
+          else
+            test "$STATUS" = "in_progress"
+          fi
+          SOURCE_REGISTRY_PR_SHA="$(jq -r .headSha <<<"$META")"
+          HEAD_PARENT="$(git rev-parse "${RDX_PR_HEAD_SHA}^")"
+          test "$HEAD_PARENT" = "$SOURCE_REGISTRY_PR_SHA"
       - name: Verify registry delta is append-only
         env:
           RDX_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
