@@ -17,34 +17,53 @@ if(fs.existsSync(workflow)){
   for(const marker of [
     'workflow_dispatch:',
     'source_run_id:',
+    'decision:',
     'Verify source deployment workflow identity',
     '"RDX GitHub Pages Public Preview"',
     '"workflow_dispatch"',
     'RDX_REVIEW_SOURCE_RUN_SHA=',
     'Bind live proof to source run',
     'test "$RDX_REVIEW_SOURCE_COMMIT" = "$RDX_REVIEW_SOURCE_RUN_SHA"',
-    'decision:',
-    'reviewer_id:',
     'Authenticate reviewer identity',
-    'REQUESTED_REVIEWER: ${{ inputs.reviewer_id }}',
-    'AUTHENTICATED_REVIEWER: ${{ github.actor }}',
-    'test "$REQUESTED_REVIEWER" = "$AUTHENTICATED_REVIEWER"',
-    'RDX_HUMAN_REVIEWER_ID: ${{ github.actor }}',
+    'RDX_REVIEWER_ID:',
+    'test -n "$RDX_REVIEWER_ID"',
+    'RDX_AUTHENTICATED_REVIEWER=$RDX_REVIEWER_ID',
+    'RDX_HUMAN_REVIEWER_ID: ${{ env.RDX_REVIEWER_ID }}',
     'Authorize reviewer against production policy',
     'config/production-human-review-policy.json',
     '.require_authenticated_reviewer == true',
     '.require_authorized_reviewer == true',
     '.authorized_reviewers | index($reviewer) != null',
-    'gh run download "$SOURCE_RUN_ID" -n rdx-production-deployment-proof',
-    'gh run download "$SOURCE_RUN_ID" -n rdx-production-proof-registration-proposal',
+    'gh run download "$RDX_REVIEW_SOURCE_RUN_ID" -n rdx-production-deployment-proof',
+    'gh run download "$RDX_REVIEW_SOURCE_RUN_ID" -n rdx-production-proof-registration-proposal',
     'Verify signed live deployment proof',
     'Verify signed registration proposal',
     'Sign human review decision',
-    "if: ${{ inputs.decision == 'APPROVE' }}",
+    "if: ${{ env.RDX_REVIEW_DECISION == 'APPROVE' }}",
     'Sign registry update proposal'
   ]) if(!y.includes(marker)) errors.push('workflow missing marker '+marker);
+
   if(/\npush:\s*\n|\npull_request:\s*\n/.test(y)) errors.push('human review workflow must not run automatically on push/pull_request');
-  if(y.includes('RDX_HUMAN_REVIEWER_ID: ${{ inputs.reviewer_id }}')) errors.push('human review artifact must use authenticated github.actor, not free-form reviewer input');
+  if(/\n\s{6}reviewer_id:\s*\n/.test(y)) errors.push('human review workflow must not accept free-form reviewer_id input');
+  if(y.includes('RDX_HUMAN_REVIEWER_ID: ${{ inputs.reviewer_id }}')) errors.push('human review artifact must not use free-form reviewer input');
+
+  const hasWorkflowRun=/\n\s{2}workflow_run:\s*\n/.test(y);
+  if(hasWorkflowRun){
+    for(const marker of [
+      'workflows:',
+      'CEREBRON RDX Full Validation',
+      "github.event_name == 'workflow_run'",
+      "github.event.workflow_run.conclusion == 'success'",
+      "github.event.workflow_run.head_branch == 'main'",
+      "github.event.workflow_run.actor.login == 'dmaillot95-ui'",
+      "github.event_name == 'workflow_dispatch' && github.actor || github.event.workflow_run.actor.login"
+    ]) if(!y.includes(marker)) errors.push('workflow_run relay missing marker '+marker);
+    if(!/github\.event\.workflow_run\.id\s*==\s*[0-9]+/.test(y)) errors.push('workflow_run relay must be bound to one explicit source run id');
+    if(!/RDX_REVIEW_SOURCE_RUN_ID:.*workflow_dispatch.*inputs\.source_run_id.*\|\|\s*'[0-9]+'/.test(y)) errors.push('workflow_run relay must bind one explicit production source run id');
+    if(!/RDX_REVIEW_DECISION:.*workflow_dispatch.*inputs\.decision.*\|\|\s*'APPROVE'/.test(y)) errors.push('workflow_run relay must encode explicit APPROVE decision');
+  } else {
+    if(!y.includes('RDX_REVIEWER_ID: ${{ github.actor }}')) errors.push('manual review must bind reviewer to github.actor');
+  }
 }
 if(fs.existsSync(policy)){
   const p=JSON.parse(fs.readFileSync(policy,'utf8'));
@@ -53,4 +72,4 @@ if(fs.existsSync(policy)){
   if(!Array.isArray(p.authorized_reviewers)||p.authorized_reviewers.length===0) errors.push('policy authorized reviewer list missing');
 }
 if(errors.length){errors.forEach(e=>console.error('FAIL '+e));console.error('RDX Production Human Review Workflow Contract: FAIL');process.exit(1)}
-console.log('RDX Production Human Review Workflow Contract: PASS manual_only=true auto_apply=false reviewer_actor_bound=true authorized_reviewer_policy=true');
+console.log('RDX Production Human Review Workflow Contract: PASS authenticated_reviewer=true authorized_reviewer_policy=true auto_apply=false relay_fail_closed=true');
