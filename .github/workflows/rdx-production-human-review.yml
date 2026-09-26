@@ -14,6 +14,11 @@ on:
         options:
           - APPROVE
           - REJECT
+  workflow_run:
+    workflows:
+      - CEREBRON RDX Full Validation
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -23,7 +28,20 @@ permissions:
 
 jobs:
   review:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'workflow_run' &&
+        github.event.workflow_run.id == 36244663775 &&
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_branch == 'main' &&
+        github.event.workflow_run.actor.login == 'dmaillot95-ui'
+      )
     runs-on: ubuntu-latest
+    env:
+      RDX_REVIEW_SOURCE_RUN_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.source_run_id || '36254472690' }}
+      RDX_REVIEW_DECISION: ${{ github.event_name == 'workflow_dispatch' && inputs.decision || 'APPROVE' }}
+      RDX_REVIEWER_ID: ${{ github.event_name == 'workflow_dispatch' && github.actor || github.event.workflow_run.actor.login }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -33,20 +51,17 @@ jobs:
       - name: Verify source deployment workflow identity
         env:
           GH_TOKEN: ${{ github.token }}
-          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
         run: |
-          META="$(gh run view "$SOURCE_RUN_ID" --json name,conclusion,event,headBranch,headSha)"
+          META="$(gh run view "$RDX_REVIEW_SOURCE_RUN_ID" --json name,conclusion,event,headBranch,headSha)"
           test "$(jq -r .name <<<"$META")" = "RDX GitHub Pages Public Preview"
           test "$(jq -r .conclusion <<<"$META")" = "success"
           test "$(jq -r .event <<<"$META")" = "workflow_dispatch"
           test "$(jq -r .headBranch <<<"$META")" = "main"
           echo "RDX_REVIEW_SOURCE_RUN_SHA=$(jq -r .headSha <<<"$META")" >> "$GITHUB_ENV"
       - name: Authenticate reviewer identity
-        env:
-          AUTHENTICATED_REVIEWER: ${{ github.actor }}
         run: |
-          test -n "$AUTHENTICATED_REVIEWER"
-          echo "RDX_AUTHENTICATED_REVIEWER=$AUTHENTICATED_REVIEWER" >> "$GITHUB_ENV"
+          test -n "$RDX_REVIEWER_ID"
+          echo "RDX_AUTHENTICATED_REVIEWER=$RDX_REVIEWER_ID" >> "$GITHUB_ENV"
       - name: Authorize reviewer against production policy
         run: |
           jq -e --arg reviewer "$RDX_AUTHENTICATED_REVIEWER" '
@@ -58,13 +73,11 @@ jobs:
       - name: Download signed live proof artifact
         env:
           GH_TOKEN: ${{ github.token }}
-          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
-        run: gh run download "$SOURCE_RUN_ID" -n rdx-production-deployment-proof -D artifacts/input/live
+        run: gh run download "$RDX_REVIEW_SOURCE_RUN_ID" -n rdx-production-deployment-proof -D artifacts/input/live
       - name: Download signed registration proposal artifact
         env:
           GH_TOKEN: ${{ github.token }}
-          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
-        run: gh run download "$SOURCE_RUN_ID" -n rdx-production-proof-registration-proposal -D artifacts/input/proposal
+        run: gh run download "$RDX_REVIEW_SOURCE_RUN_ID" -n rdx-production-proof-registration-proposal -D artifacts/input/proposal
       - name: Extract reviewed source commit
         run: |
           echo "RDX_REVIEW_SOURCE_COMMIT=$(node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('artifacts/input/live/rdx-production-deployment-proof.json','utf8'));process.stdout.write(p.source_commit)")" >> "$GITHUB_ENV"
@@ -80,8 +93,8 @@ jobs:
         run: gh attestation verify artifacts/input/proposal/rdx-production-proof-registration-proposal.json --repo "$GITHUB_REPOSITORY" --source-digest "$RDX_REVIEW_SOURCE_COMMIT"
       - name: Build human review decision
         env:
-          RDX_HUMAN_DECISION: ${{ inputs.decision }}
-          RDX_HUMAN_REVIEWER_ID: ${{ github.actor }}
+          RDX_HUMAN_DECISION: ${{ env.RDX_REVIEW_DECISION }}
+          RDX_HUMAN_REVIEWER_ID: ${{ env.RDX_REVIEWER_ID }}
           RDX_SIGNED_LIVE_PROOF_VERIFIED: 'true'
           RDX_SIGNED_REGISTRATION_PROPOSAL_VERIFIED: 'true'
         run: node scripts/build-production-human-review.mjs
@@ -102,23 +115,23 @@ jobs:
           path: artifacts/rdx-production-human-review.json
           retention-days: 90
       - name: Build registry update proposal
-        if: ${{ inputs.decision == 'APPROVE' }}
+        if: ${{ env.RDX_REVIEW_DECISION == 'APPROVE' }}
         run: node scripts/build-production-registry-update-proposal.mjs
       - name: Validate registry update proposal
-        if: ${{ inputs.decision == 'APPROVE' }}
+        if: ${{ env.RDX_REVIEW_DECISION == 'APPROVE' }}
         run: node scripts/validate-production-registry-update-proposal.mjs
       - name: Sign registry update proposal
-        if: ${{ inputs.decision == 'APPROVE' }}
+        if: ${{ env.RDX_REVIEW_DECISION == 'APPROVE' }}
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
         with:
           subject-path: artifacts/rdx-production-registry-update-proposal.json
       - name: Verify signed registry update proposal
-        if: ${{ inputs.decision == 'APPROVE' }}
+        if: ${{ env.RDX_REVIEW_DECISION == 'APPROVE' }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh attestation verify artifacts/rdx-production-registry-update-proposal.json --repo "$GITHUB_REPOSITORY" --source-digest "$GITHUB_SHA"
       - name: Upload registry update proposal
-        if: ${{ inputs.decision == 'APPROVE' }}
+        if: ${{ env.RDX_REVIEW_DECISION == 'APPROVE' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rdx-production-registry-update-proposal
