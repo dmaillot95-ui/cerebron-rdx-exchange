@@ -12,6 +12,11 @@ on:
       - RDX Production Human Review
     types:
       - completed
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/rdx-production-registry-pr.yml
 
 permissions:
   contents: write
@@ -21,7 +26,7 @@ permissions:
 
 jobs:
   propose-pr:
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main') }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -39,6 +44,8 @@ jobs:
         run: |
           if [ "$EVENT_NAME" = "workflow_run" ]; then
             SOURCE_REVIEW_RUN_ID="$WORKFLOW_RUN_ID"
+          elif [ "$EVENT_NAME" = "push" ]; then
+            SOURCE_REVIEW_RUN_ID="36258188061"
           else
             SOURCE_REVIEW_RUN_ID="$DISPATCH_RUN_ID"
           fi
