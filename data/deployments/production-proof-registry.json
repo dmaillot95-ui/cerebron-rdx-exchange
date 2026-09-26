@@ -1,7 +1,7 @@
 {
   "schema": "RDX_PRODUCTION_PROOF_REGISTRY_V1",
   "policy": "FAIL_CLOSED",
-  "latest_verified": "RDX-LIVE-4b983166e635-a791110dc1e9",
+  "latest_verified": "RDX-LIVE-a3dd396aa448-e0c41095ee19",
   "proofs": [
     {
       "id": "RDX-LIVE-4b983166e635-a791110dc1e9",
@@ -267,6 +267,272 @@
         "signed_registration_proposal_verified": true,
         "auto_apply": false,
         "review_sha256": "84dae3931113991c5420d9e5c7e2cf3074a72aa6de0e6d17bb32247d1aae7e77"
+      }
+    },
+    {
+      "id": "RDX-LIVE-a3dd396aa448-e0c41095ee19",
+      "live_proof_signed": true,
+      "schema": "RDX_PRODUCTION_DEPLOYMENT_PROOF_V2",
+      "verified_at": "2026-09-26T16:20:24.748Z",
+      "base_url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/",
+      "public_https_surface_policy": true,
+      "github_sha": "a3dd396aa4482752de821cea9157ce855cb9ef68",
+      "release_manifest_schema": "RDX_RELEASE_MANIFEST_V1",
+      "build_provenance_schema": "RDX_BUILD_PROVENANCE_V1",
+      "source_commit": "a3dd396aa4482752de821cea9157ce855cb9ef68",
+      "provenance_matches_manifest": true,
+      "github_sha_matches_provenance": true,
+      "release_attestation_signed": true,
+      "release_attestation_sha256": "ffbf881799c2fbc023b7007da0a0267b8c3ca5fde0e5440d19219ef35c11f7ff",
+      "expected_release_aggregate_sha256": "c43646c320ac19abd75aeacc8530d75943b1720e23c789397c6292f881ee8521",
+      "actual_release_aggregate_sha256": "c43646c320ac19abd75aeacc8530d75943b1720e23c789397c6292f881ee8521",
+      "release_file_count_expected": 16,
+      "release_file_count_checked": 16,
+      "manifest_file_count_match": true,
+      "manifest_aggregate_match": true,
+      "endpoint_checks": [
+        {
+          "path": "",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/",
+          "http_status": 200,
+          "ok": true,
+          "bytes": 24096,
+          "status": "PASS"
+        },
+        {
+          "path": "api/v1/status.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/status.json",
+          "http_status": 200,
+          "ok": true,
+          "bytes": 8870,
+          "status": "PASS"
+        },
+        {
+          "path": "api/v1/catalog.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/catalog.json",
+          "http_status": 200,
+          "ok": true,
+          "bytes": 1130,
+          "status": "PASS"
+        },
+        {
+          "path": "api/v1/packs/RDX-000001.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/packs/RDX-000001.json",
+          "http_status": 200,
+          "ok": true,
+          "bytes": 6976,
+          "status": "PASS"
+        },
+        {
+          "path": "api/v1/build-provenance.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/build-provenance.json",
+          "http_status": 200,
+          "ok": true,
+          "bytes": 283,
+          "status": "PASS"
+        },
+        {
+          "path": "api/v1/release-manifest.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/release-manifest.json",
+          "http_status": 200,
+          "ok": true,
+          "bytes": 2874,
+          "status": "PASS"
+        }
+      ],
+      "bundle_file_checks": [
+        {
+          "path": "api.html",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api.html",
+          "status": "PASS",
+          "sha256": "c10f03f460930f5f10ff557b3cff7a0291c532fa76c213609feaad379dc54a5a",
+          "expected_sha256": "c10f03f460930f5f10ff557b3cff7a0291c532fa76c213609feaad379dc54a5a",
+          "bytes": 3719,
+          "expected_bytes": 3719,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "api/v1/architecton-40.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/architecton-40.json",
+          "status": "PASS",
+          "sha256": "bc243a2122e1ea15939e725918319a1c925921be59a1cb441b969b70957e6761",
+          "expected_sha256": "bc243a2122e1ea15939e725918319a1c925921be59a1cb441b969b70957e6761",
+          "bytes": 12871,
+          "expected_bytes": 12871,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "api/v1/architecton-missions.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/architecton-missions.json",
+          "status": "PASS",
+          "sha256": "f80a3f0a6edcf4e8231c247fb139fe81a6121a21dde2286cb211ef8be23a3ae4",
+          "expected_sha256": "f80a3f0a6edcf4e8231c247fb139fe81a6121a21dde2286cb211ef8be23a3ae4",
+          "bytes": 14399,
+          "expected_bytes": 14399,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "api/v1/architecton-pipeline.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/architecton-pipeline.json",
+          "status": "PASS",
+          "sha256": "395bd0d7f11f2517aaae240dba36830210620f16eaf7cb4b9237a0cb87414643",
+          "expected_sha256": "395bd0d7f11f2517aaae240dba36830210620f16eaf7cb4b9237a0cb87414643",
+          "bytes": 4527,
+          "expected_bytes": 4527,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "api/v1/architecton-wave-01.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/architecton-wave-01.json",
+          "status": "PASS",
+          "sha256": "fba6737a7f56a2a7f5223bb0441d29fff9d3e6671034e7e5831a5755d5e37075",
+          "expected_sha256": "fba6737a7f56a2a7f5223bb0441d29fff9d3e6671034e7e5831a5755d5e37075",
+          "bytes": 3447,
+          "expected_bytes": 3447,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "api/v1/build-provenance.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/build-provenance.json",
+          "status": "PASS",
+          "sha256": "f0080d65d83fc0daed7297077957bde619be927c8fd48c2d7ae8fe7060e9b8dc",
+          "expected_sha256": "f0080d65d83fc0daed7297077957bde619be927c8fd48c2d7ae8fe7060e9b8dc",
+          "bytes": 283,
+          "expected_bytes": 283,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "api/v1/catalog.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/catalog.json",
+          "status": "PASS",
+          "sha256": "37673f0bf8d3aca4435d9c044b9f245103703469c60df409f6d71b033393bf43",
+          "expected_sha256": "37673f0bf8d3aca4435d9c044b9f245103703469c60df409f6d71b033393bf43",
+          "bytes": 1130,
+          "expected_bytes": 1130,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "api/v1/packs/RDX-000001.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/packs/RDX-000001.json",
+          "status": "PASS",
+          "sha256": "4a3690f4515eea06f404b19decb689abc076cac51d392a16c12a339c2df627df",
+          "expected_sha256": "4a3690f4515eea06f404b19decb689abc076cac51d392a16c12a339c2df627df",
+          "bytes": 6976,
+          "expected_bytes": 6976,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "api/v1/request-schema.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/request-schema.json",
+          "status": "PASS",
+          "sha256": "b53f22dc7e8d89e845a618210f86c28b1dce3951c0f999a3f462dc6732489a2d",
+          "expected_sha256": "b53f22dc7e8d89e845a618210f86c28b1dce3951c0f999a3f462dc6732489a2d",
+          "bytes": 2121,
+          "expected_bytes": 2121,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "api/v1/status.json",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/api/v1/status.json",
+          "status": "PASS",
+          "sha256": "81b16aad1a7a7157f12c341708c0d08c7187faa957b56a56c99a47b14ad5e62f",
+          "expected_sha256": "81b16aad1a7a7157f12c341708c0d08c7187faa957b56a56c99a47b14ad5e62f",
+          "bytes": 8870,
+          "expected_bytes": 8870,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "dossiers/RDX-000001.html",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/dossiers/RDX-000001.html",
+          "status": "PASS",
+          "sha256": "245dcbcaad7a4c1fad7bf95594db228009c55188aea77ba9fc304c79a4e5f0f6",
+          "expected_sha256": "245dcbcaad7a4c1fad7bf95594db228009c55188aea77ba9fc304c79a4e5f0f6",
+          "bytes": 7529,
+          "expected_bytes": 7529,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "dossiers/index.html",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/dossiers/index.html",
+          "status": "PASS",
+          "sha256": "d9d7c118a1eb7005025739d6d59e920340598e41bc92cfc00a31e94e72757e79",
+          "expected_sha256": "d9d7c118a1eb7005025739d6d59e920340598e41bc92cfc00a31e94e72757e79",
+          "bytes": 2211,
+          "expected_bytes": 2211,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "index.html",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/index.html",
+          "status": "PASS",
+          "sha256": "8cfde3ae625d659fcdebdb8e6ee082b56c55b103c3442fd1571157380bfab1da",
+          "expected_sha256": "8cfde3ae625d659fcdebdb8e6ee082b56c55b103c3442fd1571157380bfab1da",
+          "bytes": 24096,
+          "expected_bytes": 24096,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "privacy.html",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/privacy.html",
+          "status": "PASS",
+          "sha256": "77829f1c45f9fc5dcf124f07ba19dece8955592fad29400519fcb9925ae851e5",
+          "expected_sha256": "77829f1c45f9fc5dcf124f07ba19dece8955592fad29400519fcb9925ae851e5",
+          "bytes": 1953,
+          "expected_bytes": 1953,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "status.html",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/status.html",
+          "status": "PASS",
+          "sha256": "dd10c2e4afd671d97bc7f0b81f593e4132974b75a4b9aa7a0d18739539b1740f",
+          "expected_sha256": "dd10c2e4afd671d97bc7f0b81f593e4132974b75a4b9aa7a0d18739539b1740f",
+          "bytes": 7032,
+          "expected_bytes": 7032,
+          "sha_match": true,
+          "bytes_match": true
+        },
+        {
+          "path": "verify.html",
+          "url": "https://dmaillot95-ui.github.io/cerebron-rdx-exchange/verify.html",
+          "status": "PASS",
+          "sha256": "1bf3be755997e2914debd7a149227c50643db76750acac49736ac741e9debe85",
+          "expected_sha256": "1bf3be755997e2914debd7a149227c50643db76750acac49736ac741e9debe85",
+          "bytes": 6745,
+          "expected_bytes": 6745,
+          "sha_match": true,
+          "bytes_match": true
+        }
+      ],
+      "status": "PASS",
+      "proof_sha256": "e0c41095ee19bf742ed84fd3ea207d54ade3a5b614de71443008171b996ff685",
+      "human_review": {
+        "schema": "RDX_PRODUCTION_HUMAN_REVIEW_V1",
+        "decision": "APPROVE",
+        "reviewer_id": "dmaillot95-ui",
+        "reviewed_at": "2026-09-26T17:27:00.960Z",
+        "registration_proposal_sha256": "a3a743eadf0978e48e9de14c7883507f6b736a263c017155b8c8804fee579992",
+        "live_proof_sha256": "e0c41095ee19bf742ed84fd3ea207d54ade3a5b614de71443008171b996ff685",
+        "source_commit": "a3dd396aa4482752de821cea9157ce855cb9ef68",
+        "release_aggregate_sha256": "c43646c320ac19abd75aeacc8530d75943b1720e23c789397c6292f881ee8521",
+        "signed_live_proof_verified": true,
+        "signed_registration_proposal_verified": true,
+        "auto_apply": false,
+        "review_sha256": "baa47b15d76717b020f0a7ae56461f6dea7381787cc351ad0f7439141f2119e3"
       }
     }
   ]
