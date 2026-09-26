@@ -27,6 +27,7 @@ const commands=[
   ['node',['scripts/validate-production-human-review-workflow-contract.mjs']],
   ['node',['scripts/validate-production-registry-pr-workflow-contract.mjs']],
   ['node',['scripts/validate-production-promotion.mjs']],
+  ['node',['scripts/validate-production-publication-binding.mjs']],
   ['node',['scripts/validate-production-fail-closed-negative.mjs']],
   ['node',['scripts/validate-human-review-pre-registry-negative.mjs']],
   ['node',['scripts/validate-production-rollback-negative.mjs']],
@@ -41,7 +42,8 @@ const commands=[
   ['node',['--check','scripts/verify-live-deployment.mjs']],
   ['node',['--check','scripts/build-production-proof-registration-proposal.mjs']],
   ['node',['--check','scripts/validate-production-proof-registration-proposal.mjs']],
-  ['node',['--check','scripts/validate-production-registry-pr-delta.mjs']]
+  ['node',['--check','scripts/validate-production-registry-pr-delta.mjs']],
+  ['node',['--check','scripts/validate-production-publication-binding.mjs']]
 ];
 
 for(const [cmd,args] of commands){
