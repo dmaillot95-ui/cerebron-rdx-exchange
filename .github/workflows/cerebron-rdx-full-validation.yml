@@ -6,6 +6,7 @@ on:
     paths:
       - 'data/architecton/**'
       - 'data/packs/**'
+      - 'data/deployments/**'
       - 'config/**'
       - 'schema/**'
       - 'templates/**'
@@ -20,6 +21,7 @@ on:
     paths:
       - 'data/architecton/**'
       - 'data/packs/**'
+      - 'data/deployments/**'
       - 'config/**'
       - 'schema/**'
       - 'templates/**'
