@@ -14,10 +14,6 @@ on:
         options:
           - APPROVE
           - REJECT
-      reviewer_id:
-        description: 'GitHub reviewer login; must equal the authenticated and authorized workflow actor'
-        required: true
-        type: string
 
 permissions:
   contents: read
@@ -47,11 +43,9 @@ jobs:
           echo "RDX_REVIEW_SOURCE_RUN_SHA=$(jq -r .headSha <<<"$META")" >> "$GITHUB_ENV"
       - name: Authenticate reviewer identity
         env:
-          REQUESTED_REVIEWER: ${{ inputs.reviewer_id }}
           AUTHENTICATED_REVIEWER: ${{ github.actor }}
         run: |
           test -n "$AUTHENTICATED_REVIEWER"
-          test "$REQUESTED_REVIEWER" = "$AUTHENTICATED_REVIEWER"
           echo "RDX_AUTHENTICATED_REVIEWER=$AUTHENTICATED_REVIEWER" >> "$GITHUB_ENV"
       - name: Authorize reviewer against production policy
         run: |
