@@ -74,5 +74,7 @@ jobs:
         env:
           RDX_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: node scripts/validate-production-registry-pr-delta.mjs
+      - name: Build temporary RDX static release for promotion validation
+        run: node scripts/build-static-release.mjs
       - name: Validate fail-closed production registry
         run: node scripts/validate-production-promotion.mjs
